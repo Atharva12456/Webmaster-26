@@ -79,8 +79,8 @@ function initApp() {
     });
 
     // ===== ACCESSIBILITY WIDGET =====
-    a11yToggle.addEventListener('click', () => {
-        a11yPanel.classList.toggle('active');
+    a11yToggle?.addEventListener('click', () => {
+        a11yPanel?.classList.toggle('active');
     });
 
     document.querySelectorAll('.a11y-btn[data-size]').forEach(btn => {
@@ -112,8 +112,8 @@ function initApp() {
     document.documentElement.setAttribute('data-contrast', state.contrast);
 
     // ===== LANGUAGE SELECTOR =====
-    langToggle.addEventListener('click', () => {
-        langDropdown.classList.toggle('active');
+    langToggle?.addEventListener('click', () => {
+        langDropdown?.classList.toggle('active');
     });
 
     document.querySelectorAll('.lang-option').forEach(option => {
@@ -121,8 +121,8 @@ function initApp() {
             const lang = option.dataset.lang;
             state.language = lang;
             localStorage.setItem('language', lang);
-            langToggle.innerHTML = `<i class="fas fa-globe"></i> ${lang.toUpperCase()}`;
-            langDropdown.classList.remove('active');
+            if (langToggle) langToggle.innerHTML = `<i class="fas fa-globe"></i> ${lang.toUpperCase()}`;
+            langDropdown?.classList.remove('active');
             showToast(lang === 'es' ? '¡Idioma cambiado a Español!' : 'Language changed to English!', 'success');
             // Update UI text would go here for full implementation
         });
@@ -131,10 +131,10 @@ function initApp() {
     // Close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.lang-selector')) {
-            langDropdown.classList.remove('active');
+            langDropdown?.classList.remove('active');
         }
         if (!e.target.closest('.a11y-widget')) {
-            a11yPanel.classList.remove('active');
+            a11yPanel?.classList.remove('active');
         }
     });
 
