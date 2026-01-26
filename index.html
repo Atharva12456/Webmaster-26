@@ -29,14 +29,17 @@
                 <span>Houston<span>Hub</span></span>
             </div>
             <ul class="nav-links">
-                <li><a href="#directory" class="active"><i class="fas fa-search"></i> Directory</a></li>
-                <li><a href="#featured"><i class="fas fa-star"></i> Featured</a></li>
-                <li><a href="#calendar"><i class="fas fa-calendar"></i> Calendar</a></li>
-                <li><a href="#petitions"><i class="fas fa-file-contract"></i> Create a Change</a></li>
-                <li><a href="#support"><i class="fas fa-heart"></i> Support</a></li>
+                <li><a href="#directory" class="active" data-i18n="directory"><i class="fas fa-search"></i>
+                        Directory</a></li>
+                <li><a href="#featured" data-i18n="featured"><i class="fas fa-star"></i> Featured</a></li>
+                <li><a href="#calendar" data-i18n="calendar"><i class="fas fa-calendar"></i> Calendar</a></li>
+                <li><a href="#petitions" data-i18n="petitions"><i class="fas fa-file-contract"></i> Create a Change</a>
+                </li>
+                <li><a href="#support" data-i18n="support"><i class="fas fa-heart"></i> Support</a></li>
             </ul>
             <div class="header-actions">
-                <button class="btn btn-primary" id="suggest-resource-btn">Suggest Resource</button>
+                <button class="btn btn-primary" id="suggest-resource-btn" data-i18n="suggestResource">Suggest
+                    Resource</button>
             </div>
             <button class="mobile-menu-btn" aria-label="Open menu">
                 <i class="fas fa-bars"></i>
@@ -48,26 +51,29 @@
         <!-- Dynamic Content Injected Here -->
         <section id="hero" class="hero-section">
             <div class="container hero-content">
-                <h1>Connecting Houston <br><span class="text-gradient">To What Matters.</span></h1>
-                <p>Find non-profits, support services, recreation, and youth programs in your neighborhood.</p>
+                <h1><span data-i18n="heroTitle">Connecting Houston</span> <br><span class="text-gradient"
+                        data-i18n="heroSubtitle">To What Matters.</span></h1>
+                <p data-i18n="heroDescription">Find non-profits, support services, recreation, and youth programs in
+                    your neighborhood.</p>
                 <div class="hero-search">
                     <input type="text" id="main-search-input" placeholder="What are you looking for today?"
-                        aria-label="Search resources">
-                    <button class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
+                        aria-label="Search resources" data-i18n-placeholder="searchPlaceholder">
+                    <button class="btn btn-primary"><i class="fas fa-search"></i> <span
+                            data-i18n="search">Search</span></button>
                 </div>
                 <!-- Stats Dashboard -->
                 <div class="stats-dashboard animate-in">
                     <div class="stat-item">
                         <div class="stat-number" id="stat-resources">17+</div>
-                        <div class="stat-label">Resources Listed</div>
+                        <div class="stat-label" data-i18n="resourcesListed">Resources Listed</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number">5</div>
-                        <div class="stat-label">Categories</div>
+                        <div class="stat-label" data-i18n="categories">Categories</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number">50K+</div>
-                        <div class="stat-label">Users Helped</div>
+                        <div class="stat-label" data-i18n="usersHelped">Users Helped</div>
                     </div>
                 </div>
             </div>

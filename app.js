@@ -255,12 +255,40 @@ function initApp() {
     };
     updateLangButtons();
 
+    // ===== TRANSLATION LOGIC =====
+    const updateLanguage = (lang) => {
+        // Update static text elements
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                el.textContent = translations[lang][key];
+            }
+        });
+
+        // Update placeholders
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (translations[lang] && translations[lang][key]) {
+                el.placeholder = translations[lang][key];
+            }
+        });
+
+        // Update document direction if needed (for RTL languages, though not applicable here yet)
+        document.documentElement.lang = lang;
+    };
+
+    // Initial translation apply
+    updateLanguage(state.language);
+
     langOptionBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             state.language = btn.dataset.lang;
             localStorage.setItem('language', state.language);
             langToggle.innerHTML = `<i class="fas fa-globe"></i> ${state.language.toUpperCase()}`;
+
             updateLangButtons();
+            updateLanguage(state.language);
+
             showToast(state.language === 'es' ? '¡Idioma cambiado a Español!' : 'Language changed to English!', 'success');
         });
     });
