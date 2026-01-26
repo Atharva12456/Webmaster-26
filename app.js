@@ -277,7 +277,18 @@ function initApp() {
         });
 
         // Update document direction if needed (for RTL languages, though not applicable here yet)
+        // Update document direction if needed (for RTL languages, though not applicable here yet)
         document.documentElement.lang = lang;
+
+        // Re-render current view to translate dynamic content
+        renderSection(state.currentView);
+        // Force update of nav links to ensure they get localized too if needed
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                el.textContent = translations[lang][key];
+            }
+        });
     };
 
     // Initial translation apply
@@ -501,6 +512,8 @@ function initApp() {
     // ===== DIRECTORY =====
     function renderDirectory() {
         const categories = ['All', 'Food Security', 'Recreation', 'Community Centers', 'Support Services', 'Youth Programs'];
+        const t = translations[state.language];
+
         const categoryCounts = {};
         categories.forEach(cat => {
             if (cat === 'All') {
@@ -515,7 +528,7 @@ function initApp() {
             <div class="emergency-section animate-in">
                 <div class="emergency-header">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Emergency Resources</h3>
+                    <h3>${t['Emergency Resources'] || 'Emergency Resources'}</h3>
                 </div>
                 <div class="emergency-grid">
                     ${emergencyResources.map(e => `
@@ -570,11 +583,11 @@ function initApp() {
             <div class="filter-chips">
                 ${categories.map(cat => `
                     <button class="filter-chip ${state.filters.category === cat ? 'active' : ''}" data-category="${cat}">
-                        ${cat} <span class="count">${categoryCounts[cat]}</span>
+                        ${t[cat] || cat} <span class="count">${categoryCounts[cat]}</span>
                     </button>
                 `).join('')}
                 ${state.filters.category !== 'All' || state.filters.search ? `
-                    <button class="clear-filters"><i class="fas fa-times"></i> Clear Filters</button>
+                    <button class="clear-filters"><i class="fas fa-times"></i> ${state.language === 'es' ? 'Borrar Filtros' : 'Clear Filters'}</button>
                 ` : ''}
             </div>
 
@@ -598,10 +611,11 @@ function initApp() {
 
             if (filtered.length === 0) {
                 grid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">
-                        <i class="fas fa-search" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+                    <div class="no-results animate-in">
+                        <i class="fas fa-search" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
                         <h3>No resources found</h3>
-                        <p style="color: var(--text-muted)">Try adjusting your filters or search terms.</p>
+                        <p>Try adjusting your filters or search terms.</p>
+                        <button class="btn btn-primary" onclick="state.filters.search=''; state.filters.category='All'; renderDirectory();">Clear All Filters</button>
                     </div>
                 `;
                 return;
@@ -614,12 +628,12 @@ function initApp() {
                     <div class="resource-card animate-in" data-id="${res.id}">
                         <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
-                                <span class="category-badge">${res.category}</span>
+                                <span class="category-badge">${t[res.category] || res.category}</span>
                                 <span class="${openStatus ? 'open-badge' : 'open-badge closed-badge'}" style="margin-left: 0.5rem;">
-                                    ${openStatus ? 'Open' : 'Closed'}
+                                    ${openStatus ? (t['openNow'] || 'Open') : (t['closed'] || 'Closed')}
                                 </span>
                             </div>
-                            <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${res.id}" aria-label="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}">
+                            <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${res.id}" aria-label="${isFavorite ? t['removeFromFavorites'] : t['addToFavorites']}">
                                 <i class="fas fa-heart"></i>
                             </button>
                         </div>
@@ -653,12 +667,12 @@ function initApp() {
                         <div class="card-actions" style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
                             ${res.website ? `
                                 <a href="${res.website}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="flex: 1;">
-                                    <i class="fas fa-external-link-alt"></i> Visit Website
+                                    <i class="fas fa-external-link-alt"></i> ${state.language === 'es' ? 'Visitar Sitio' : 'Visit Website'}
                                 </a>
                             ` : ''}
                             ${res.category === 'Recreation' ? `
                                 <button class="btn btn-primary book-btn" data-id="${res.id}" style="flex: 1;">
-                                    <i class="fas fa-calendar-check"></i> Book Venue
+                                    <i class="fas fa-calendar-check"></i> ${state.language === 'es' ? 'Reservar' : 'Book Venue'}
                                 </button>
                             ` : ''}
                         </div>

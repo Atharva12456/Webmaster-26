@@ -603,15 +603,18 @@ const tourSteps = [
 ];
 
 // ===== TRANSLATIONS (English/Spanish) =====
+// ===== TRANSLATIONS (English/Spanish) =====
 const translations = {
     en: {
         heroTitle: "Connecting Houston",
         heroSubtitle: "To What Matters.",
         heroDescription: "Find non-profits, support services, recreation, and youth programs in your neighborhood.",
         searchPlaceholder: "What are you looking for today?",
+        search: "Search",
         directory: "Directory",
         featured: "Featured",
         calendar: "Calendar",
+        petitions: "Create a Change",
         support: "Support",
         suggestResource: "Suggest Resource",
         resourcesListed: "Resources Listed",
@@ -620,16 +623,28 @@ const translations = {
         openNow: "Open Now",
         closed: "Closed",
         addToFavorites: "Add to favorites",
-        removeFromFavorites: "Remove from favorites"
+        removeFromFavorites: "Remove from favorites",
+        // Categories
+        "Food Security": "Food Security",
+        "Recreation": "Recreation",
+        "Community Centers": "Community Centers",
+        "Support Services": "Support Services",
+        "Youth Programs": "Youth Programs",
+        "All": "All",
+        // Dynamic
+        "Emergency Resources": "Emergency Resources",
+        "Browse by Category": "Browse by Category"
     },
     es: {
         heroTitle: "Conectando Houston",
         heroSubtitle: "Con Lo Que Importa.",
         heroDescription: "Encuentre organizaciones sin fines de lucro, servicios de apoyo, recreación y programas juveniles en su vecindario.",
         searchPlaceholder: "¿Qué estás buscando hoy?",
+        search: "Buscar",
         directory: "Directorio",
         featured: "Destacados",
         calendar: "Calendario",
+        petitions: "Crear un Cambio",
         support: "Apoyo",
         suggestResource: "Sugerir Recurso",
         resourcesListed: "Recursos Listados",
@@ -638,6 +653,16 @@ const translations = {
         openNow: "Abierto Ahora",
         closed: "Cerrado",
         addToFavorites: "Agregar a favoritos",
-        removeFromFavorites: "Quitar de favoritos"
+        removeFromFavorites: "Quitar de favoritos",
+        // Categories
+        "Food Security": "Seguridad Alimentaria",
+        "Recreation": "Recreación",
+        "Community Centers": "Centros Comunitarios",
+        "Support Services": "Servicios de Apoyo",
+        "Youth Programs": "Programas Juveniles",
+        "All": "Todos",
+        // Dynamic
+        "Emergency Resources": "Recursos de Emergencia",
+        "Browse by Category": "Explorar por Categoría"
     }
 };
