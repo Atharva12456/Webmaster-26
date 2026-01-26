@@ -328,6 +328,7 @@ function initApp() {
         const hash = window.location.hash.replace('#', '') || 'directory';
         renderSection(hash);
         updateActiveNav(hash);
+        window.scrollTo({ top: 0, behavior: 'instant' });
     });
 
     navLinks.forEach(link => {
