@@ -60,6 +60,8 @@ function initApp() {
     const modalBody = document.getElementById('modal-body');
     const suggestBtn = document.getElementById('suggest-resource-btn');
     const partnerBtn = document.getElementById('partner-inquiry-btn');
+    const closeModalBtn = document.querySelector('.close-modal');
+    const sidebarSuggestBtn = document.getElementById('sidebar-suggest');
     const toggleScrollLock = (lock) => {
         if (lock) document.body.classList.add('no-scroll');
         else document.body.classList.remove('no-scroll');
