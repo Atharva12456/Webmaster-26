@@ -1371,9 +1371,9 @@ function initApp() {
     document.addEventListener('keydown', (e) => {
         // Escape to close modals
         if (e.key === 'Escape') {
-            modal.classList.remove('active');
-            a11yPanel.classList.remove('active');
-            langDropdown.classList.remove('active');
+            modal?.classList.remove('active');
+            a11yPanel?.classList.remove('active');
+            langDropdown?.classList.remove('active');
         }
 
         // Slash to focus search
