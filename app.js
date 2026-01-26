@@ -178,11 +178,11 @@ function initApp() {
                 <p>Help us expand our community hub by suggesting a local service.</p>
                 <form id="suggest-form">
                     <div class="form-group">
-                        <label>Organization Name</label>
-                        <input type="text" id="res-name" required>
+                        <label for="res-name">Organization Name</label>
+                        <input type="text" id="res-name" placeholder="e.g. Houston Literacy Center" required>
                     </div>
                     <div class="form-group">
-                        <label>Category</label>
+                        <label for="res-category">Category</label>
                         <select id="res-category">
                             <option>Food Security</option>
                             <option>Recreation</option>
@@ -192,14 +192,16 @@ function initApp() {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="res-location" required>
+                        <label for="res-location">Location</label>
+                        <input type="text" id="res-location" placeholder="Address or neighborhood" required>
                     </div>
                     <div class="form-group">
-                        <label>Brief Description</label>
-                        <textarea id="res-desc" rows="3" required></textarea>
+                        <label for="res-desc">Brief Description</label>
+                        <textarea id="res-desc" rows="4" placeholder="How does this resource help the community?" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary w-full">Submit Resource</button>
+                    <button type="submit" class="btn btn-primary w-full" style="padding: 1.25rem; font-size: 1.1rem; margin-top: 1rem;">
+                        Submit Resource
+                    </button>
                 </form>
             </div>
         `;
