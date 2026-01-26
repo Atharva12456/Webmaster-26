@@ -594,29 +594,6 @@ function initApp() {
         });
 
         contentDisplay.innerHTML = `
-            <!-- Emergency Resources Section -->
-            <div class="emergency-section animate-in">
-                <div class="emergency-header">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>${t['Emergency Resources'] || 'Emergency Resources'}</h3>
-                </div>
-                <div class="emergency-grid">
-                    ${emergencyResources.map(e => {
-            const name = (state.language === 'es' && e.name_es) ? e.name_es : e.name;
-            const desc = (state.language === 'es' && e.description_es) ? e.description_es : e.description;
-            return `
-                        <div class="emergency-card">
-                            <div class="emergency-icon"><i class="fas ${e.icon}"></i></div>
-                            <div class="emergency-info">
-                                <h4>${name}</h4>
-                                <a href="tel:${e.number.replace(/[^0-9]/g, '')}" class="emergency-number">${e.number}</a>
-                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem">${desc}</p>
-                            </div>
-                        </div>
-                    `}).join('')}
-                </div>
-            </div>
-
             <!-- Recently Viewed -->
             ${state.recentlyViewed.length > 0 ? `
                 <div class="recently-viewed animate-in">
@@ -666,6 +643,29 @@ function initApp() {
 
             <!-- Resource Grid -->
             <div id="resource-grid" class="resource-grid"></div>
+
+            <!-- Emergency Resources Section (moved to bottom) -->
+            <div class="emergency-section animate-in" style="margin-top: 3rem;">
+                <div class="emergency-header">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>${t['Emergency Resources'] || 'Emergency Resources'}</h3>
+                </div>
+                <div class="emergency-grid">
+                    ${emergencyResources.map(e => {
+            const name = (state.language === 'es' && e.name_es) ? e.name_es : e.name;
+            const desc = (state.language === 'es' && e.description_es) ? e.description_es : e.description;
+            return `
+                        <div class="emergency-card">
+                            <div class="emergency-icon"><i class="fas ${e.icon}"></i></div>
+                            <div class="emergency-info">
+                                <h4>${name}</h4>
+                                <a href="tel:${e.number.replace(/[^0-9]/g, '')}" class="emergency-number">${e.number}</a>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem">${desc}</p>
+                            </div>
+                        </div>
+                    `}).join('')}
+                </div>
+            </div>
         `;
 
         const grid = document.getElementById('resource-grid');
