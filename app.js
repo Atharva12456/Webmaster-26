@@ -5,6 +5,21 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
+
+    // Register Service Worker for PWA
+    // Register Service Worker for PWA (Only if served via HTTP/HTTPS)
+    if ('serviceWorker' in navigator && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(registration => {
+                    console.log('Hub: ServiceWorker registration successful');
+                }, err => {
+                    console.log('Hub: ServiceWorker registration failed: ', err);
+                });
+        });
+    } else if (window.location.protocol === 'file:') {
+        console.log('Hub: PWA ServiceWorker skipped on file protocol (requires local server).');
+    }
 });
 
 function initApp() {
@@ -29,8 +44,9 @@ function initApp() {
         currentView: 'directory',
         filters: {
             search: '',
-            category: 'All',
-            openNow: false
+            category: ['All'],
+            openNow: false,
+            maxDistance: 0
         },
         theme: localStorage.getItem('theme') || 'light',
         fontSize: localStorage.getItem('fontSize') || 'normal',
@@ -616,40 +632,86 @@ function initApp() {
             </div>
 
             <!-- Section Header -->
-            <div class="section-header">
+            <div class="section-header" style="margin-bottom: 1rem; border-bottom: none; padding-bottom: 0;">
                 <div>
                     <h2>${t['resourceDirectory'] || 'Resource Directory'}</h2>
                     <p id="results-count" class="text-muted"></p>
                 </div>
-                <div class="directory-controls" style="display: flex; gap: 1rem; align-items: center;">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 600;">
+            </div>
+
+            <!-- Condensed Toolbar -->
+            <div class="directory-toolbar" style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                
+                <!-- Search (Flex 1) -->
+                <div class="search-input-wrapper" style="flex: 1; min-width: 250px; position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    <input type="text" id="main-search-input" placeholder="${t['searchPlaceholder'] || 'Search resources...'}" 
+                        style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border: 2px solid var(--border-color); border-radius: 12px; font-size: 0.95rem; background: var(--card-bg); color: var(--text-color);"
+                        value="${state.filters.search}">
+                </div>
+
+                <!-- Controls Group -->
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: nowrap;">
+                    
+                    <!-- View Toggle -->
+                    <div class="view-toggle" style="display: flex; border-radius: 8px; overflow: hidden; border: 2px solid var(--border-color);">
+                        <button id="list-view-btn" class="view-btn active" style="padding: 0.5rem 0.8rem; border: none; background: var(--primary-teal); color: white; cursor: pointer;">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button id="map-view-btn" class="view-btn" style="padding: 0.5rem 0.8rem; border: none; background: var(--card-bg); color: var(--text-color); cursor: pointer;">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </button>
+                    </div>
+
+                    <!-- Near Me -->
+                    <button id="near-me-btn" class="btn btn-outline" title="${t['nearMe'] || 'Near Me'}" style="padding: 0.5rem; width: 42px; display: flex; justify-content: center; border-radius: 8px;">
+                        <i class="fas fa-location-crosshairs"></i>
+                    </button>
+
+                    <!-- Distance -->
+                    <div style="position: relative;">
+                         <select id="distance-filter" style="appearance: none; -webkit-appearance: none; padding: 0.5rem 2rem 0.5rem 2.2rem; border-radius: 8px; border: 2px solid var(--border-color); background: var(--card-bg); color: var(--text-color); font-size: 0.9rem; cursor: pointer; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            <option value="0">Any Dist</option>
+                            <option value="1">< 1 mi</option>
+                            <option value="5">< 5 mi</option>
+                            <option value="10">< 10 mi</option>
+                            <option value="25">< 25 mi</option>
+                        </select>
+                        <i class="fas fa-ruler" style="position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-muted); font-size: 0.8rem;"></i>
+                        <i class="fas fa-chevron-down" style="position: absolute; right: 0.7rem; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-muted); font-size: 0.7rem;"></i>
+                    </div>
+
+                     <!-- Open Now -->
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 600; font-size: 0.85rem; white-space: nowrap; margin-left: 0.25rem;">
                         <input type="checkbox" id="open-now-filter" ${state.filters.openNow ? 'checked' : ''}>
-                        <span class="open-badge">${t['openNow'] || 'Open Now'}</span>
+                        <span class="open-badge" style="padding: 0.25rem 0.5rem;">${t['openNow'] || 'Open'}</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Search Bar -->
-            <div class="directory-search" style="margin-bottom: 1.5rem;">
-                <div class="search-input-wrapper" style="position: relative; max-width: 500px;">
-                    <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
-                    <input type="text" id="main-search-input" placeholder="${t['searchPlaceholder'] || 'What are you looking for today?'}" 
-                        style="width: 100%; padding: 0.875rem 1rem 0.875rem 2.75rem; border: 2px solid var(--border-color); border-radius: 12px; font-size: 1rem; background: var(--card-bg); color: var(--text-color); transition: all 0.3s ease;"
-                        value="${state.filters.search}">
-                </div>
-            </div>
+            <!-- Saved Searches (Compact) -->
+            <div id="saved-searches-container" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.85rem;"></div>
 
-            <!-- Filter Chips -->
+            <!-- Filter Chips (Scrolling) -->
             <div class="filter-chips">
-                ${categories.map(cat => `
-                    <button class="filter-chip ${state.filters.category === cat ? 'active' : ''}" data-category="${cat}">
+                ${categories.map(cat => {
+            const isActive = state.filters.category.includes(cat);
+            return `
+                    <button class="filter-chip ${isActive ? 'active' : ''}" data-category="${cat}">
                         ${t[cat] || cat} <span class="count">${categoryCounts[cat]}</span>
                     </button>
-                `).join('')}
-                ${state.filters.category !== 'All' || state.filters.search ? `
+                    `;
+        }).join('')}
+                ${(state.filters.category.length > 0 && !state.filters.category.includes('All')) || state.filters.search ? `
                     <button class="clear-filters"><i class="fas fa-times"></i> ${t['clearFilters'] || 'Clear Filters'}</button>
                 ` : ''}
+                <button id="save-search-btn" class="btn btn-outline" style="margin-left: auto; font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                    <i class="fas fa-bookmark"></i> Save Search
+                </button>
             </div>
+
+            <!-- Map Container (Hidden by default) -->
+            <div id="resource-map-container" style="display: none; height: 500px; border-radius: 16px; overflow: hidden; margin-bottom: 2rem; border: 2px solid var(--border-color);"></div>
 
             <!-- Resource Grid -->
             <div id="resource-grid" class="resource-grid"></div>
@@ -685,9 +747,15 @@ function initApp() {
                 const matchesSearch = res.name.toLowerCase().includes(state.filters.search.toLowerCase()) ||
                     res.description.toLowerCase().includes(state.filters.search.toLowerCase()) ||
                     (res.tags && res.tags.some(tag => tag.toLowerCase().includes(state.filters.search.toLowerCase())));
-                const matchesCategory = state.filters.category === 'All' || res.category === state.filters.category;
+
+                const matchesCategory = state.filters.category.includes('All') || state.filters.category.includes(res.category);
+
                 const matchesOpen = !state.filters.openNow || isOpenNow(res.hours);
-                return matchesSearch && matchesCategory && matchesOpen;
+
+                const dist = typeof getResourceDistance === 'function' ? getResourceDistance(res.id) : null;
+                const matchesDist = !state.filters.maxDistance || (dist !== null && dist <= state.filters.maxDistance);
+
+                return matchesSearch && matchesCategory && matchesOpen && matchesDist;
             });
 
             document.getElementById('results-count').textContent = `${t['showing'] || 'Showing'} ${filtered.length} ${t['resourcesInHouston'] || 'resources in Houston'}`;
@@ -713,21 +781,37 @@ function initApp() {
                 const desc = (state.language === 'es' && res.description_es) ? res.description_es : res.description;
                 const impactLabel = (state.language === 'es' && res.impact?.label_es) ? res.impact.label_es : res.impact?.label;
 
+                // Distance calculation
+                const dist = typeof getResourceDistance === 'function' ? getResourceDistance(res.id) : null;
+                const distText = typeof formatDistance === 'function' && dist !== null ? formatDistance(dist) : '';
+
+                // Accessibility features
+                const a11yFeatures = typeof getResourceAccessibility === 'function' ? getResourceAccessibility(res.id) : [];
+
+                // Directions URL
+                const directionsUrl = typeof getDirectionsUrl === 'function' ? getDirectionsUrl(res.location) : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(res.location)}`;
+
                 return `
                     <div class="resource-card animate-in" data-id="${res.id}">
                         <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
-                            <div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
                                 <span class="category-badge">${t[res.category] || res.category}</span>
-                                <span class="${openStatus ? 'open-badge' : 'open-badge closed-badge'}" style="margin-left: 0.5rem;">
+                                <span class="${openStatus ? 'open-badge' : 'open-badge closed-badge'}">
                                     ${openStatus ? (t['openNow'] || 'Open') : (t['closed'] || 'Closed')}
                                 </span>
+                                ${distText ? `<span class="distance-badge" style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-location-arrow"></i> ${distText}</span>` : ''}
                             </div>
                             <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${res.id}" data-i18n-aria-label="${isFavorite ? 'removeFromFavorites' : 'addToFavorites'}">
                                 <i class="fas fa-heart"></i>
                             </button>
                         </div>
-                        <h3>${name}</h3>
+                        <h3 style="cursor: pointer;" class="resource-name-link" data-id="${res.id}">${name}</h3>
                         <p>${desc}</p>
+                        ${a11yFeatures.length > 0 ? `
+                            <div class="accessibility-badges" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.5rem 0;">
+                                ${a11yFeatures.map(f => `<span style="background: #E8F5E9; color: #2E7D32; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem;"><i class="fas ${f.icon}"></i> ${state.language === 'es' && f.label_es ? f.label_es : f.label}</span>`).join('')}
+                            </div>
+                        ` : ''}
                         ${res.impact ? `
                             <div style="background: rgba(0, 121, 107, 0.05); padding: 1rem; border-radius: 12px; text-align: center;">
                                 <div style="font-size: 1.75rem; font-weight: 700; color: var(--primary-teal);">${res.impact.metric}</div>
@@ -748,21 +832,20 @@ function initApp() {
                                 <i class="fas fa-star" style="color: #f59e0b;"></i> ${res.rating} (${res.reviews})
                             </div>
                             <div class="share-container">
-                                <button class="share-btn twitter" data-share="twitter" data-name="${res.name}" data-i18n-aria-label="shareOnTwitter"><i class="fab fa-twitter"></i></button>
-                                <button class="share-btn facebook" data-share="facebook" data-name="${res.name}" data-i18n-aria-label="shareOnFacebook"><i class="fab fa-facebook-f"></i></button>
                                 <button class="share-btn copy" data-share="copy" data-name="${res.name}" data-i18n-aria-label="copyLink"><i class="fas fa-link"></i></button>
                             </div>
                         </div>
                         <div class="card-actions" style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+                            <button class="btn btn-primary view-details-btn" data-id="${res.id}" style="flex: 1;">
+                                <i class="fas fa-info-circle"></i> ${t['viewDetails'] || 'View Details'}
+                            </button>
+                            <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline directions-btn" style="flex: 1;">
+                                <i class="fas fa-directions"></i> Directions
+                            </a>
                             ${res.website ? `
                                 <a href="${res.website}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="flex: 1;">
-                                    <i class="fas fa-external-link-alt"></i> ${t['visitWebsite'] || 'Visit Website'}
+                                    <i class="fas fa-external-link-alt"></i> Website
                                 </a>
-                            ` : ''}
-                            ${res.category === 'Recreation' ? `
-                                <button class="btn btn-primary book-btn" data-id="${res.id}" style="flex: 1;">
-                                    <i class="fas fa-calendar-check"></i> ${t['bookVenue'] || 'Book Venue'}
-                                </button>
                             ` : ''}
                         </div>
                     </div>
@@ -828,21 +911,39 @@ function initApp() {
         // Filter chip clicks
         document.querySelectorAll('.filter-chip').forEach(chip => {
             chip.addEventListener('click', () => {
-                state.filters.category = chip.dataset.category;
-                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-                updateGrid();
+                const category = chip.dataset.category;
+
+                if (category === 'All') {
+                    state.filters.category = ['All'];
+                } else {
+                    // If currently 'All', clear it and select the new one
+                    if (state.filters.category.includes('All')) {
+                        state.filters.category = [category];
+                    } else {
+                        // Toggle selection
+                        if (state.filters.category.includes(category)) {
+                            state.filters.category = state.filters.category.filter(c => c !== category);
+                            if (state.filters.category.length === 0) state.filters.category = ['All'];
+                        } else {
+                            state.filters.category.push(category);
+                        }
+                    }
+                }
+                renderDirectory(); // Re-render to update classes
             });
         });
 
         // Clear filters
         document.querySelector('.clear-filters')?.addEventListener('click', () => {
-            state.filters.category = 'All';
+            state.filters.category = ['All'];
             state.filters.search = '';
             state.filters.openNow = false;
+            state.filters.maxDistance = 0;
             const searchInput = document.getElementById('main-search-input');
             if (searchInput) searchInput.value = '';
             document.getElementById('open-now-filter').checked = false;
+            const distFilter = document.getElementById('distance-filter');
+            if (distFilter) distFilter.value = "0";
             renderDirectory();
         });
 
@@ -875,8 +976,275 @@ function initApp() {
             });
         });
 
+        // ===== NEW FEATURE EVENT HANDLERS =====
+
+        // View Details button - opens resource detail modal
+        grid.querySelectorAll('.view-details-btn, .resource-name-link').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.dataset.id);
+                showResourceDetailModal(id);
+            });
+        });
+
+        // Map/List View Toggle
+        document.getElementById('list-view-btn')?.addEventListener('click', () => {
+            document.getElementById('list-view-btn').classList.add('active');
+            document.getElementById('list-view-btn').style.background = 'var(--primary-teal)';
+            document.getElementById('list-view-btn').style.color = 'white';
+            document.getElementById('map-view-btn').classList.remove('active');
+            document.getElementById('map-view-btn').style.background = 'var(--card-bg)';
+            document.getElementById('map-view-btn').style.color = 'var(--text-color)';
+            document.getElementById('resource-grid').style.display = 'grid';
+            document.getElementById('resource-map-container').style.display = 'none';
+        });
+
+        document.getElementById('map-view-btn')?.addEventListener('click', () => {
+            document.getElementById('map-view-btn').classList.add('active');
+            document.getElementById('map-view-btn').style.background = 'var(--primary-teal)';
+            document.getElementById('map-view-btn').style.color = 'white';
+            document.getElementById('list-view-btn').classList.remove('active');
+            document.getElementById('list-view-btn').style.background = 'var(--card-bg)';
+            document.getElementById('list-view-btn').style.color = 'var(--text-color)';
+            document.getElementById('resource-grid').style.display = 'none';
+            document.getElementById('resource-map-container').style.display = 'block';
+
+            // Get filtered resources
+            const filtered = state.resources.filter(res => {
+                const matchesSearch = res.name.toLowerCase().includes(state.filters.search.toLowerCase());
+                const matchesCategory = state.filters.category.includes('All') || state.filters.category.includes(res.category);
+                const dist = typeof getResourceDistance === 'function' ? getResourceDistance(res.id) : null;
+                const matchesDist = !state.filters.maxDistance || (dist !== null && dist <= state.filters.maxDistance);
+                return matchesSearch && matchesCategory && matchesDist;
+            });
+
+            // Initialize map with filtered resources
+            if (typeof initializeMap === 'function') {
+                initializeMap('resource-map-container', filtered, {
+                    onMarkerClick: (id) => showResourceDetailModal(id)
+                });
+            }
+        });
+
+        // Near Me Button
+        document.getElementById('near-me-btn')?.addEventListener('click', async () => {
+            const btn = document.getElementById('near-me-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Locating...';
+            try {
+                if (typeof getUserLocation === 'function') {
+                    await getUserLocation();
+                    showToast('Location found! Distances updated.', 'success');
+                    updateGrid();
+                }
+            } catch (err) {
+                showToast('Could not get location. Using Houston center.', 'error');
+            }
+            btn.innerHTML = '<i class="fas fa-location-crosshairs"></i> Near Me';
+        });
+
+        // Distance Filter
+        document.getElementById('distance-filter')?.addEventListener('change', (e) => {
+            const maxDist = parseInt(e.target.value);
+            state.filters.maxDistance = maxDist;
+            updateGrid();
+        });
+
+        // Save Search Button
+        document.getElementById('save-search-btn')?.addEventListener('click', () => {
+            if (typeof saveSearch === 'function') {
+                const searchConfig = {
+                    name: state.filters.search || state.filters.category,
+                    filters: { ...state.filters }
+                };
+                saveSearch(searchConfig);
+                showToast('Search saved!', 'success');
+                loadSavedSearches();
+            }
+        });
+
+        // Load Saved Searches
+        function loadSavedSearches() {
+            const container = document.getElementById('saved-searches-container');
+            if (!container || typeof getSavedSearches !== 'function') return;
+
+            const searches = getSavedSearches();
+            if (searches.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = searches.slice(0, 5).map(s => `
+                <button class="saved-search-chip" data-id="${s.id}" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 0.3rem 0.6rem; border-radius: 16px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.3rem;">
+                    <i class="fas fa-bookmark" style="color: var(--primary-teal);"></i>
+                    ${s.name.substring(0, 20)}${s.name.length > 20 ? '...' : ''}
+                    <span class="delete-saved" data-id="${s.id}" style="margin-left: 0.25rem; color: #999;">&times;</span>
+                </button>
+            `).join('');
+
+            // Attach click handlers
+            container.querySelectorAll('.saved-search-chip').forEach(chip => {
+                chip.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('delete-saved')) {
+                        const id = parseInt(e.target.dataset.id);
+                        if (typeof deleteSavedSearch === 'function') {
+                            deleteSavedSearch(id);
+                            loadSavedSearches();
+                        }
+                        return;
+                    }
+                    const id = parseInt(chip.dataset.id);
+                    const searches = getSavedSearches();
+                    const saved = searches.find(s => s.id === id);
+                    if (saved) {
+                        state.filters = { ...saved.filters };
+                        const searchInput = document.getElementById('main-search-input');
+                        if (searchInput) searchInput.value = state.filters.search || '';
+                        renderDirectory();
+                    }
+                });
+            });
+        }
+
+        loadSavedSearches();
+
         updateGrid();
     }
+
+    // ===== RESOURCE DETAIL MODAL =====
+    function showResourceDetailModal(resourceId) {
+        const res = state.resources.find(r => r.id === resourceId);
+        if (!res) return;
+
+        const t = translations[state.language];
+        const isEs = state.language === 'es';
+        const name = (isEs && res.name_es) ? res.name_es : res.name;
+        const desc = (isEs && res.description_es) ? res.description_es : res.description;
+        const impactLabel = (isEs && res.impact?.label_es) ? res.impact.label_es : res.impact?.label;
+
+        const dist = typeof getResourceDistance === 'function' ? getResourceDistance(res.id) : null;
+        const distText = typeof formatDistance === 'function' && dist !== null ? formatDistance(dist) : '';
+        const a11yFeatures = typeof getResourceAccessibility === 'function' ? getResourceAccessibility(res.id) : [];
+        const reviews = typeof getResourceReviews === 'function' ? getResourceReviews(res.id) : [];
+        const avgRating = typeof getAverageUserRating === 'function' ? getAverageUserRating(res.id) : null;
+        const directionsUrl = typeof getDirectionsUrl === 'function' ? getDirectionsUrl(res.location) : '';
+
+        const isFavorite = state.favorites.includes(res.id);
+
+        openModal(`
+            <div class="resource-detail-modal" style="max-width: 600px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <div>
+                        <span class="category-badge">${t[res.category] || res.category}</span>
+                        ${distText ? `<span style="margin-left: 0.5rem; background: #2196F3; color: white; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem;">${distText}</span>` : ''}
+                    </div>
+                    <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(${res.id}); document.querySelector('.resource-detail-modal .favorite-btn').classList.toggle('active');" style="font-size: 1.5rem;">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                
+                <h2 style="margin-bottom: 0.5rem;">${name}</h2>
+                
+                ${res.impact ? `
+                    <div style="background: linear-gradient(135deg, var(--primary-teal), #00a896); color: white; padding: 1.5rem; border-radius: 12px; text-align: center; margin: 1rem 0;">
+                        <div style="font-size: 2.5rem; font-weight: 700;">${res.impact.metric}</div>
+                        <div style="opacity: 0.9;">${impactLabel}</div>
+                    </div>
+                ` : ''}
+                
+                <p style="color: var(--text-muted); line-height: 1.6;">${desc}</p>
+                
+                ${a11yFeatures.length > 0 ? `
+                    <div style="margin: 1rem 0;">
+                        <h4 style="margin-bottom: 0.5rem;"><i class="fas fa-universal-access"></i> Accessibility</h4>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            ${a11yFeatures.map(f => `<span style="background: #E8F5E9; color: #2E7D32; padding: 0.3rem 0.6rem; border-radius: 8px; font-size: 0.8rem;"><i class="fas ${f.icon}"></i> ${f.label}</span>`).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div style="background: var(--card-bg); padding: 1rem; border-radius: 12px; margin: 1rem 0; border: 1px solid var(--border-color);">
+                    <div style="margin-bottom: 0.75rem;"><i class="fas fa-location-dot" style="color: var(--primary-teal); width: 20px;"></i> ${res.location}</div>
+                    <div style="margin-bottom: 0.75rem;"><i class="fas fa-clock" style="color: var(--primary-teal); width: 20px;"></i> ${res.hours}</div>
+                    <div><i class="fas fa-star" style="color: #f59e0b; width: 20px;"></i> ${res.rating} (${res.reviews} reviews)${avgRating ? ` | User Rating: ${avgRating}` : ''}</div>
+                </div>
+                
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0;">
+                    <a href="${directionsUrl}" target="_blank" class="btn btn-primary" style="flex: 1; text-align: center;">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </a>
+                    ${res.website ? `
+                        <a href="${res.website}" target="_blank" class="btn btn-outline" style="flex: 1; text-align: center;">
+                            <i class="fas fa-globe"></i> Visit Website
+                        </a>
+                    ` : ''}
+                </div>
+                
+                <!-- User Reviews Section -->
+                <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                    <h4><i class="fas fa-comments"></i> Community Reviews</h4>
+                    
+                    <form id="review-form" style="margin: 1rem 0; background: var(--card-bg); padding: 1rem; border-radius: 12px;">
+                        <div style="margin-bottom: 0.5rem;">
+                            <label style="font-weight: 600;">Your Rating:</label>
+                            <div class="star-rating" style="font-size: 1.5rem;">
+                                ${[1, 2, 3, 4, 5].map(n => `<i class="far fa-star" data-rating="${n}" style="cursor: pointer; color: #f59e0b;"></i>`).join('')}
+                            </div>
+                            <input type="hidden" id="user-rating" value="0">
+                        </div>
+                        <textarea id="review-text" placeholder="Share your experience..." style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; min-height: 80px; resize: vertical;"></textarea>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">Submit Review</button>
+                    </form>
+                    
+                    <div id="reviews-list">
+                        ${reviews.length > 0 ? reviews.map(r => `
+                            <div style="padding: 0.75rem; border-bottom: 1px solid var(--border-color);">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="font-weight: 600;">Anonymous</span>
+                                    <span style="color: #f59e0b;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                                </div>
+                                <p style="margin: 0.5rem 0; color: var(--text-muted);">${r.text}</p>
+                                <small style="color: #999;">${new Date(r.timestamp).toLocaleDateString()}</small>
+                            </div>
+                        `).join('') : '<p style="color: var(--text-muted); text-align: center;">No reviews yet. Be the first!</p>'}
+                    </div>
+                </div>
+            </div>
+        `);
+
+        // Star rating interaction
+        document.querySelectorAll('.star-rating i').forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = parseInt(star.dataset.rating);
+                document.getElementById('user-rating').value = rating;
+                document.querySelectorAll('.star-rating i').forEach((s, i) => {
+                    s.className = i < rating ? 'fas fa-star' : 'far fa-star';
+                });
+            });
+        });
+
+        // Review form submission
+        document.getElementById('review-form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const rating = parseInt(document.getElementById('user-rating').value);
+            const text = document.getElementById('review-text').value.trim();
+
+            if (rating === 0) {
+                showToast('Please select a rating', 'error');
+                return;
+            }
+
+            if (typeof addResourceReview === 'function') {
+                addResourceReview(res.id, { rating, text });
+                showToast('Review submitted!', 'success');
+                showResourceDetailModal(res.id); // Refresh modal
+            }
+        });
+
+        addToRecentlyViewed(res);
+    }
+
+    // Expose for map popup
+    window.showResourceDetailFromMap = showResourceDetailModal;
 
     // ===== FEATURED SECTION WITH CAROUSEL =====
     function renderFeatured() {
@@ -915,7 +1283,9 @@ function initApp() {
                                                 <i class="fas fa-external-link-alt"></i> ${t['visitWebsite'] || 'Visit Website'}
                                             </a>
                                         ` : ''}
-                                        <button class="btn btn-outline" onclick="window.location.hash = '#directory'">${t['viewDetails'] || 'View Details'}</button>
+                                        <button class="btn btn-outline featured-view-details-btn" data-id="${res.id}">
+                                            <i class="fas fa-info-circle"></i> ${t['viewDetails'] || 'View Details'}
+                                        </button>
                                         <button class="btn btn-outline favorite-featured-btn" data-id="${res.id}">
                                             <i class="fas fa-heart"></i> ${t['save'] || 'Save'}
                                         </button>
@@ -998,6 +1368,16 @@ function initApp() {
                 updateCarousel();
             }
         }, 5000);
+
+        // Featured View Details buttons
+        document.querySelectorAll('.featured-view-details-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = parseInt(btn.dataset.id);
+                showResourceDetailModal(id);
+            });
+        });
+
+
 
         // Featured favorite buttons
         document.querySelectorAll('.favorite-featured-btn').forEach(btn => {
@@ -1143,20 +1523,63 @@ function initApp() {
                 `}).join('')}
             </div>
 
-            <div class="newsletter-card animate-in">
-                <h3>${t['newsletterTitle'] || 'Houston Hub Newsletter'}</h3>
-                <p>${t['newsletterSubtitle'] || 'Get weekly updates on resources, events, and community news.'}</p>
-                <form class="newsletter-form" id="newsletter-form">
-                    <input type="email" placeholder="${t['enterEmail'] || 'Enter your email address'}" required>
-                    <button type="submit" class="btn btn-primary">${t['joinNow'] || 'Join Now'}</button>
+            <!-- Community Stories Section -->
+            <div class="section-header">
+                <h2><i class="fas fa-quote-left"></i> ${t['communityStories'] || 'Community Stories'}</h2>
+                <p>${t['communityStoriesSubtitle'] || 'Real experiences from Houstonians who found help through our resources.'}</p>
+            </div>
+            <div class="stories-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                ${(typeof communityStories !== 'undefined' ? communityStories : []).map(story => {
+                        const storyText = (isEs && story.story_es) ? story.story_es : story.story;
+                        const resource = state.resources.find(r => r.id === story.resourceId);
+                        return `
+                    <div class="story-card animate-in" style="background: var(--card-bg); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border-color); position: relative;">
+                        <i class="fas fa-quote-left" style="position: absolute; top: 1rem; left: 1rem; font-size: 2rem; color: var(--primary-teal); opacity: 0.2;"></i>
+                        <p style="font-style: italic; color: var(--text-color); line-height: 1.6; margin-bottom: 1rem; padding-top: 1.5rem;">"${storyText}"</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                            <div>
+                                <strong style="color: var(--text-color);">${story.name}</strong>
+                                ${resource ? `<br><span style="font-size: 0.85rem; color: var(--primary-teal);">${resource.name}</span>` : ''}
+                            </div>
+                            <div style="display: flex;">
+                                ${[1, 2, 3, 4, 5].map(() => '<i class="fas fa-star" style="color: #f59e0b; font-size: 0.9rem;"></i>').join('')}
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    }).join('')}
+            </div>
+
+            <div class="newsletter-card animate-in" style="background: linear-gradient(135deg, var(--primary-teal), #00a896); color: white; padding: 2.5rem; border-radius: 20px; text-align: center;">
+                <i class="fas fa-envelope-open-text" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 1.75rem; margin-bottom: 0.5rem;">${t['newsletterTitle'] || 'Houston Hub Newsletter'}</h3>
+                <p style="opacity: 0.9; margin-bottom: 1.5rem;">${t['newsletterSubtitle'] || 'Get weekly updates on resources, events, and community news.'}</p>
+                <form class="newsletter-form" id="newsletter-form" style="display: flex; gap: 0.5rem; max-width: 500px; margin: 0 auto; flex-wrap: wrap; justify-content: center;">
+                    <input type="email" id="newsletter-email" placeholder="${t['enterEmail'] || 'Enter your email address'}" required style="flex: 1; min-width: 250px; padding: 0.875rem 1rem; border: none; border-radius: 12px; font-size: 1rem;">
+                    <button type="submit" class="btn" style="background: white; color: var(--primary-teal); font-weight: 600; padding: 0.875rem 1.5rem;">${t['joinNow'] || 'Join Now'}</button>
                 </form>
+                <p id="newsletter-status" style="margin-top: 1rem; font-size: 0.9rem;"></p>
             </div>
         `;
 
         document.getElementById('newsletter-form')?.addEventListener('submit', (e) => {
             e.preventDefault();
-            showToast(t['thanksSubscribing'] || 'Thanks for subscribing! We\'ll keep you updated.', 'success');
-            e.target.reset();
+            const email = document.getElementById('newsletter-email').value;
+            const status = document.getElementById('newsletter-status');
+
+            if (typeof subscribeToNewsletter === 'function') {
+                const result = subscribeToNewsletter(email);
+                if (result.success) {
+                    showToast(result.message, 'success');
+                    status.textContent = '✓ ' + (t['subscriptionSuccess'] || 'You\'re subscribed! Check your inbox for updates.');
+                    e.target.reset();
+                } else {
+                    status.textContent = result.message;
+                }
+            } else {
+                showToast(t['thanksSubscribing'] || 'Thanks for subscribing!', 'success');
+                e.target.reset();
+            }
         });
     }
 
@@ -1168,9 +1591,37 @@ function initApp() {
 
         contentDisplay.innerHTML = `
             <div class="section-header">
-                <h2>${t['yourFavorites'] || 'Your Favorites'}</h2>
-                <p>${favoriteResources.length} ${t['savedResources'] || 'saved resources'}</p>
+                <div>
+                    <h2>${t['yourFavorites'] || 'Your Favorites'}</h2>
+                    <p>${favoriteResources.length} ${t['savedResources'] || 'saved resources'}</p>
+                </div>
+                ${favoriteResources.length > 0 ? `
+                    <button id="export-pdf-btn" class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-file-pdf"></i> ${t['exportPDF'] || 'Export to PDF'}
+                    </button>
+                ` : ''}
             </div>
+
+            <!-- My Submissions Tracker -->
+            ${(typeof getSubmissions === 'function' && getSubmissions().length > 0) ? `
+                <div class="submissions-tracker animate-in" style="margin-bottom: 3rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-list-check"></i> ${t['mySubmissions'] || 'My Resource Suggestions'}</h3>
+                    <div class="submissions-list">
+                        ${getSubmissions().map(s => `
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                                <div>
+                                    <strong style="color: var(--text-color);">${s.name}</strong>
+                                    <div style="font-size: 0.85rem; color: var(--text-muted);">${new Date(s.submittedAt).toLocaleDateString()}</div>
+                                </div>
+                                <span class="status-badge ${s.status}" style="background: ${s.status === 'approved' ? '#E8F5E9' : '#FFF3E0'}; color: ${s.status === 'approved' ? '#2E7D32' : '#EF6C00'}; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; text-transform: capitalize;">
+                                    ${s.status}
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
+
             ${favoriteResources.length === 0 ? `
                 <div style="text-align: center; padding: 6rem 2rem;">
                     <i class="fas fa-heart" style="font-size: 5rem; color: var(--text-muted); margin-bottom: 2rem;"></i>
@@ -1206,6 +1657,15 @@ function initApp() {
                 toggleFavorite(id);
                 renderFavorites();
             });
+        });
+
+        document.getElementById('export-pdf-btn')?.addEventListener('click', () => {
+            if (typeof exportFavoritesToPDF === 'function') {
+                exportFavoritesToPDF(state.favorites, state.resources, state.language);
+                showToast(t['pdfExportStarted'] || 'Exporting favorites to PDF...', 'success');
+            } else {
+                showToast('PDF export feature not loaded.', 'error');
+            }
         });
     }
 
@@ -1257,6 +1717,20 @@ function initApp() {
 
         document.getElementById('suggest-form').addEventListener('submit', (e) => {
             e.preventDefault();
+            const name = document.getElementById('res-name').value;
+            const category = document.getElementById('res-category').value;
+            const desc = document.getElementById('res-desc').value;
+            const location = document.getElementById('res-address').value;
+
+            if (typeof addSubmission === 'function') {
+                addSubmission({
+                    name,
+                    category,
+                    description: desc,
+                    location
+                });
+            }
+
             closeModal();
             showToast(isEs ? '¡Gracias! Su sugerencia ha sido enviada.' : 'Thank you! Your suggestion has been submitted.', 'success');
             createConfetti();
