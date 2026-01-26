@@ -8,12 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initApp() {
+    // ===== HELPER: SAFE JSON PARSE =====
+    const safeParse = (key, fallback) => {
+        try {
+            const item = localStorage.getItem(key);
+            return item ? JSON.parse(item) : fallback;
+        } catch (e) {
+            console.error(`Error parsing ${key} from localStorage`, e);
+            return fallback;
+        }
+    };
+
     // ===== STATE MANAGEMENT =====
     const state = {
-        resources: JSON.parse(localStorage.getItem('resources')) || initialResources,
-        petitions: JSON.parse(localStorage.getItem('petitions')) || initialPetitions,
-        favorites: JSON.parse(localStorage.getItem('favorites')) || [],
-        recentlyViewed: JSON.parse(localStorage.getItem('recentlyViewed')) || [],
+        resources: safeParse('resources', initialResources),
+        petitions: safeParse('petitions', initialPetitions),
+        favorites: safeParse('favorites', []),
+        recentlyViewed: safeParse('recentlyViewed', []),
         currentView: 'directory',
         filters: {
             search: '',
@@ -68,13 +79,13 @@ function initApp() {
     // ===== BACK TO TOP =====
     window.addEventListener('scroll', () => {
         if (window.scrollY > 500) {
-            backToTopBtn.classList.add('visible');
+            backToTopBtn?.classList.add('visible');
         } else {
-            backToTopBtn.classList.remove('visible');
+            backToTopBtn?.classList.remove('visible');
         }
     });
 
-    backToTopBtn.addEventListener('click', () => {
+    backToTopBtn?.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
@@ -140,13 +151,13 @@ function initApp() {
 
     // ===== SIDEBAR LOGIC =====
     const toggleSidebar = () => {
-        sidebar.classList.toggle('active');
-        sidebarOverlay.classList.toggle('active');
+        sidebar?.classList.toggle('active');
+        sidebarOverlay?.classList.toggle('active');
     };
 
-    mobileMenuBtn.addEventListener('click', toggleSidebar);
-    sidebarOverlay.addEventListener('click', toggleSidebar);
-    closeSidebar.addEventListener('click', toggleSidebar);
+    mobileMenuBtn?.addEventListener('click', toggleSidebar);
+    sidebarOverlay?.addEventListener('click', toggleSidebar);
+    closeSidebar?.addEventListener('click', toggleSidebar);
 
     // Sidebar suggest button
     document.getElementById('sidebar-suggest')?.addEventListener('click', (e) => {
@@ -282,7 +293,7 @@ function initApp() {
     });
 
     // ===== LOGO CLICK =====
-    logo.addEventListener('click', () => {
+    logo?.addEventListener('click', () => {
         state.filters.search = '';
         state.filters.category = 'All';
         state.filters.openNow = false;
@@ -299,7 +310,7 @@ function initApp() {
     document.body.setAttribute('data-theme', state.theme);
     updateThemeIcon();
 
-    themeToggle.addEventListener('click', () => {
+    themeToggle?.addEventListener('click', () => {
         state.theme = state.theme === 'light' ? 'dark' : 'light';
         document.body.setAttribute('data-theme', state.theme);
         localStorage.setItem('theme', state.theme);
@@ -1476,6 +1487,38 @@ function initApp() {
             showToast('Your petition has been launched!', 'success');
             if (state.currentView === 'petitions') renderPetitions();
         });
+    }
+
+    // ===== CONFETTI ANIMATION =====
+    function createConfetti() {
+        const colors = ['#00796b', '#ff7043', '#ffffff', '#ffd54f'];
+        const container = document.querySelector('.success-overlay');
+
+        if (!container) return;
+
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.style.position = 'absolute';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = -10 + 'px';
+            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+            confetti.style.opacity = Math.random();
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+            const duration = Math.random() * 2 + 1;
+            confetti.style.transition = `top ${duration}s ease-in, opacity ${duration}s ease-in`;
+
+            container.appendChild(confetti);
+
+            // Animate
+            setTimeout(() => {
+                confetti.style.top = '100%';
+                confetti.style.opacity = '0';
+            }, 100);
+        }
     }
 
     // ===== SERVICE WORKER REGISTRATION (PWA) =====
