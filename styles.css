@@ -763,7 +763,20 @@ body.hide-hero .hero-section {
 }
 
 .mobile-menu-btn {
-    display: none;
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-main);
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.mobile-menu-btn:hover {
+    background: rgba(0, 121, 107, 0.1);
+    color: var(--primary-teal);
 }
 
 /* ===== BOTTOM MOBILE NAVIGATION ===== */

@@ -164,6 +164,26 @@ const initialResources = [
         rating: 4.6, reviews: 1500, tags: ["Financial", "2-1-1"],
         website: "https://www.unitedwayhouston.org/"
     },
+    {
+        id: 21,
+        name: "Angela House",
+        category: "Support Services",
+        description: "Successfully transitioning women into society after incarceration through a residential program of recovery.",
+        location: "6725 Reed Rd, Houston, TX 77087",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 120, tags: ["Recovery", "Re-entry"],
+        website: "https://www.angelahouse.org/"
+    },
+    {
+        id: 22,
+        name: "Tomball Pregnancy Center",
+        category: "Support Services",
+        description: "Providing bilingual client services, medical testing, and parents' resources for mothers in need.",
+        location: "990 Village Square Dr, Tomball, TX 77375",
+        hours: "10:00 AM - 4:00 PM",
+        rating: 4.7, reviews: 85, tags: ["Family", "Medical"],
+        website: "https://www.tomballpregnancy.com/"
+    },
 
     // 5. Youth Programs
     {
@@ -186,6 +206,26 @@ const initialResources = [
         hours: "10:00 AM - 6:00 PM",
         rating: 4.7, reviews: 3400, tags: ["Literacy", "Tech Access"],
         website: "https://houstonlibrary.org/"
+    },
+    {
+        id: 23,
+        name: "The HAY Center",
+        category: "Youth Programs",
+        description: "Empowering foster youth in their transition to adulthood through mentorship, employment, and housing support.",
+        location: "1216 West Clay St, Houston, TX 77019",
+        hours: "8:30 AM - 5:00 PM",
+        rating: 4.9, reviews: 200, tags: ["Foster Youth", "Mentorship"],
+        website: "https://www.haycenter.org/"
+    },
+    {
+        id: 24,
+        name: "Destiny's Door",
+        category: "Youth Programs",
+        description: "Empowering young women through mentorship, life skills training, and educational support.",
+        location: "12603 S. Gessner Rd, Houston, TX 77071",
+        hours: "By Appointment",
+        rating: 4.6, reviews: 45, tags: ["Mentorship", "Empowerment"],
+        website: "https://www.destinysdoor.org/"
     }
 ];
 
@@ -346,6 +386,28 @@ const volunteerOpportunities = [
         location: "Citywide",
         tags: ["Seniors", "Compassion"],
         website: "https://www.imgh.org/volunteer/"
+    },
+    {
+        id: 5,
+        title: "Green Team Conservation",
+        organization: "Houston Parks Board",
+        description: "Help with invasive species removal, planting, and conservation efforts along Houston's bayous.",
+        commitment: "3-4 hours",
+        frequency: "Monthly",
+        location: "Various Bayous",
+        tags: ["Environment", "Outdoors"],
+        website: "https://houstonparksboard.org/volunteer/"
+    },
+    {
+        id: 6,
+        title: "Administrative Support",
+        organization: "Angela House",
+        description: "Assist with office tasks and organization to support women transitioning after incarceration.",
+        commitment: "Varies",
+        frequency: "Weekly",
+        location: "6725 Reed Rd",
+        tags: ["Admin", "Support"],
+        website: "https://www.angelahouse.org/volunteer/"
     }
 ];
 
@@ -449,6 +511,33 @@ const calendarEvents = [
         location: "Buffalo Bayou Park",
         category: "Environment",
         description: "Join volunteers to clean up Houston's waterways."
+    },
+    {
+        id: 8,
+        title: "FIFA World Cup 2026™ Houston",
+        date: "2026-06-14",
+        time: "TBA",
+        location: "NRG Stadium",
+        category: "Entertainment",
+        description: "Houston hosts the world's biggest sporting event! International matches at NRG Stadium."
+    },
+    {
+        id: 9,
+        title: "National Night Out",
+        date: "2026-10-06",
+        time: "6:00 PM - 9:00 PM",
+        location: "Citywide Neighborhoods",
+        category: "Community",
+        description: "Building community-police partnerships and neighborhood camaraderie."
+    },
+    {
+        id: 10,
+        title: "Houston Restaurant Weeks 2026",
+        date: "2026-08-01",
+        time: "All Day",
+        location: "Participating Restaurants",
+        category: "Community",
+        description: "The largest annual fundraiser for the Houston Food Bank featuring special menus."
     }
 ];
 
