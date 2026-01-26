@@ -90,8 +90,8 @@ function initApp() {
         showSuggestModal();
     };
 
-    suggestBtn?.addEventListener('click', handleSuggestClick);
-    sidebarSuggestBtn?.addEventListener('click', handleSuggestClick);
+    if (suggestBtn) suggestBtn.addEventListener('click', handleSuggestClick);
+    if (sidebarSuggestBtn) sidebarSuggestBtn.addEventListener('click', handleSuggestClick);
 
     partnerBtn?.addEventListener('click', () => {
         console.log('Hub: Partner button clicked');
