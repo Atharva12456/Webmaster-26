@@ -581,7 +581,7 @@ function initApp() {
 
     // ===== DIRECTORY =====
     function renderDirectory() {
-        const categories = ['All', 'Food Security', 'Recreation', 'Community Centers', 'Support Services', 'Youth Programs'];
+        const categories = ['All', 'Food Security', 'Recreation', 'Community Centers', 'Support Services', 'Youth Programs', 'Immigration Services', 'Disability Services', 'Education', 'Job Training', 'Senior Services'];
         const t = translations[state.language];
 
         const categoryCounts = {};

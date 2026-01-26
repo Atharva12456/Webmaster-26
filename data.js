@@ -266,6 +266,753 @@ const initialResources = [
         hours: "By Appointment",
         rating: 4.6, reviews: 45, tags: ["Mentorship", "Empowerment"],
         website: "https://www.destinysdoor.org/"
+    },
+
+    // ========== NEW FOOD SECURITY RESOURCES ==========
+    {
+        id: 25,
+        name: "Target Hunger",
+        category: "Food Security",
+        description: "Multiple pantries & home delivery serving 23K+ annually across Houston.",
+        location: "Houston, TX",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 340, tags: ["Pantry", "Home Delivery"],
+        impact: { metric: "23K+", label: "People Served Annually" },
+        website: "https://www.targethunger.org/"
+    },
+    {
+        id: 26,
+        name: "Cy-Fair Helping Hands",
+        category: "Food Security",
+        description: "Food pantry providing toiletries, infant formula, and essential items to families in need.",
+        location: "Cypress, TX",
+        hours: "9:00 AM - 3:00 PM",
+        rating: 4.6, reviews: 180, tags: ["Pantry", "Infant Formula"],
+        website: "https://www.cyfairhelpinghands.org/"
+    },
+    {
+        id: 27,
+        name: "Tomball Emergency Assistance Ministries (TEAM)",
+        category: "Food Security",
+        description: "Food pantry serving low-income families in the Tomball area.",
+        location: "Tomball, TX",
+        hours: "10:00 AM - 2:00 PM",
+        rating: 4.5, reviews: 95, tags: ["Pantry", "Emergency"],
+        website: "https://www.team-tomball.org/"
+    },
+    {
+        id: 28,
+        name: "Mission Bells",
+        category: "Food Security",
+        description: "Volunteer-driven food pantry serving Harris County residents.",
+        location: "Houston, TX",
+        hours: "9:00 AM - 12:00 PM",
+        rating: 4.4, reviews: 75, tags: ["Volunteer", "Pantry"],
+        website: "https://www.missionbellshouston.org/"
+    },
+    {
+        id: 29,
+        name: "West Houston Assistance Ministries (WHAM)",
+        category: "Food Security",
+        description: "Food assistance via drive-thru, walk-up, and food fairs for West Houston families.",
+        location: "Houston, TX 77077",
+        hours: "9:00 AM - 3:00 PM",
+        rating: 4.7, reviews: 220, tags: ["Drive-Thru", "Food Fair"],
+        website: "https://www.whamministries.org/"
+    },
+    {
+        id: 30,
+        name: "Bread of Life, Inc.",
+        category: "Food Security",
+        description: "Food & shelter distribution for those experiencing hunger and homelessness.",
+        location: "Houston, TX",
+        hours: "8:00 AM - 4:00 PM",
+        rating: 4.6, reviews: 310, tags: ["Shelter", "Meals"],
+        website: "https://www.breadoflifeinc.org/"
+    },
+    {
+        id: 31,
+        name: "Second Servings of Houston",
+        category: "Food Security",
+        description: "Rescues & redistributes food to 250K+ people annually, reducing food waste.",
+        location: "Houston, TX",
+        hours: "7:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 420, tags: ["Food Rescue", "Environment"],
+        impact: { metric: "250K+", label: "People Fed Annually" },
+        website: "https://www.secondservingshouston.org/"
+    },
+    {
+        id: 32,
+        name: "Catholic Charities Food Pantries",
+        category: "Food Security",
+        description: "3 regional drive-through food pantries serving the Greater Houston area.",
+        location: "Multiple Locations",
+        hours: "9:00 AM - 2:00 PM",
+        rating: 4.7, reviews: 560, tags: ["Drive-Thru", "Regional"],
+        website: "https://www.catholiccharities.org/"
+    },
+    {
+        id: 33,
+        name: "Heights Interfaith Ministries Food Pantry",
+        category: "Food Security",
+        description: "Local food assistance serving Houston Heights community.",
+        location: "Houston Heights, TX",
+        hours: "10:00 AM - 1:00 PM",
+        rating: 4.5, reviews: 145, tags: ["Local", "Community"],
+        website: "https://www.heightsinterfaith.org/"
+    },
+    {
+        id: 34,
+        name: "Common Market",
+        category: "Food Security",
+        description: "Farm-fresh produce distribution in partnership with Precinct 4.",
+        location: "Houston, TX",
+        hours: "8:00 AM - 4:00 PM",
+        rating: 4.6, reviews: 190, tags: ["Fresh Produce", "Farm"],
+        website: "https://www.commonmarket.com/"
+    },
+    {
+        id: 35,
+        name: "RaiseUp Families",
+        category: "Food Security",
+        description: "Financial assistance to prevent family hunger and food insecurity.",
+        location: "Houston, TX",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 85, tags: ["Financial Aid", "Prevention"],
+        website: "https://www.raiseupfamilies.org/"
+    },
+
+    // ========== NEW RECREATION RESOURCES ==========
+    {
+        id: 36,
+        name: "Buffalo Bayou Park",
+        category: "Recreation",
+        description: "160+ acres with trails, dog park, kayaking, and beautiful green space along the bayou.",
+        location: "1800 Allen Pkwy, Houston, TX 77019",
+        hours: "6:00 AM - 11:00 PM",
+        rating: 4.9, reviews: 8500, tags: ["Trails", "Kayaking", "Dog Park"],
+        impact: { metric: "160+", label: "Acres of Park" },
+        website: "https://www.buffalobayou.org/"
+    },
+    {
+        id: 37,
+        name: "Hermann Park",
+        category: "Recreation",
+        description: "Zoo, gardens, train, paddle boats, and one of Houston's most beloved parks.",
+        location: "6001 Fannin St, Houston, TX 77030",
+        hours: "6:00 AM - 11:00 PM",
+        rating: 4.8, reviews: 12000, tags: ["Zoo", "Gardens", "Family"],
+        website: "https://www.hermannpark.org/"
+    },
+    {
+        id: 38,
+        name: "Memorial Park",
+        category: "Recreation",
+        description: "1,500 acres of trails, golf courses, sports facilities in the heart of Houston.",
+        location: "6501 Memorial Dr, Houston, TX 77007",
+        hours: "6:00 AM - 10:00 PM",
+        rating: 4.8, reviews: 9200, tags: ["Trails", "Golf", "Sports"],
+        impact: { metric: "1,500", label: "Acres of Park" },
+        website: "https://www.memorialparkconservancy.org/"
+    },
+    {
+        id: 39,
+        name: "Lake Houston Wilderness Park",
+        category: "Recreation",
+        description: "Camping, hiking, nature center, and fishing in a natural wilderness setting.",
+        location: "25840 FM 1485, New Caney, TX 77357",
+        hours: "7:00 AM - Dusk",
+        rating: 4.6, reviews: 1800, tags: ["Camping", "Hiking", "Fishing"],
+        website: "https://www.houstontx.gov/parks/"
+    },
+    {
+        id: 40,
+        name: "Armand Bayou Nature Center",
+        category: "Recreation",
+        description: "Wildlife preserve with hiking trails, kayaking, and environmental education.",
+        location: "8500 Bay Area Blvd, Pasadena, TX 77507",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 2100, tags: ["Wildlife", "Kayaking", "Nature"],
+        website: "https://www.abnc.org/"
+    },
+    {
+        id: 41,
+        name: "Miller Outdoor Theatre",
+        category: "Recreation",
+        description: "Free performances March-November featuring music, dance, theater, and film.",
+        location: "6000 Hermann Park Dr, Houston, TX 77030",
+        hours: "Varies by Event",
+        rating: 4.9, reviews: 7500, tags: ["Free Events", "Theater", "Music"],
+        website: "https://www.milleroutdoortheatre.com/"
+    },
+    {
+        id: 42,
+        name: "Houston BCycle",
+        category: "Recreation",
+        description: "Bike sharing network with stations citywide for convenient urban cycling.",
+        location: "Citywide Stations",
+        hours: "24/7",
+        rating: 4.5, reviews: 3200, tags: ["Biking", "Transportation", "Green"],
+        website: "https://www.houstonbcycle.com/"
+    },
+    {
+        id: 43,
+        name: "Bear Creek Pioneers Park",
+        category: "Recreation",
+        description: "2,154 acres with trails, sports fields, and natural areas in West Houston.",
+        location: "3535 War Memorial Dr, Houston, TX 77084",
+        hours: "7:00 AM - Dusk",
+        rating: 4.6, reviews: 1950, tags: ["Trails", "Sports", "Nature"],
+        website: "https://www.hcp4.net/"
+    },
+    {
+        id: 44,
+        name: "Cullen Park",
+        category: "Recreation",
+        description: "Sports fields, trails, and nature areas in a large urban park setting.",
+        location: "19008 Saums Rd, Houston, TX 77084",
+        hours: "7:00 AM - Dusk",
+        rating: 4.5, reviews: 890, tags: ["Sports", "Trails", "Family"],
+        website: "https://www.houstontx.gov/parks/"
+    },
+    {
+        id: 45,
+        name: "Market Square Park",
+        category: "Recreation",
+        description: "Downtown park with events, programs, and a beautiful green space in historic district.",
+        location: "301 Milam St, Houston, TX 77002",
+        hours: "6:00 AM - 11:00 PM",
+        rating: 4.7, reviews: 2400, tags: ["Downtown", "Events", "Historic"],
+        website: "https://www.marketsquarepark.com/"
+    },
+
+    // ========== NEW COMMUNITY CENTERS ==========
+    {
+        id: 46,
+        name: "BakerRipley Community Centers",
+        category: "Community Centers",
+        description: "Multi-service centers across Houston offering education, workforce, and family services.",
+        location: "Multiple Locations",
+        hours: "8:00 AM - 6:00 PM",
+        rating: 4.7, reviews: 1800, tags: ["Multi-Service", "Education", "Family"],
+        website: "https://www.bakerripley.org/"
+    },
+    {
+        id: 47,
+        name: "Harris County Precinct 2 Community Centers",
+        category: "Community Centers",
+        description: "10 centers with activities for all ages including fitness, youth, and senior programs.",
+        location: "Multiple Locations",
+        hours: "8:00 AM - 8:00 PM",
+        rating: 4.5, reviews: 920, tags: ["All Ages", "Fitness", "Programs"],
+        website: "https://www.hcp2.com/"
+    },
+    {
+        id: 48,
+        name: "Harris County Precinct 4 Community Centers",
+        category: "Community Centers",
+        description: "Fitness, seniors, and youth programs across Northwest Houston.",
+        location: "Multiple Locations",
+        hours: "8:00 AM - 8:00 PM",
+        rating: 4.6, reviews: 1100, tags: ["Fitness", "Seniors", "Youth"],
+        website: "https://www.hcp4.net/"
+    },
+    {
+        id: 49,
+        name: "S.H.A.P.E. Community Center",
+        category: "Community Centers",
+        description: "Cultural & recreation programs celebrating African American heritage.",
+        location: "3815 Live Oak St, Houston, TX 77004",
+        hours: "9:00 AM - 6:00 PM",
+        rating: 4.8, reviews: 650, tags: ["Cultural", "Heritage", "Recreation"],
+        website: "https://www.shape.org/"
+    },
+    {
+        id: 50,
+        name: "The FORGE for Families",
+        category: "Community Centers",
+        description: "Safe zone for children & families providing afterschool programs and resources.",
+        location: "4815 Polk St, Houston, TX 77023",
+        hours: "3:00 PM - 8:00 PM",
+        rating: 4.7, reviews: 380, tags: ["Family", "Youth", "Safe Zone"],
+        website: "https://www.forgeforfamilies.org/"
+    },
+    {
+        id: 51,
+        name: "Nehemiah Center",
+        category: "Community Centers",
+        description: "After-school enrichment & mentoring programs for youth.",
+        location: "4818 Kashmere St, Houston, TX 77026",
+        hours: "3:00 PM - 7:00 PM",
+        rating: 4.6, reviews: 210, tags: ["Youth", "Mentoring", "After-School"],
+        website: "https://www.nehemiahcenter.org/"
+    },
+    {
+        id: 52,
+        name: "Wesley Community Center",
+        category: "Community Centers",
+        description: "K-5 after-school healthy living program focusing on academics and wellness.",
+        location: "1410 Lee St, Houston, TX 77009",
+        hours: "3:00 PM - 6:00 PM",
+        rating: 4.5, reviews: 175, tags: ["K-5", "Healthy Living", "Academic"],
+        website: "https://www.wesleyhouston.org/"
+    },
+    {
+        id: 53,
+        name: "MECA",
+        category: "Community Centers",
+        description: "Multicultural Education & Counseling through the Arts - arts classes, academic support, counseling.",
+        location: "1900 Kane St, Houston, TX 77007",
+        hours: "9:00 AM - 6:00 PM",
+        rating: 4.8, reviews: 520, tags: ["Arts", "Education", "Counseling"],
+        website: "https://www.maboromeca.org/"
+    },
+
+    // ========== NEW SUPPORT SERVICES - HOMELESS & HOUSING ==========
+    {
+        id: 54,
+        name: "Covenant House Texas",
+        category: "Support Services",
+        description: "Shelter for youth 18-24 with 24/7 support, housing, and life skills training.",
+        location: "1111 Lovett Blvd, Houston, TX 77006",
+        hours: "24/7",
+        rating: 4.8, reviews: 480, tags: ["Youth Shelter", "Housing", "24/7"],
+        website: "https://www.covenanthousetx.org/"
+    },
+    {
+        id: 55,
+        name: "Hope Center Houston",
+        category: "Support Services",
+        description: "Day center, emergency shelter, and transitional housing for homeless individuals.",
+        location: "1112 Prairie St, Houston, TX 77002",
+        hours: "8:00 AM - 4:00 PM",
+        rating: 4.6, reviews: 290, tags: ["Day Center", "Shelter", "Transitional"],
+        website: "https://www.hopecenterhouston.org/"
+    },
+    {
+        id: 56,
+        name: "The Beacon",
+        category: "Support Services",
+        description: "Day center services for homeless individuals including meals, showers, and case management.",
+        location: "1212 Prairie St, Houston, TX 77002",
+        hours: "7:00 AM - 3:00 PM",
+        rating: 4.7, reviews: 650, tags: ["Day Center", "Meals", "Services"],
+        website: "https://www.beaconhomeless.org/"
+    },
+    {
+        id: 57,
+        name: "SEARCH Homeless Services",
+        category: "Support Services",
+        description: "Housing, jobs, and outreach programs helping end chronic homelessness.",
+        location: "2015 Congress St, Houston, TX 77002",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 520, tags: ["Housing", "Jobs", "Outreach"],
+        website: "https://www.searchhomeless.org/"
+    },
+    {
+        id: 58,
+        name: "Houston Housing Authority",
+        category: "Support Services",
+        description: "Section 8 & housing vouchers for low-income Houston residents.",
+        location: "2640 Fountain View Dr, Houston, TX 77057",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.3, reviews: 380, tags: ["Section 8", "Vouchers", "Housing"],
+        website: "https://www.housingforhouston.com/"
+    },
+
+    // ========== NEW SUPPORT SERVICES - MENTAL HEALTH ==========
+    {
+        id: 59,
+        name: "The Harris Center for Mental Health",
+        category: "Support Services",
+        description: "Free/sliding scale mental health services with 24/7 crisis line.",
+        location: "9401 Southwest Freeway, Houston, TX 77074",
+        hours: "24/7 Crisis Line",
+        rating: 4.6, reviews: 890, tags: ["Mental Health", "Crisis", "Sliding Scale"],
+        website: "https://www.theharriscenter.org/"
+    },
+    {
+        id: 60,
+        name: "Mental Health America of Greater Houston",
+        category: "Support Services",
+        description: "Care Connect Helpline, therapy referrals, and mental health education.",
+        location: "2211 Norfolk St, Houston, TX 77098",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 340, tags: ["Helpline", "Referrals", "Education"],
+        website: "https://www.mhahouston.org/"
+    },
+    {
+        id: 61,
+        name: "Hope & Healing Center",
+        category: "Support Services",
+        description: "Free mental health coaching and support groups for Houston residents.",
+        location: "7900 Fannin St, Houston, TX 77054",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 420, tags: ["Coaching", "Support Groups", "Free"],
+        website: "https://www.hopeandhealingcenter.org/"
+    },
+    {
+        id: 62,
+        name: "re:MIND",
+        category: "Support Services",
+        description: "Free support groups for depression and bipolar disorder in Houston.",
+        location: "Houston, TX",
+        hours: "Varies by Group",
+        rating: 4.7, reviews: 180, tags: ["Depression", "Bipolar", "Support Groups"],
+        website: "https://www.remindsupport.org/"
+    },
+    {
+        id: 63,
+        name: "NAMI Greater Houston",
+        category: "Support Services",
+        description: "Free education and support for mental illness and family members.",
+        location: "2627 Caroline St, Houston, TX 77004",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 560, tags: ["Education", "Support", "Family"],
+        website: "https://www.namigreaterhouston.org/"
+    },
+    {
+        id: 64,
+        name: "Bo's Place",
+        category: "Support Services",
+        description: "Free grief support for children, families, and adults who have lost loved ones.",
+        location: "10050 Buffalo Speedway, Houston, TX 77054",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.9, reviews: 720, tags: ["Grief", "Children", "Family"],
+        website: "https://www.bosplace.org/"
+    },
+    {
+        id: 65,
+        name: "Family Houston",
+        category: "Support Services",
+        description: "Counseling & family services including therapy, case management, and crisis intervention.",
+        location: "4625 Lillian St, Houston, TX 77007",
+        hours: "8:00 AM - 6:00 PM",
+        rating: 4.6, reviews: 290, tags: ["Counseling", "Family", "Crisis"],
+        website: "https://www.familyhouston.org/"
+    },
+    {
+        id: 66,
+        name: "Memorial Assistance Ministries",
+        category: "Support Services",
+        description: "Rent, utilities, ESL, immigration help for families in crisis.",
+        location: "1625 Blalock Rd, Houston, TX 77080",
+        hours: "8:30 AM - 4:30 PM",
+        rating: 4.7, reviews: 510, tags: ["Rent", "Utilities", "ESL"],
+        website: "https://www.mamhouston.org/"
+    },
+
+    // ========== NEW YOUTH PROGRAMS ==========
+    {
+        id: 67,
+        name: "Big Brothers Big Sisters of Greater Houston",
+        category: "Youth Programs",
+        description: "One-on-one youth mentorship connecting children with caring adult mentors.",
+        location: "1003 Washington Ave, Houston, TX 77002",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.9, reviews: 890, tags: ["Mentorship", "One-on-One"],
+        website: "https://www.bbbstx.org/"
+    },
+    {
+        id: 68,
+        name: "Friends of the Children - Houston",
+        category: "Youth Programs",
+        description: "Long-term professional mentoring for youth facing the greatest obstacles.",
+        location: "Houston, TX",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 320, tags: ["Long-Term", "Professional Mentors"],
+        website: "https://www.friendshtx.org/"
+    },
+    {
+        id: 69,
+        name: "Boys to Men Texas",
+        category: "Youth Programs",
+        description: "Mentoring programs for young men through community, sports, and life skills.",
+        location: "Houston, TX",
+        hours: "By Program",
+        rating: 4.7, reviews: 210, tags: ["Young Men", "Sports", "Life Skills"],
+        website: "https://www.boystomentexas.org/"
+    },
+    {
+        id: 70,
+        name: "Hope for Youth",
+        category: "Youth Programs",
+        description: "Christ-centered youth mentorship and development programs.",
+        location: "Houston, TX",
+        hours: "By Appointment",
+        rating: 4.6, reviews: 145, tags: ["Faith-Based", "Mentorship"],
+        website: "https://www.hopeforyouth.org/"
+    },
+    {
+        id: 71,
+        name: "Houston Area Urban League - Youth Programs",
+        category: "Youth Programs",
+        description: "Project Ready and youth development programs for Houston students.",
+        location: "1302 Texas Ave, Houston, TX 77002",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.6, reviews: 280, tags: ["Project Ready", "Development"],
+        website: "https://www.haul.org/"
+    },
+    {
+        id: 72,
+        name: "GirlStart Houston",
+        category: "Youth Programs",
+        description: "Free STEM programs for 4th-5th grade girls, inspiring future scientists and engineers.",
+        location: "Houston, TX",
+        hours: "By Program",
+        rating: 4.8, reviews: 390, tags: ["STEM", "Girls", "Free"],
+        website: "https://www.girlstart.org/"
+    },
+    {
+        id: 73,
+        name: "Houston Public Library After School Zone",
+        category: "Youth Programs",
+        description: "Free activities, homework help, and programs at Houston Public Libraries.",
+        location: "Multiple Library Locations",
+        hours: "3:00 PM - 6:00 PM",
+        rating: 4.7, reviews: 1200, tags: ["Free", "Homework Help", "Library"],
+        website: "https://www.houstonlibrary.org/"
+    },
+    {
+        id: 74,
+        name: "Kidventure",
+        category: "Youth Programs",
+        description: "Active learning after-school programs with sports, arts, and academics.",
+        location: "Multiple Locations",
+        hours: "3:00 PM - 6:00 PM",
+        rating: 4.5, reviews: 480, tags: ["Active Learning", "After-School"],
+        website: "https://www.kidventure.com/"
+    },
+
+    // ========== NEW CATEGORY: IMMIGRATION & REFUGEE SERVICES ==========
+    {
+        id: 75,
+        name: "St. Frances Cabrini Center (Catholic Charities)",
+        category: "Immigration Services",
+        description: "Largest nonprofit immigration legal aid providing visa, citizenship, and asylum assistance.",
+        location: "2900 Louisiana St, Houston, TX 77006",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 720, tags: ["Legal Aid", "Citizenship", "Asylum"],
+        website: "https://www.catholiccharities.org/"
+    },
+    {
+        id: 76,
+        name: "Houston Immigration Legal Services Collaborative",
+        category: "Immigration Services",
+        description: "Immigrant Rights Hotline 1-833-HOU-IMMI for legal referrals and assistance.",
+        location: "Houston, TX",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 380, tags: ["Hotline", "Legal Referrals"],
+        website: "https://www.houstonimmigration.org/"
+    },
+    {
+        id: 77,
+        name: "YMCA International Services",
+        category: "Immigration Services",
+        description: "Immigration assistance, refugee resettlement, and cultural integration programs.",
+        location: "6671 Southwest Fwy, Houston, TX 77074",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 540, tags: ["Refugee", "Resettlement", "Integration"],
+        website: "https://www.ymcahouston.org/"
+    },
+    {
+        id: 78,
+        name: "BakerRipley Immigration Services",
+        category: "Immigration Services",
+        description: "Citizenship, DACA support, and immigration assistance for Houston residents.",
+        location: "Multiple Locations",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.6, reviews: 410, tags: ["Citizenship", "DACA", "Support"],
+        website: "https://www.bakerripley.org/"
+    },
+    {
+        id: 79,
+        name: "RAICES",
+        category: "Immigration Services",
+        description: "Refugee & immigrant legal aid providing representation and advocacy.",
+        location: "1305 N. Flores St, San Antonio, TX (serves Houston)",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 920, tags: ["Legal Aid", "Advocacy", "Refugee"],
+        website: "https://www.raicestexas.org/"
+    },
+
+    // ========== NEW CATEGORY: DISABILITY SERVICES ==========
+    {
+        id: 80,
+        name: "Easter Seals Greater Houston",
+        category: "Disability Services",
+        description: "Comprehensive disability services including therapy, employment, and support programs.",
+        location: "4500 Bissonnet St, Bellaire, TX 77401",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 650, tags: ["Therapy", "Employment", "Support"],
+        website: "https://www.eastersealshouston.org/"
+    },
+    {
+        id: 81,
+        name: "The Arc of Greater Houston",
+        category: "Disability Services",
+        description: "Programs for people with intellectual and developmental disabilities.",
+        location: "3737 Belle Park Dr, Houston, TX 77072",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 410, tags: ["IDD", "Programs", "Support"],
+        website: "https://www.thearchouston.org/"
+    },
+    {
+        id: 82,
+        name: "Disability Rights Texas",
+        category: "Disability Services",
+        description: "Advocacy & legal services protecting the rights of people with disabilities.",
+        location: "1500 McGowen St, Houston, TX 77004",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.6, reviews: 280, tags: ["Advocacy", "Legal", "Rights"],
+        website: "https://www.disabilityrightstx.org/"
+    },
+    {
+        id: 83,
+        name: "Down Syndrome Association of Houston",
+        category: "Disability Services",
+        description: "Support groups, respite services, and resources for families.",
+        location: "Houston, TX",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.9, reviews: 340, tags: ["Support Groups", "Respite", "Family"],
+        website: "https://www.dsah.org/"
+    },
+
+    // ========== NEW CATEGORY: EDUCATION & ADULT LITERACY ==========
+    {
+        id: 84,
+        name: "HCDE Adult Education",
+        category: "Education",
+        description: "Free ABL, ESL, and GED classes for Harris County adults.",
+        location: "Multiple Locations",
+        hours: "9:00 AM - 9:00 PM",
+        rating: 4.6, reviews: 520, tags: ["GED", "ESL", "Free"],
+        website: "https://www.hcde-texas.org/"
+    },
+    {
+        id: 85,
+        name: "Houston Center for Literacy",
+        category: "Education",
+        description: "ABE, GED, ESL, and workplace literacy programs for adults.",
+        location: "6100 Westpark Dr, Houston, TX 77057",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 380, tags: ["Literacy", "GED", "Workplace"],
+        website: "https://www.houstonliteracy.org/"
+    },
+    {
+        id: 86,
+        name: "Harris County Public Library Adult Literacy",
+        category: "Education",
+        description: "Free tutoring and Career Online High School for adult learners.",
+        location: "Multiple Library Locations",
+        hours: "Varies",
+        rating: 4.5, reviews: 290, tags: ["Tutoring", "High School", "Free"],
+        website: "https://www.hcpl.net/"
+    },
+    {
+        id: 87,
+        name: "Houston Community College Adult Education",
+        category: "Education",
+        description: "GED, ESL, and career pathways programs for adult students.",
+        location: "Multiple Campuses",
+        hours: "Varies by Campus",
+        rating: 4.5, reviews: 620, tags: ["GED", "Career", "College"],
+        website: "https://www.hccs.edu/"
+    },
+    {
+        id: 88,
+        name: "Barbara Bush Houston Literacy Foundation",
+        category: "Education",
+        description: "Adult literacy advocacy and family literacy programs.",
+        location: "Houston, TX",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 210, tags: ["Advocacy", "Family Literacy"],
+        website: "https://www.bushhoustonliteracy.org/"
+    },
+
+    // ========== NEW CATEGORY: JOB TRAINING & EMPLOYMENT ==========
+    {
+        id: 89,
+        name: "Workforce Solutions",
+        category: "Job Training",
+        description: "Job search, training, and career services for Houston area job seekers.",
+        location: "Multiple Career Offices",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.5, reviews: 1800, tags: ["Job Search", "Training", "Career"],
+        website: "https://www.wrksolutions.com/"
+    },
+    {
+        id: 90,
+        name: "SERJobs",
+        category: "Job Training",
+        description: "Occupational training and employment placement for underserved communities.",
+        location: "1750 Seamist Ct, Houston, TX 77008",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.7, reviews: 640, tags: ["Training", "Placement", "Underserved"],
+        website: "https://www.serjobs.org/"
+    },
+    {
+        id: 91,
+        name: "Houston Area Urban League - Workforce Development",
+        category: "Job Training",
+        description: "Job readiness, certifications, and career development programs.",
+        location: "1302 Texas Ave, Houston, TX 77002",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.6, reviews: 380, tags: ["Certifications", "Career", "Readiness"],
+        website: "https://www.haul.org/"
+    },
+    {
+        id: 92,
+        name: "WorkTexas Training Center",
+        category: "Job Training",
+        description: "Welding, electrical, HVAC, and medical training for in-demand careers.",
+        location: "Houston, TX",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.5, reviews: 290, tags: ["Welding", "HVAC", "Medical"],
+        website: "https://www.worktexas.org/"
+    },
+    {
+        id: 93,
+        name: "United Way THRIVE",
+        category: "Job Training",
+        description: "Short-term training and career coaching for financial stability.",
+        location: "Houston, TX",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.6, reviews: 210, tags: ["Short-Term", "Coaching", "Stability"],
+        website: "https://www.unitedwayhouston.org/"
+    },
+
+    // ========== NEW CATEGORY: SENIOR SERVICES ==========
+    {
+        id: 94,
+        name: "Interfaith Ministries Senior Companion Program",
+        category: "Senior Services",
+        description: "Companionship visits for seniors to reduce isolation and provide support.",
+        location: "3303 Main St, Houston, TX 77002",
+        hours: "9:00 AM - 5:00 PM",
+        rating: 4.8, reviews: 420, tags: ["Companionship", "Visits", "Support"],
+        website: "https://www.imgh.org/"
+    },
+    {
+        id: 95,
+        name: "Harris County Area Agency on Aging",
+        category: "Senior Services",
+        description: "Senior resources, programs, and benefits assistance for older adults.",
+        location: "8410 Lantern Point Dr, Houston, TX 77054",
+        hours: "8:00 AM - 5:00 PM",
+        rating: 4.6, reviews: 340, tags: ["Resources", "Benefits", "Programs"],
+        website: "https://www.hcaaa.org/"
+    },
+    {
+        id: 96,
+        name: "Meals on Wheels Greater Houston",
+        category: "Senior Services",
+        description: "Home-delivered meals and wellness checks for seniors across Houston.",
+        location: "Houston, TX",
+        hours: "8:00 AM - 4:00 PM",
+        rating: 4.9, reviews: 890, tags: ["Meals", "Home Delivery", "Wellness"],
+        impact: { metric: "1M+", label: "Meals Delivered Annually" },
+        website: "https://www.mealsonwheelshouston.org/"
     }
 ];
 
