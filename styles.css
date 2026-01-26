@@ -2283,3 +2283,648 @@ h4 {
 .clear-filters:hover {
     opacity: 0.8;
 }
+
+/* ===== SIDEBAR TABS & SETTINGS ===== */
+.sidebar-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-tab {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar-tab:hover {
+    border-color: var(--primary-teal);
+    color: var(--primary-teal);
+}
+
+.sidebar-tab.active {
+    background: var(--primary-teal);
+    border-color: var(--primary-teal);
+    color: white;
+}
+
+.sidebar-content {
+    animation: fadeInUp 0.3s ease;
+}
+
+.sidebar-content.hidden {
+    display: none;
+}
+
+.settings-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.settings-section h4 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.settings-section h4 i {
+    color: var(--primary-teal);
+}
+
+.settings-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+}
+
+.settings-label {
+    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.theme-toggle-switch,
+.font-size-options,
+.contrast-toggle,
+.language-options {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.theme-option,
+.size-option,
+.contrast-option,
+.lang-option-btn {
+    padding: 0.5rem 0.75rem;
+    border: 2px solid var(--border-color);
+    background: var(--card-bg);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.theme-option:hover,
+.size-option:hover,
+.contrast-option:hover,
+.lang-option-btn:hover {
+    border-color: var(--primary-teal);
+    color: var(--primary-teal);
+}
+
+.theme-option.active,
+.size-option.active,
+.contrast-option.active,
+.lang-option-btn.active {
+    background: var(--primary-teal);
+    border-color: var(--primary-teal);
+    color: white;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-color);
+    transition: 0.3s;
+    border-radius: 26px;
+}
+
+.toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked+.toggle-slider {
+    background-color: var(--primary-teal);
+}
+
+.toggle-switch input:checked+.toggle-slider::before {
+    transform: translateX(24px);
+}
+
+/* Settings Button */
+.settings-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.settings-btn:hover {
+    border-color: var(--primary-teal);
+    color: var(--primary-teal);
+}
+
+.settings-btn.danger {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.settings-btn.danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* ===== RESOURCE CARD IMPROVEMENTS ===== */
+.resource-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.resource-card h3 {
+    margin-top: 0.5rem;
+}
+
+.card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.card-footer span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-footer i {
+    color: var(--primary-teal);
+    width: 16px;
+}
+
+/* Visit Website Button */
+.visit-website-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--primary-teal);
+    color: var(--primary-teal);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.visit-website-btn:hover {
+    background: var(--primary-teal);
+    color: white;
+}
+
+/* ===== HIDDEN UTILITY ===== */
+.hidden {
+    display: none !important;
+}
+
+/* ===== PETITION GRID ===== */
+.petition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .petition-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== PETITION META ===== */
+.petition-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* ===== SIDEBAR WIDTH FIX ===== */
+.sidebar {
+    width: 350px;
+    right: -350px;
+}
+
+@media (max-width: 400px) {
+    .sidebar {
+        width: 100%;
+        right: -100%;
+    }
+}
+
+/* ===== LANGUAGE OPTIONS FULL WIDTH ===== */
+.language-options {
+    flex-direction: column;
+    width: 100%;
+}
+
+.lang-option-btn {
+    justify-content: flex-start;
+    padding: 0.75rem 1rem;
+}
+
+/* ===== IMPROVED HERO STATS ===== */
+.stats-dashboard {
+    backdrop-filter: blur(10px);
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+/* ===== DIRECTORY CONTROLS RESPONSIVE ===== */
+.directory-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .directory-controls {
+        width: 100%;
+    }
+
+    .filter-chips {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 0.5rem;
+    }
+
+    .filter-chip {
+        white-space: nowrap;
+    }
+}
+
+/* ===== SIDEBAR TABS & SETTINGS ===== */
+.sidebar-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: -1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-tab {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar-tab:hover {
+    background: var(--bg-color);
+    color: var(--text-main);
+}
+
+.sidebar-tab.active {
+    background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-light));
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 121, 107, 0.3);
+}
+
+.sidebar-tab i {
+    font-size: 1rem;
+}
+
+.sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-content.hidden {
+    display: none;
+}
+
+/* Settings Sections */
+.settings-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.settings-section h4 {
+    font-size: 1rem;
+    font-family: 'Outfit', sans-serif;
+    margin-bottom: 1.25rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.settings-section h4 i {
+    color: var(--primary-teal);
+    font-size: 1.1rem;
+}
+
+.settings-option {
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.settings-option:last-child {
+    margin-bottom: 0;
+}
+
+.settings-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Theme Toggle Buttons */
+.theme-toggle-switch,
+.contrast-toggle {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.theme-option,
+.contrast-option {
+    padding: 0.5rem 0.9rem;
+    border: 2px solid var(--border-color);
+    background: var(--bg-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.theme-option:hover,
+.contrast-option:hover {
+    border-color: var(--primary-teal);
+    color: var(--primary-teal);
+}
+
+.theme-option.active,
+.contrast-option.active {
+    background: var(--primary-teal);
+    border-color: var(--primary-teal);
+    color: white;
+}
+
+/* Font Size Options */
+.font-size-options {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.size-option {
+    width: 42px;
+    height: 42px;
+    border: 2px solid var(--border-color);
+    background: var(--bg-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.size-option:nth-child(1) {
+    font-size: 0.85rem;
+}
+
+.size-option:nth-child(2) {
+    font-size: 1rem;
+}
+
+.size-option:nth-child(3) {
+    font-size: 1.15rem;
+}
+
+.size-option:hover {
+    border-color: var(--primary-teal);
+    color: var(--primary-teal);
+}
+
+.size-option.active {
+    background: var(--primary-teal);
+    border-color: var(--primary-teal);
+    color: white;
+}
+
+/* Language Options */
+.language-options {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.lang-option-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    background: var(--bg-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+
+.lang-option-btn:hover {
+    border-color: var(--primary-teal);
+    color: var(--primary-teal);
+}
+
+.lang-option-btn.active {
+    background: var(--primary-teal);
+    border-color: var(--primary-teal);
+    color: white;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-color);
+    transition: 0.3s;
+    border-radius: 28px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch input:checked+.toggle-slider {
+    background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-light));
+}
+
+.toggle-switch input:checked+.toggle-slider:before {
+    transform: translateX(22px);
+}
+
+/* Settings Button */
+.settings-btn {
+    width: 100%;
+    padding: 0.9rem 1.25rem;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.settings-btn.danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.settings-btn.danger:hover {
+    background: #ef4444;
+    color: white;
+}

@@ -9,7 +9,8 @@ const initialResources = [
         location: "535 Portwall St, Houston, TX 77029",
         hours: "8:00 AM - 6:00 PM",
         rating: 4.8, reviews: 1240, tags: ["Volunteer", "Donations"],
-        impact: { metric: "1.1M+", label: "People Fed Annually" }
+        impact: { metric: "1.1M+", label: "People Fed Annually" },
+        website: "https://www.houstonfoodbank.org/"
     },
     {
         id: 10,
@@ -19,7 +20,8 @@ const initialResources = [
         location: "624 4th Ave N, Texas City, TX 77590",
         hours: "8:00 AM - 4:00 PM",
         rating: 4.7, reviews: 310, tags: ["Coastal", "Nutrition"],
-        impact: { metric: "25K+", label: "Families Served" }
+        impact: { metric: "25K+", label: "Families Served" },
+        website: "https://www.galvestoncountyfoodbank.org/"
     },
     {
         id: 11,
@@ -29,7 +31,8 @@ const initialResources = [
         location: "330 Garden Oaks Blvd, Houston, TX 77018",
         hours: "9:00 AM - 3:00 PM",
         rating: 4.9, reviews: 850, tags: ["Youth", "Poverty Relief"],
-        impact: { metric: "3M+", label: "Meals Delivered" }
+        impact: { metric: "3M+", label: "Meals Delivered" },
+        website: "https://www.kidsmealsinc.org/"
     },
     {
         id: 12,
@@ -38,7 +41,8 @@ const initialResources = [
         description: "Offering hope to neighbors in Fort Bend County by providing food, counseling, and health services.",
         location: "1135 Hwy 90A, Missouri City, TX 77489",
         hours: "10:00 AM - 5:00 PM",
-        rating: 4.6, reviews: 220, tags: ["Missouri City", "Health"]
+        rating: 4.6, reviews: 220, tags: ["Missouri City", "Health"],
+        website: "https://www.secondmilemission.org/"
     },
 
     // 2. Recreation
@@ -50,7 +54,8 @@ const initialResources = [
         location: "1500 Memorial Loop Dr, Houston, TX 77007",
         hours: "6:00 AM - 9:00 PM",
         rating: 4.6, reviews: 450, tags: ["Court Booking", "Sports"],
-        impact: { metric: "18", label: "Courts Available" }
+        impact: { metric: "18", label: "Courts Available" },
+        website: "https://www.memorialparkconservancy.org/tennis/"
     },
     {
         id: 13,
@@ -59,7 +64,8 @@ const initialResources = [
         description: "Providing a wide range of recreational, leisure, and social opportunities for residents of Sugar Land.",
         location: "226 Matlage Way, Sugar Land, TX 77478",
         hours: "8:00 AM - 8:00 PM",
-        rating: 4.4, reviews: 560, tags: ["Classes", "Social"]
+        rating: 4.4, reviews: 560, tags: ["Classes", "Social"],
+        website: "https://www.sugarlandtx.gov/"
     },
     {
         id: 5,
@@ -69,7 +75,8 @@ const initialResources = [
         location: "3801 Eastside St, Houston, TX 77098",
         hours: "6:00 AM - 11:00 PM",
         rating: 4.7, reviews: 2150, tags: ["Family", "Outdoors"],
-        impact: { metric: "500K+", label: "Annual Visitors" }
+        impact: { metric: "500K+", label: "Annual Visitors" },
+        website: "https://www.levyparkhouston.org/"
     },
     {
         id: 14,
@@ -78,7 +85,8 @@ const initialResources = [
         description: "Vibrant downtown park offering free events, public art, and green space for Houstonians to gather.",
         location: "1500 McKinney St, Houston, TX 77010",
         hours: "6:00 AM - 11:00 PM",
-        rating: 4.8, reviews: 8900, tags: ["Downtown", "Free Events"]
+        rating: 4.8, reviews: 8900, tags: ["Downtown", "Free Events"],
+        website: "https://www.discoverygreen.com/"
     },
 
     // 3. Community Centers
@@ -89,7 +97,8 @@ const initialResources = [
         description: "A hub for health, wellness, and community connection in the heart of downtown Houston.",
         location: "808 Pease St, Houston, TX 77002",
         hours: "5:00 AM - 9:00 PM",
-        rating: 4.5, reviews: 1100, tags: ["Fitness", "Connection"]
+        rating: 4.5, reviews: 1100, tags: ["Fitness", "Connection"],
+        website: "https://www.ymcahouston.org/"
     },
     {
         id: 16,
@@ -98,7 +107,8 @@ const initialResources = [
         description: "A Harris County Precinct 4 facility offering activities for seniors, youth, and the general public.",
         location: "6400 Bissonnet St, Houston, TX 77074",
         hours: "8:00 AM - 8:00 PM",
-        rating: 4.3, reviews: 290, tags: ["Seniors", "Precinct 4"]
+        rating: 4.3, reviews: 290, tags: ["Seniors", "Precinct 4"],
+        website: "https://www.hcp4.net/"
     },
     {
         id: 3,
@@ -107,7 +117,8 @@ const initialResources = [
         description: "A hub for neighborhood activities, featuring after-school programs, fitness classes, and senior events.",
         location: "4900 Providence St, Houston, TX 77020",
         hours: "9:00 AM - 8:00 PM",
-        rating: 4.5, reviews: 89, tags: ["Youth", "Seniors"]
+        rating: 4.5, reviews: 89, tags: ["Youth", "Seniors"],
+        website: "https://www.houstonparks.org/"
     },
 
     // 4. Support Services
@@ -119,7 +130,8 @@ const initialResources = [
         location: "4848 Jacinto City, TX 77029",
         hours: "24/7",
         rating: 4.8, reviews: 920, tags: ["Housing", "Pantry"],
-        impact: { metric: "2,000+", label: "Beds Available" }
+        impact: { metric: "2,000+", label: "Beds Available" },
+        website: "https://www.sohmission.org/"
     },
     {
         id: 18,
@@ -128,7 +140,8 @@ const initialResources = [
         description: "Leading the Way Home - coordinating the community response to homelessness in Houston and surrounding counties.",
         location: "2010 Congress St, Houston, TX 77002",
         hours: "9:00 AM - 5:00 PM",
-        rating: 4.7, reviews: 410, tags: ["Advocacy", "Way Home"]
+        rating: 4.7, reviews: 410, tags: ["Advocacy", "Way Home"],
+        website: "https://www.homelesshouston.org/"
     },
     {
         id: 4,
@@ -138,7 +151,8 @@ const initialResources = [
         location: "1010 Waugh Dr, Houston, TX 77019",
         hours: "24/7 Crisis Line",
         rating: 4.9, reviews: 320, tags: ["Counseling", "Safe Space"],
-        impact: { metric: "35K+", label: "People Helped Yearly" }
+        impact: { metric: "35K+", label: "People Helped Yearly" },
+        website: "https://hawc.org/"
     },
     {
         id: 19,
@@ -147,7 +161,8 @@ const initialResources = [
         description: "Helping our neighbors thrive by connecting them with people and resources to improve their lives.",
         location: "50 Waugh Dr, Houston, TX 77007",
         hours: "8:30 AM - 5:00 PM",
-        rating: 4.6, reviews: 1500, tags: ["Financial", "2-1-1"]
+        rating: 4.6, reviews: 1500, tags: ["Financial", "2-1-1"],
+        website: "https://www.unitedwayhouston.org/"
     },
 
     // 5. Youth Programs
@@ -159,7 +174,8 @@ const initialResources = [
         location: "Multiple Locations",
         hours: "2:00 PM - 8:00 PM",
         rating: 4.6, reviews: 180, tags: ["Mentorship", "Education"],
-        impact: { metric: "40K+", label: "Youth Served" }
+        impact: { metric: "40K+", label: "Youth Served" },
+        website: "https://www.bgcgh.org/"
     },
     {
         id: 20,
@@ -168,7 +184,8 @@ const initialResources = [
         description: "Providing free access to information, educational programs, and technology for Houston's youth and families.",
         location: "500 McKinney St, Houston, TX 77002",
         hours: "10:00 AM - 6:00 PM",
-        rating: 4.7, reviews: 3400, tags: ["Literacy", "Tech Access"]
+        rating: 4.7, reviews: 3400, tags: ["Literacy", "Tech Access"],
+        website: "https://houstonlibrary.org/"
     }
 ];
 
@@ -294,7 +311,8 @@ const volunteerOpportunities = [
         commitment: "4 hours",
         frequency: "Weekly",
         location: "Multiple Locations",
-        tags: ["Physical", "Groups Welcome"]
+        tags: ["Physical", "Groups Welcome"],
+        website: "https://www.houstonfoodbank.org/volunteer/"
     },
     {
         id: 2,
@@ -304,7 +322,8 @@ const volunteerOpportunities = [
         commitment: "2 hours",
         frequency: "Twice Weekly",
         location: "Various Club Locations",
-        tags: ["Education", "Mentorship"]
+        tags: ["Education", "Mentorship"],
+        website: "https://www.bgcgh.org/volunteer"
     },
     {
         id: 3,
@@ -314,7 +333,8 @@ const volunteerOpportunities = [
         commitment: "3 hours",
         frequency: "Weekend",
         location: "Eastside Houston",
-        tags: ["Outdoors", "Environment"]
+        tags: ["Outdoors", "Environment"],
+        website: "https://www.urbanharvest.org/volunteer/"
     },
     {
         id: 4,
@@ -324,7 +344,8 @@ const volunteerOpportunities = [
         commitment: "2-3 hours",
         frequency: "Weekly",
         location: "Citywide",
-        tags: ["Seniors", "Compassion"]
+        tags: ["Seniors", "Compassion"],
+        website: "https://www.imgh.org/volunteer/"
     }
 ];
 

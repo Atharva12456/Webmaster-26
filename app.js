@@ -155,6 +155,132 @@ function initApp() {
         showSuggestModal();
     });
 
+    // ===== SIDEBAR TABS =====
+    const sidebarTabs = document.querySelectorAll('.sidebar-tab');
+    const sidebarNavigationContent = document.getElementById('sidebar-navigation');
+    const sidebarSettingsContent = document.getElementById('sidebar-settings');
+
+    sidebarTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            sidebarTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            const tabName = tab.dataset.tab;
+            if (tabName === 'navigation') {
+                sidebarNavigationContent.classList.remove('hidden');
+                sidebarSettingsContent.classList.add('hidden');
+            } else if (tabName === 'settings') {
+                sidebarNavigationContent.classList.add('hidden');
+                sidebarSettingsContent.classList.remove('hidden');
+            }
+        });
+    });
+
+    // ===== SIDEBAR SETTINGS FUNCTIONALITY =====
+    // Theme options in sidebar
+    const themeOptions = document.querySelectorAll('.theme-option');
+    const updateThemeButtons = () => {
+        themeOptions.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === state.theme);
+        });
+    };
+    updateThemeButtons();
+
+    themeOptions.forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.theme = btn.dataset.theme;
+            document.body.setAttribute('data-theme', state.theme);
+            localStorage.setItem('theme', state.theme);
+            updateThemeIcon();
+            updateThemeButtons();
+            showToast(`${state.theme === 'dark' ? 'Dark' : 'Light'} mode enabled`, 'info');
+        });
+    });
+
+    // Font size options in sidebar
+    const sizeOptions = document.querySelectorAll('.size-option');
+    const updateSizeButtons = () => {
+        sizeOptions.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.size === state.fontSize);
+        });
+    };
+    updateSizeButtons();
+
+    sizeOptions.forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.fontSize = btn.dataset.size;
+            document.documentElement.setAttribute('data-font-size', state.fontSize);
+            localStorage.setItem('fontSize', state.fontSize);
+            updateSizeButtons();
+            showToast('Font size updated', 'success');
+        });
+    });
+
+    // Contrast options in sidebar
+    const contrastOptions = document.querySelectorAll('.contrast-option');
+    const updateContrastButtons = () => {
+        contrastOptions.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.contrast === state.contrast);
+        });
+    };
+    updateContrastButtons();
+
+    contrastOptions.forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.contrast = btn.dataset.contrast;
+            document.documentElement.setAttribute('data-contrast', state.contrast);
+            localStorage.setItem('contrast', state.contrast);
+            updateContrastButtons();
+            showToast('Contrast mode updated', 'success');
+        });
+    });
+
+    // Language options in sidebar
+    const langOptionBtns = document.querySelectorAll('.lang-option-btn');
+    const updateLangButtons = () => {
+        langOptionBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === state.language);
+        });
+    };
+    updateLangButtons();
+
+    langOptionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.language = btn.dataset.lang;
+            localStorage.setItem('language', state.language);
+            langToggle.innerHTML = `<i class="fas fa-globe"></i> ${state.language.toUpperCase()}`;
+            updateLangButtons();
+            showToast(state.language === 'es' ? '¡Idioma cambiado a Español!' : 'Language changed to English!', 'success');
+        });
+    });
+
+    // Clear data button
+    document.getElementById('clear-data-btn')?.addEventListener('click', () => {
+        if (confirm('Are you sure you want to clear all saved data? This will reset favorites, recently viewed, and all settings.')) {
+            localStorage.clear();
+            state.favorites = [];
+            state.recentlyViewed = [];
+            state.theme = 'light';
+            state.fontSize = 'normal';
+            state.contrast = 'normal';
+            state.language = 'en';
+
+            document.body.setAttribute('data-theme', 'light');
+            document.documentElement.setAttribute('data-font-size', 'normal');
+            document.documentElement.setAttribute('data-contrast', 'normal');
+
+            updateThemeIcon();
+            updateThemeButtons();
+            updateSizeButtons();
+            updateContrastButtons();
+            updateLangButtons();
+
+            showToast('All data has been cleared!', 'success');
+            toggleSidebar();
+            renderSection(state.currentView);
+        }
+    });
+
     // ===== LOGO CLICK =====
     logo.addEventListener('click', () => {
         state.filters.search = '';
@@ -472,11 +598,18 @@ function initApp() {
                                 <button class="share-btn copy" data-share="copy" data-name="${res.name}" aria-label="Copy link"><i class="fas fa-link"></i></button>
                             </div>
                         </div>
-                        ${res.category === 'Recreation' ? `
-                            <button class="btn btn-primary book-btn" data-id="${res.id}" style="width: 100%; margin-top: 1rem;">
-                                <i class="fas fa-calendar-check"></i> Book Venue
-                            </button>
-                        ` : ''}
+                        <div class="card-actions" style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+                            ${res.website ? `
+                                <a href="${res.website}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="flex: 1;">
+                                    <i class="fas fa-external-link-alt"></i> Visit Website
+                                </a>
+                            ` : ''}
+                            ${res.category === 'Recreation' ? `
+                                <button class="btn btn-primary book-btn" data-id="${res.id}" style="flex: 1;">
+                                    <i class="fas fa-calendar-check"></i> Book Venue
+                                </button>
+                            ` : ''}
+                        </div>
                     </div>
                 `;
             }).join('');
