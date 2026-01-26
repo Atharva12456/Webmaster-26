@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initApp() {
+    console.log('Hub: initApp started');
     // ===== HELPER: SAFE JSON PARSE =====
     const safeParse = (key, fallback) => {
         try {
@@ -55,6 +56,33 @@ function initApp() {
     const a11yPanel = document.getElementById('a11y-panel');
     const langToggle = document.getElementById('lang-toggle');
     const langDropdown = document.getElementById('lang-dropdown');
+    const modal = document.getElementById('modal-container');
+    const modalBody = document.getElementById('modal-body');
+    const suggestBtn = document.getElementById('suggest-resource-btn');
+    const partnerBtn = document.getElementById('partner-inquiry-btn');
+    const closeModalBtn = document.querySelector('.close-modal');
+    const sidebarSuggestBtn = document.getElementById('sidebar-suggest');
+
+    // Attach Modal Listeners immediately for robustness
+    console.log('Hub: Initializing Modal Listeners');
+    const handleSuggestClick = (e) => {
+        if (e) e.preventDefault();
+        console.log('Hub: Suggest button/link clicked');
+        showSuggestModal();
+    };
+
+    suggestBtn?.addEventListener('click', handleSuggestClick);
+    sidebarSuggestBtn?.addEventListener('click', handleSuggestClick);
+
+    partnerBtn?.addEventListener('click', () => {
+        console.log('Hub: Partner button clicked');
+        showPartnerModal();
+    });
+    closeModalBtn?.addEventListener('click', () => {
+        console.log('Hub: Close button clicked');
+        modal?.classList.remove('active');
+        modal?.classList.add('hidden');
+    });
 
     // ===== TOAST NOTIFICATION SYSTEM =====
     function showToast(message, type = 'info', duration = 3000) {
@@ -119,11 +147,11 @@ function initApp() {
     });
 
     // Initialize accessibility settings
+    console.log('Hub: Initializing accessibility');
     document.documentElement.setAttribute('data-font-size', state.fontSize);
     document.documentElement.setAttribute('data-contrast', state.contrast);
 
-    // Suggest Resource Button
-    document.getElementById('suggest-resource-btn')?.addEventListener('click', showSuggestModal);
+
 
     // ===== LANGUAGE SELECTOR =====
     langToggle?.addEventListener('click', () => {
@@ -458,20 +486,39 @@ function initApp() {
 
     function createConfetti() {
         const colors = ['#00796b', '#ff7043', '#10b981', '#f59e0b', '#ef4444'];
+        const container = document.querySelector('.success-overlay') || document.body;
+
         for (let i = 0; i < 50; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
+            confetti.style.position = 'fixed';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.animationDelay = Math.random() * 2 + 's';
+            confetti.style.top = '-20px';
+            confetti.style.zIndex = '9999';
             confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-            document.querySelector('.success-overlay')?.appendChild(confetti);
+            document.body.appendChild(confetti);
+
+            const animation = confetti.animate([
+                { transform: `translate3d(0, 0, 0) rotate(0deg)`, opacity: 1 },
+                { transform: `translate3d(${Math.random() * 100 - 50}px, 100vh, 0) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 2000 + 3000,
+                easing: 'cubic-bezier(0, .9, .57, 1)',
+                delay: Math.random() * 1000
+            });
+
+            animation.onfinish = () => confetti.remove();
         }
     }
 
-    // ===== INITIAL RENDER =====
+    // ===== RENDER INITIAL SECTION =====
+    console.log('Hub: Rendering initial section', state.currentView);
     const initialHash = window.location.hash.replace('#', '') || 'directory';
     renderSection(initialHash);
+    console.log('Hub: initApp finished successfully');
     updateActiveNav(initialHash);
 
     // Show onboarding tour for first-time visitors
@@ -1132,18 +1179,15 @@ function initApp() {
         });
     }
 
-    // ===== MODALS =====
-    const modal = document.getElementById('modal-container');
-    const modalBody = document.getElementById('modal-body');
-    const suggestBtn = document.getElementById('suggest-resource-btn');
-    const closeModalBtn = document.querySelector('.close-modal');
-    const partnerBtn = document.getElementById('partner-inquiry-btn');
+    // Event listeners already moved up for robustness
 
-    suggestBtn?.addEventListener('click', showSuggestModal);
-    partnerBtn?.addEventListener('click', showPartnerModal);
-    closeModalBtn?.addEventListener('click', () => modal.classList.remove('active'));
 
     function showSuggestModal() {
+        console.log('Hub: showSuggestModal executing');
+        if (!modal || !modalBody) {
+            console.error('Hub: Cannot show modal - missing elements');
+            return;
+        }
         const isEs = state.language === 'es';
         modalBody.innerHTML = `
             <div class="modal-form">
@@ -1179,11 +1223,13 @@ function initApp() {
                 </form>
             </div>
             `;
+        modal.classList.remove('hidden');
         modal.classList.add('active');
 
         document.getElementById('suggest-form').addEventListener('submit', (e) => {
             e.preventDefault();
             modal.classList.remove('active');
+            modal.classList.add('hidden');
             showToast(isEs ? '¡Gracias! Su sugerencia ha sido enviada.' : 'Thank you! Your suggestion has been submitted.', 'success');
             createConfetti();
         });
@@ -1209,6 +1255,7 @@ function initApp() {
     }
 
     function showBookingModal(res) {
+        if (!modal || !modalBody) return;
         const isEs = state.language === 'es';
         const name = (isEs && res.name_es) ? res.name_es : res.name;
 
@@ -1239,16 +1286,19 @@ function initApp() {
                 </form>
             </div>
             `;
+        modal.classList.remove('hidden');
         modal.classList.add('active');
 
         document.getElementById('booking-form').addEventListener('submit', (e) => {
             e.preventDefault();
             modal.classList.remove('active');
+            modal.classList.add('hidden');
             showToast(isEs ? `¡Reserva confirmada para ${name} !` : `Booking confirmed for ${res.name}!`, 'success');
         });
     }
 
     function showPartnerModal() {
+        if (!modal || !modalBody) return;
         const isEs = state.language === 'es';
         modalBody.innerHTML = `
             <div class="modal-form">
@@ -1271,11 +1321,13 @@ function initApp() {
                 </form>
             </div>
             `;
+        modal.classList.remove('hidden');
         modal.classList.add('active');
 
         document.getElementById('partner-form').addEventListener('submit', (e) => {
             e.preventDefault();
             modal.classList.remove('active');
+            modal.classList.add('hidden');
             showToast(isEs ? '¡Gracias! Estaremos en contacto pronto.' : 'Thank you! We\'ll be in touch soon.', 'success');
         });
     }
@@ -1372,6 +1424,7 @@ function initApp() {
         // Escape to close modals
         if (e.key === 'Escape') {
             modal?.classList.remove('active');
+            modal?.classList.add('hidden');
             a11yPanel?.classList.remove('active');
             langDropdown?.classList.remove('active');
         }
@@ -1475,8 +1528,9 @@ function initApp() {
         updatePetitions();
     }
 
-    // ===== SUGGEST RESOURCE MODAL =====
+    // ===== PETITION MODAL =====
     function showPetitionModal() {
+        if (!modal || !modalBody) return;
         const isEs = state.language === 'es';
         modalBody.innerHTML = `
             <div class="modal-form">
@@ -1512,6 +1566,7 @@ function initApp() {
                 </form>
             </div>
             `;
+        modal.classList.remove('hidden');
         modal.classList.add('active');
 
         document.getElementById('petition-form').addEventListener('submit', (e) => {
@@ -1530,42 +1585,14 @@ function initApp() {
             state.petitions.unshift(newPet);
             localStorage.setItem('petitions', JSON.stringify(state.petitions));
             modal.classList.remove('active');
+            modal.classList.add('hidden');
             showToast(isEs ? '¡Su petición ha sido lanzada!' : 'Your petition has been launched!', 'success');
             if (state.currentView === 'petitions') renderPetitions();
         });
     }
 
-    // ===== CONFETTI ANIMATION =====
-    function createConfetti() {
-        const colors = ['#00796b', '#ff7043', '#ffffff', '#ffd54f'];
-        const container = document.querySelector('.success-overlay');
+    // Consolidated confetti removed from here
 
-        if (!container) return;
-
-        for (let i = 0; i < 50; i++) {
-            const confetti = document.createElement('div');
-            confetti.style.position = 'absolute';
-            confetti.style.width = '10px';
-            confetti.style.height = '10px';
-            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.left = Math.random() * 100 + '%';
-            confetti.style.top = -10 + 'px';
-            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-            confetti.style.opacity = Math.random();
-            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-
-            const duration = Math.random() * 2 + 1;
-            confetti.style.transition = `top ${duration}s ease-in, opacity ${duration}s ease-in`;
-
-            container.appendChild(confetti);
-
-            // Animate
-            setTimeout(() => {
-                confetti.style.top = '100%';
-                confetti.style.opacity = '0';
-            }, 100);
-        }
-    }
 
     // ===== SERVICE WORKER REGISTRATION (PWA) =====
     if ('serviceWorker' in navigator) {

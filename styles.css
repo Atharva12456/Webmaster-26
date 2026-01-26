@@ -2192,67 +2192,7 @@ body.hide-hero .hero-section {
     background: rgba(0, 121, 107, 0.05);
 }
 
-/* ===== ONBOARDING TOUR ===== */
-.tour-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 9999;
-    display: none;
-}
 
-.tour-overlay.active {
-    display: block;
-}
-
-.tour-highlight {
-    position: relative;
-    z-index: 10001;
-    border-radius: var(--radius-md);
-    box-shadow: 0 0 0 4px var(--primary-teal), 0 0 0 9999px rgba(0, 0, 0, 0.75);
-}
-
-.tour-tooltip {
-    position: fixed;
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-    max-width: 380px;
-    z-index: 10002;
-    box-shadow: var(--shadow-lg);
-    animation: fadeInUp 0.3s ease;
-}
-
-.tour-tooltip h4 {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-}
-
-.tour-tooltip p {
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
-}
-
-.tour-progress {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.tour-dots {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.tour-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--border-color);
-}
 
 .tour-dot.active {
     background: var(--primary-teal);
@@ -3054,7 +2994,7 @@ body.hide-hero .hero-section {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 9500;
     overflow: hidden;
 }
 
@@ -3066,7 +3006,7 @@ body.hide-hero .hero-section {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 2100;
+    z-index: 9000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -3087,7 +3027,18 @@ body.hide-hero .hero-section {
     display: none !important;
 }
 
+.hide-hero #hero-section {
+    display: none !important;
+}
+
 /* ===== TOUR OVERLAY FIX ===== */
+.tour-highlight {
+    position: relative;
+    z-index: 4000;
+    border-radius: var(--radius-md);
+    box-shadow: 0 0 0 4px var(--primary-teal), 0 0 0 9999px rgba(0, 0, 0, 0.5);
+}
+
 .tour-overlay {
     position: fixed;
     top: 0;
@@ -3095,7 +3046,7 @@ body.hide-hero .hero-section {
     width: 100%;
     height: 100%;
     background: transparent;
-    z-index: 10000;
+    z-index: 3000;
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s ease;
@@ -3113,7 +3064,7 @@ body.hide-hero .hero-section {
     padding: 1.5rem;
     border-radius: var(--radius-md);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    z-index: 10001;
+    z-index: 3100;
     width: 320px;
     max-width: 90vw;
     animation: fadeInUp 0.3s ease;
