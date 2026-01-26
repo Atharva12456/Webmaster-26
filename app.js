@@ -624,6 +624,12 @@ function initApp() {
             grid.innerHTML = filtered.map(res => {
                 const isFavorite = state.favorites.includes(res.id);
                 const openStatus = isOpenNow(res.hours);
+
+                // Select content based on language
+                const name = (state.language === 'es' && res.name_es) ? res.name_es : res.name;
+                const desc = (state.language === 'es' && res.description_es) ? res.description_es : res.description;
+                const impactLabel = (state.language === 'es' && res.impact?.label_es) ? res.impact.label_es : res.impact?.label;
+
                 return `
                     <div class="resource-card animate-in" data-id="${res.id}">
                         <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
@@ -637,12 +643,12 @@ function initApp() {
                                 <i class="fas fa-heart"></i>
                             </button>
                         </div>
-                        <h3>${res.name}</h3>
-                        <p>${res.description}</p>
+                        <h3>${name}</h3>
+                        <p>${desc}</p>
                         ${res.impact ? `
                             <div style="background: rgba(0, 121, 107, 0.05); padding: 1rem; border-radius: 12px; text-align: center;">
                                 <div style="font-size: 1.75rem; font-weight: 700; color: var(--primary-teal);">${res.impact.metric}</div>
-                                <div style="font-size: 0.85rem; color: var(--text-muted);">${res.impact.label}</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">${impactLabel}</div>
                             </div>
                         ` : ''}
                         ${res.tags ? `
@@ -1254,17 +1260,20 @@ function initApp() {
     }
 
     function showBookingModal(res) {
+        const isEs = state.language === 'es';
+        const name = (isEs && res.name_es) ? res.name_es : res.name;
+
         modalBody.innerHTML = `
             <div class="modal-form">
-                <h2>Book Venue: ${res.name}</h2>
-                <p>Select a date and time to reserve this community space.</p>
+                <h2>${isEs ? 'Reservar Lugar: ' : 'Book Venue: '} ${name}</h2>
+                <p>${isEs ? 'Seleccione fecha y hora para reservar este espacio.' : 'Select a date and time to reserve this community space.'}</p>
                 <form id="booking-form">
                     <div class="form-group">
-                        <label>Select Date</label>
+                        <label>${isEs ? 'Seleccionar Fecha' : 'Select Date'}</label>
                         <input type="date" id="book-date" required>
                     </div>
                     <div class="form-group">
-                        <label>Select Time</label>
+                        <label>${isEs ? 'Seleccionar Hora' : 'Select Time'}</label>
                         <select id="book-time" required>
                             <option>09:00 AM</option>
                             <option>11:00 AM</option>
@@ -1274,10 +1283,10 @@ function initApp() {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Number of People</label>
+                        <label>${isEs ? 'Número de Personas' : 'Number of People'}</label>
                         <input type="number" id="book-count" min="1" max="50" value="2" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-full">Confirm Booking</button>
+                    <button type="submit" class="btn btn-primary w-full">${isEs ? 'Confirmar Reserva' : 'Confirm Booking'}</button>
                 </form>
             </div>
         `;
@@ -1286,29 +1295,30 @@ function initApp() {
         document.getElementById('booking-form').addEventListener('submit', (e) => {
             e.preventDefault();
             modal.classList.remove('active');
-            showToast(`Booking confirmed for ${res.name}!`, 'success');
+            showToast(isEs ? `¡Reserva confirmada para ${name}!` : `Booking confirmed for ${res.name}!`, 'success');
         });
     }
 
     function showPartnerModal() {
+        const isEs = state.language === 'es';
         modalBody.innerHTML = `
             <div class="modal-form">
-                <h2>Partner With Us</h2>
-                <p>Are you a non-profit or community organization? Let's work together to serve Houston.</p>
+                <h2>${isEs ? 'Asóciese con Nosotros' : 'Partner With Us'}</h2>
+                <p>${isEs ? '¿Eres organización sin fines de lucro? Trabajemos juntos.' : 'Are you a non-profit or community organization? Let\'s work together to serve Houston.'}</p>
                 <form id="partner-form">
                     <div class="form-group">
-                        <label>Organization Name</label>
-                        <input type="text" placeholder="Your organization" required>
+                        <label>${isEs ? 'Nombre de Organización' : 'Organization Name'}</label>
+                        <input type="text" placeholder="${isEs ? 'Su organización' : 'Your organization'}" required>
                     </div>
                     <div class="form-group">
-                        <label>Contact Email</label>
+                        <label>${isEs ? 'Correo de Contacto' : 'Contact Email'}</label>
                         <input type="email" placeholder="email@organization.org" required>
                     </div>
                     <div class="form-group">
-                        <label>How can we help?</label>
-                        <textarea rows="4" placeholder="Tell us about your organization and how we can partner..."></textarea>
+                        <label>${isEs ? '¿Cómo podemos ayudar?' : 'How can we help?'}</label>
+                        <textarea rows="4" placeholder="${isEs ? 'Cuéntenos sobre su organización...' : 'Tell us about your organization and how we can partner...'}"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Inquiry</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">${isEs ? 'Enviar Consulta' : 'Submit Inquiry'}</button>
                 </form>
             </div>
         `;
@@ -1317,7 +1327,7 @@ function initApp() {
         document.getElementById('partner-form').addEventListener('submit', (e) => {
             e.preventDefault();
             modal.classList.remove('active');
-            showToast('Thank you! We\'ll be in touch soon.', 'success');
+            showToast(isEs ? '¡Gracias! Estaremos en contacto pronto.' : 'Thank you! We\'ll be in touch soon.', 'success');
         });
     }
 
@@ -1358,14 +1368,14 @@ function initApp() {
             overlay.classList.add('active');
             tooltip.style.display = 'block';
 
-            titleEl.textContent = step.title;
-            descEl.textContent = step.description;
+            titleEl.textContent = (state.language === 'es' && step.title_es) ? step.title_es : step.title;
+            descEl.textContent = (state.language === 'es' && step.description_es) ? step.description_es : step.description;
 
             dotsEl.innerHTML = tourSteps.map((_, i) =>
                 `<div class="tour-dot ${i === currentTourStep ? 'active' : ''}"></div>`
             ).join('');
 
-            nextBtn.textContent = currentTourStep === tourSteps.length - 1 ? 'Got it!' : 'Next';
+            nextBtn.textContent = currentTourStep === tourSteps.length - 1 ? (state.language === 'es' ? '¡Entendido!' : 'Got it!') : (state.language === 'es' ? 'Siguiente' : 'Next');
 
             // Position tooltip
             const rect = target.getBoundingClientRect();
@@ -1426,14 +1436,17 @@ function initApp() {
 
     // ===== PETITIONS SECTION =====
     function renderPetitions() {
+        const t = translations[state.language];
+        const isEs = state.language === 'es';
+
         contentDisplay.innerHTML = `
             <div class="section-header">
                 <div>
-                    <h2>Create a Change</h2>
-                    <p>Support initiatives that make Houston better for everyone.</p>
+                    <h2>${t['petitions'] || 'Create a Change'}</h2>
+                    <p>${isEs ? 'Apoye iniciativas que hacen que Houston sea mejor para todos.' : 'Support initiatives that make Houston better for everyone.'}</p>
                 </div>
                 <button class="btn btn-primary" id="start-petition-btn">
-                    <i class="fas fa-plus"></i> Start a Petition
+                    <i class="fas fa-plus"></i> ${isEs ? 'Iniciar una Petición' : 'Start a Petition'}
                 </button>
             </div>
             <div class="petition-grid" id="petition-list"></div>
@@ -1444,16 +1457,20 @@ function initApp() {
         const updatePetitions = () => {
             list.innerHTML = state.petitions.map(pet => {
                 const percent = Math.min((pet.signatures / pet.goal) * 100, 100);
+
+                const title = (state.language === 'es' && pet.title_es) ? pet.title_es : pet.title;
+                const desc = (state.language === 'es' && pet.description_es) ? pet.description_es : pet.description;
+
                 return `
                     <div class="petition-card animate-in">
                         <div class="petition-category">${pet.category}</div>
-                        <h3>${pet.title}</h3>
-                        <p>${pet.description}</p>
+                        <h3>${title}</h3>
+                        <p>${desc}</p>
                         
                         <div class="petition-progress-wrapper">
                             <div class="petition-stats">
-                                <span>${pet.signatures.toLocaleString()} signed</span>
-                                <span class="goal">Goal: ${pet.goal.toLocaleString()}</span>
+                                <span>${pet.signatures.toLocaleString()} ${isEs ? 'firmado' : 'signed'}</span>
+                                <span class="goal">${isEs ? 'Meta' : 'Goal'}: ${pet.goal.toLocaleString()}</span>
                             </div>
                             <div class="petition-progress-container">
                                 <div class="petition-progress-bar" style="width: ${percent}%"></div>
@@ -1462,11 +1479,11 @@ function initApp() {
 
                         <button class="btn btn-primary sign-btn ${pet.signed ? 'signed' : ''}" 
                                 data-id="${pet.id}" ${pet.signed ? 'disabled' : ''}>
-                            ${pet.signed ? 'Signed ✓' : 'Sign this Petition'}
+                            ${pet.signed ? (isEs ? 'Firmado ✓' : 'Signed ✓') : (isEs ? 'Firmar esta Petición' : 'Sign this Petition')}
                         </button>
 
                         <div class="petition-author">
-                            <span>By ${pet.creator}</span>
+                            <span>${isEs ? 'Por' : 'By'} ${pet.creator}</span>
                             <span>${pet.timestamp}</span>
                         </div>
                     </div>
@@ -1490,11 +1507,15 @@ function initApp() {
 
                         btn.classList.add('signed');
                         btn.disabled = true;
-                        btn.textContent = 'Signed ✓';
+                        btn.classList.add('signed');
+                        btn.disabled = true;
+                        btn.textContent = state.language === 'es' ? 'Firmado ✓' : 'Signed ✓';
+
+                        showToast(state.language === 'es' ? '¡Gracias por firmar!' : 'Thank you for signing!', 'success');
 
                         const newPercent = Math.min((pet.signatures / pet.goal) * 100, 100);
                         progressBar.style.width = `${newPercent}%`;
-                        stats.textContent = `${pet.signatures.toLocaleString()} signed`;
+                        stats.textContent = `${pet.signatures.toLocaleString()} ${state.language === 'es' ? 'firmado' : 'signed'}`;
                     }
                 });
             });
@@ -1510,37 +1531,38 @@ function initApp() {
     function showSuggestModal() {
         const modalBody = document.getElementById('modal-body');
         const modal = document.getElementById('modal-container');
+        const isEs = state.language === 'es';
 
         modalBody.innerHTML = `
             <div class="modal-form">
-                <h2>Suggest a Resource</h2>
-                <p>Help us grow the directory! Tell us about a local service.</p>
+                <h2>${isEs ? 'Sugerir un Recurso' : 'Suggest a Resource'}</h2>
+                <p>${isEs ? '¡Ayúdenos a hacer crecer el directorio! Cuéntenos sobre un servicio local.' : 'Help us grow the directory! Tell us about a local service.'}</p>
                 <form id="suggest-form">
                     <div class="form-group">
-                        <label>Resource Name</label>
-                        <input type="text" id="res-name" placeholder="e.g. Houston Food Bank" required>
+                        <label>${isEs ? 'Nombre del Recurso' : 'Resource Name'}</label>
+                        <input type="text" id="res-name" placeholder="${isEs ? 'ej. Banco de Alimentos de Houston' : 'e.g. Houston Food Bank'}" required>
                     </div>
                     <div class="form-group">
-                        <label>Category</label>
+                        <label>${isEs ? 'Categoría' : 'Category'}</label>
                         <select id="res-category">
-                            <option>Food Security</option>
-                            <option>Recreation</option>
-                            <option>Support Services</option>
-                            <option>Youth Programs</option>
-                            <option>Community Centers</option>
-                            <option>Other</option>
+                            <option>${isEs ? 'Seguridad Alimentaria' : 'Food Security'}</option>
+                            <option>${isEs ? 'Recreación' : 'Recreation'}</option>
+                            <option>${isEs ? 'Servicios de Apoyo' : 'Support Services'}</option>
+                            <option>${isEs ? 'Programas Juveniles' : 'Youth Programs'}</option>
+                            <option>${isEs ? 'Centros Comunitarios' : 'Community Centers'}</option>
+                            <option>${isEs ? 'Otro' : 'Other'}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
-                        <textarea id="res-desc" rows="3" placeholder="What services do they provide?" required></textarea>
+                        <label>${isEs ? 'Descripción' : 'Description'}</label>
+                        <textarea id="res-desc" rows="3" placeholder="${isEs ? '¿Qué servicios proporcionan?' : 'What services do they provide?'}" required></textarea>
                     </div>
                      <div class="form-group">
-                        <label>Location/Address</label>
+                        <label>${isEs ? 'Ubicación/Dirección' : 'Location/Address'}</label>
                         <input type="text" id="res-address" placeholder="123 Main St, Houston, TX" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-full" style="margin-top: 1rem;">
-                        Submit Suggestion
+                        ${isEs ? 'Enviar Sugerencia' : 'Submit Suggestion'}
                     </button>
                 </form>
             </div>
@@ -1551,7 +1573,7 @@ function initApp() {
             e.preventDefault();
             modal.classList.remove('active');
             // In a real app, this would send data to a backend
-            showToast('Thank you! Your suggestion has been submitted for review.', 'success');
+            showToast(isEs ? '¡Gracias! Su sugerencia ha sido enviada para revisión.' : 'Thank you! Your suggestion has been submitted for review.', 'success');
 
             // Trigger confetti for fun
             createConfetti();
@@ -1559,36 +1581,37 @@ function initApp() {
     }
 
     function showPetitionModal() {
+        const isEs = state.language === 'es';
         modalBody.innerHTML = `
             <div class="modal-form">
-                <h2>Start a Community Petition</h2>
-                <p>What change would you like to see in Houston?</p>
+                <h2>${isEs ? 'Iniciar una Petición Comunitaria' : 'Start a Community Petition'}</h2>
+                <p>${isEs ? '¿Qué cambio te gustaría ver en Houston?' : 'What change would you like to see in Houston?'}</p>
                 <form id="petition-form">
                     <div class="form-group">
-                        <label>Target Neighborhood/District</label>
+                        <label>${isEs ? 'Vecindario/Distrito Objetivo' : 'Target Neighborhood/District'}</label>
                         <select id="pet-category">
-                            <option>Transportation</option>
-                            <option>Education</option>
-                            <option>Environment</option>
-                            <option>Safety</option>
-                            <option>Health</option>
-                            <option>Other</option>
+                            <option>${isEs ? 'Transporte' : 'Transportation'}</option>
+                            <option>${isEs ? 'Educación' : 'Education'}</option>
+                            <option>${isEs ? 'Medio Ambiente' : 'Environment'}</option>
+                            <option>${isEs ? 'Seguridad' : 'Safety'}</option>
+                            <option>${isEs ? 'Salud' : 'Health'}</option>
+                            <option>${isEs ? 'Otro' : 'Other'}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Petition Title</label>
-                        <input type="text" id="pet-title" placeholder="e.g. Save Hernandez Park" required>
+                        <label>${isEs ? 'Título de la Petición' : 'Petition Title'}</label>
+                        <input type="text" id="pet-title" placeholder="${isEs ? 'ej. Salvar el Parque Hernandez' : 'e.g. Save Hernandez Park'}" required>
                     </div>
                     <div class="form-group">
-                        <label>Signature Goal</label>
+                        <label>${isEs ? 'Meta de Firmas' : 'Signature Goal'}</label>
                         <input type="number" id="pet-goal" value="1000" min="100" required>
                     </div>
                     <div class="form-group">
-                        <label>Description & Why this matters</label>
-                        <textarea id="pet-desc" rows="4" placeholder="Explain the impact of this change..." required></textarea>
+                        <label>${isEs ? 'Descripción y Por qué importa' : 'Description & Why this matters'}</label>
+                        <textarea id="pet-desc" rows="4" placeholder="${isEs ? 'Explique el impacto de este cambio...' : 'Explain the impact of this change...'}" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary w-full" style="padding: 1.25rem; font-size: 1.1rem; margin-top: 1rem;">
-                        Launch Petition
+                        ${isEs ? 'Lanzar Petición' : 'Launch Petition'}
                     </button>
                 </form>
             </div>
@@ -1602,8 +1625,8 @@ function initApp() {
                 title: document.getElementById('pet-title').value,
                 description: document.getElementById('pet-desc').value,
                 category: document.getElementById('pet-category').value,
-                creator: "Resident",
-                timestamp: "Just now",
+                creator: isEs ? "Residente" : "Resident",
+                timestamp: isEs ? "Justo ahora" : "Just now",
                 signatures: 1,
                 goal: parseInt(document.getElementById('pet-goal').value),
                 signed: true
@@ -1611,7 +1634,7 @@ function initApp() {
             state.petitions.unshift(newPet);
             localStorage.setItem('petitions', JSON.stringify(state.petitions));
             modal.classList.remove('active');
-            showToast('Your petition has been launched!', 'success');
+            showToast(isEs ? '¡Su petición ha sido lanzada!' : 'Your petition has been launched!', 'success');
             if (state.currentView === 'petitions') renderPetitions();
         });
     }
