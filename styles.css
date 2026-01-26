@@ -3119,3 +3119,55 @@ body.hide-hero .hero-section {
     opacity: 1;
     visibility: visible;
 }
+
+/* ===== TOUR TOOLTIP RESTORED ===== */
+.tour-tooltip {
+    position: fixed;
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 10001;
+    width: 320px;
+    max-width: 90vw;
+    animation: fadeInUp 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.tour-tooltip h4 {
+    color: var(--primary-teal);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.tour-tooltip p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.tour-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tour-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tour-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.tour-dot.active {
+    background: var(--primary-teal);
+    transform: scale(1.2);
+}
