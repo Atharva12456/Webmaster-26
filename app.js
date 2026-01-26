@@ -44,7 +44,7 @@ function initApp() {
     const contentDisplay = document.getElementById('content-display');
     const navLinks = document.querySelectorAll('.nav-links a, .sidebar-links a, .bottom-nav-items a');
     const themeToggle = document.getElementById('theme-toggle');
-    const rootSearch = document.getElementById('main-search-input');
+    // rootSearch is now dynamically rendered in directory section
     const logo = document.querySelector('.logo');
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const sidebar = document.getElementById('mobile-sidebar');
@@ -629,6 +629,16 @@ function initApp() {
                 </div>
             </div>
 
+            <!-- Search Bar -->
+            <div class="directory-search" style="margin-bottom: 1.5rem;">
+                <div class="search-input-wrapper" style="position: relative; max-width: 500px;">
+                    <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    <input type="text" id="main-search-input" placeholder="${t['searchPlaceholder'] || 'What are you looking for today?'}" 
+                        style="width: 100%; padding: 0.875rem 1rem 0.875rem 2.75rem; border: 2px solid var(--border-color); border-radius: 12px; font-size: 1rem; background: var(--card-bg); color: var(--text-color); transition: all 0.3s ease;"
+                        value="${state.filters.search}">
+                </div>
+            </div>
+
             <!-- Filter Chips -->
             <div class="filter-chips">
                 ${categories.map(cat => `
@@ -791,7 +801,8 @@ function initApp() {
             grid.querySelectorAll('.tag').forEach(tag => {
                 tag.addEventListener('click', () => {
                     state.filters.search = tag.dataset.tag;
-                    rootSearch.value = tag.dataset.tag;
+                    const searchInput = document.getElementById('main-search-input');
+                    if (searchInput) searchInput.value = tag.dataset.tag;
                     updateGrid();
                 });
             });
@@ -829,7 +840,8 @@ function initApp() {
             state.filters.category = 'All';
             state.filters.search = '';
             state.filters.openNow = false;
-            rootSearch.value = '';
+            const searchInput = document.getElementById('main-search-input');
+            if (searchInput) searchInput.value = '';
             document.getElementById('open-now-filter').checked = false;
             renderDirectory();
         });
@@ -841,11 +853,13 @@ function initApp() {
         });
 
         // Search input
-        rootSearch.addEventListener('input', (e) => {
-            state.filters.search = e.target.value;
-            if (window.location.hash !== '#directory') window.location.hash = 'directory';
-            updateGrid();
-        });
+        const searchInput = document.getElementById('main-search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                state.filters.search = e.target.value;
+                updateGrid();
+            });
+        }
 
         // Recently viewed clicks
         document.querySelectorAll('.recent-item').forEach(item => {
@@ -854,7 +868,8 @@ function initApp() {
                 const res = state.resources.find(r => r.id === id);
                 if (res) {
                     state.filters.search = res.name;
-                    rootSearch.value = res.name;
+                    const searchInput = document.getElementById('main-search-input');
+                    if (searchInput) searchInput.value = res.name;
                     updateGrid();
                 }
             });
