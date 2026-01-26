@@ -1118,7 +1118,7 @@ function initApp() {
                                 <span><i class="fas fa-location-dot"></i> ${res.location}</span>
                             </div>
                         </div>
-                    `).join('')}
+                    `}).join('')}
                 </div>
             `}
         `;
@@ -1193,7 +1193,7 @@ function initApp() {
         const overlay = document.createElement('div');
         overlay.className = 'success-overlay';
         overlay.innerHTML = `
-            < div class="success-checkmark" > <i class="fas fa-check"></i></div >
+            <div class="success-checkmark"><i class="fas fa-check"></i></div>
                 <div class="success-message">
                     <h2>Thank You!</h2>
                     <p>Your resource suggestion has been submitted successfully.</p>
@@ -1213,7 +1213,7 @@ function initApp() {
         const name = (isEs && res.name_es) ? res.name_es : res.name;
 
         modalBody.innerHTML = `
-            < div class="modal-form" >
+            <div class="modal-form">
                 <h2>${isEs ? 'Reservar Lugar: ' : 'Book Venue: '} ${name}</h2>
                 <p>${isEs ? 'Seleccione fecha y hora para reservar este espacio.' : 'Select a date and time to reserve this community space.'}</p>
                 <form id="booking-form">
@@ -1237,7 +1237,7 @@ function initApp() {
                     </div>
                     <button type="submit" class="btn btn-primary w-full">${isEs ? 'Confirmar Reserva' : 'Confirm Booking'}</button>
                 </form>
-            </div >
+            </div>
             `;
         modal.classList.add('active');
 
@@ -1251,7 +1251,7 @@ function initApp() {
     function showPartnerModal() {
         const isEs = state.language === 'es';
         modalBody.innerHTML = `
-            < div class= "modal-form" >
+            <div class="modal-form">
                 <h2>${isEs ? 'Asóciese con Nosotros' : 'Partner With Us'}</h2>
                 <p>${isEs ? '¿Eres organización sin fines de lucro? Trabajemos juntos.' : 'Are you a non-profit or community organization? Let\'s work together to serve Houston.'}</p>
                 <form id="partner-form">
@@ -1269,7 +1269,7 @@ function initApp() {
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">${isEs ? 'Enviar Consulta' : 'Submit Inquiry'}</button>
                 </form>
-            </div >
+            </div>
             `;
         modal.classList.add('active');
 
@@ -1321,7 +1321,7 @@ function initApp() {
             descEl.textContent = (state.language === 'es' && step.description_es) ? step.description_es : step.description;
 
             dotsEl.innerHTML = tourSteps.map((_, i) =>
-                `< div class="tour-dot ${i === currentTourStep ? 'active' : ''}" ></div > `
+                `<div class="tour-dot ${i === currentTourStep ? 'active' : ''}"></div>`
             ).join('');
 
             nextBtn.textContent = currentTourStep === tourSteps.length - 1 ? (state.language === 'es' ? '¡Entendido!' : 'Got it!') : (state.language === 'es' ? 'Siguiente' : 'Next');
@@ -1333,8 +1333,8 @@ function initApp() {
             let left = Math.max(20, rect.left);
 
             // Should add boundary checks ideally, but basic positioning:
-            tooltip.style.top = `${top} px`;
-            tooltip.style.left = `${left} px`;
+            tooltip.style.top = `${top}px`;
+            tooltip.style.left = `${left}px`;
 
             // Scroll target into view if needed
             target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1389,7 +1389,7 @@ function initApp() {
         const isEs = state.language === 'es';
 
         contentDisplay.innerHTML = `
-            < div class="section-header" >
+            <div class="section-header">
                 <div>
                     <h2>${t['petitions'] || 'Create a Change'}</h2>
                     <p>${isEs ? 'Apoye iniciativas que hacen que Houston sea mejor para todos.' : 'Support initiatives that make Houston better for everyone.'}</p>
@@ -1397,7 +1397,7 @@ function initApp() {
                 <button class="btn btn-primary" id="start-petition-btn">
                     <i class="fas fa-plus"></i> ${isEs ? 'Iniciar una Petición' : 'Start a Petition'}
                 </button>
-            </div >
+            </div>
             <div class="petition-grid" id="petition-list"></div>
         `;
 
@@ -1411,7 +1411,7 @@ function initApp() {
                 const desc = (state.language === 'es' && pet.description_es) ? pet.description_es : pet.description;
 
                 return `
-            < div class="petition-card animate-in" >
+            <div class="petition-card animate-in">
                         <div class="petition-category">${pet.category}</div>
                         <h3>${title}</h3>
                         <p>${desc}</p>
@@ -1435,7 +1435,7 @@ function initApp() {
                             <span>${isEs ? 'Por' : 'By'} ${pet.creator}</span>
                             <span>${pet.timestamp}</span>
                         </div>
-                    </div >
+                    </div>
             `;
             }).join('');
 
@@ -1463,8 +1463,8 @@ function initApp() {
                         btn.textContent = state.language === 'es' ? 'Firmado ✓' : 'Signed ✓';
 
                         const newPercent = Math.min((pet.signatures / pet.goal) * 100, 100);
-                        progressBar.style.width = `${newPercent}% `;
-                        stats.textContent = `${pet.signatures.toLocaleString()} ${state.language === 'es' ? 'firmado' : 'signed'} `;
+                        progressBar.style.width = `${newPercent}%`;
+                        stats.textContent = `${pet.signatures.toLocaleString()} ${state.language === 'es' ? 'firmado' : 'signed'}`;
                     }
                 });
             });
@@ -1473,14 +1473,13 @@ function initApp() {
         document.getElementById('start-petition-btn').addEventListener('click', showPetitionModal);
 
         updatePetitions();
-        updatePetitions();
     }
 
     // ===== SUGGEST RESOURCE MODAL =====
     function showPetitionModal() {
         const isEs = state.language === 'es';
         modalBody.innerHTML = `
-            < div class="modal-form" >
+            <div class="modal-form">
                 <h2>${isEs ? 'Iniciar una Petición Comunitaria' : 'Start a Community Petition'}</h2>
                 <p>${isEs ? '¿Qué cambio te gustaría ver en Houston?' : 'What change would you like to see in Houston?'}</p>
                 <form id="petition-form">
@@ -1511,7 +1510,7 @@ function initApp() {
                         ${isEs ? 'Lanzar Petición' : 'Launch Petition'}
                     </button>
                 </form>
-            </div >
+            </div>
             `;
         modal.classList.add('active');
 
@@ -1556,7 +1555,7 @@ function initApp() {
             confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
 
             const duration = Math.random() * 2 + 1;
-            confetti.style.transition = `top ${duration}s ease -in, opacity ${duration}s ease -in `;
+            confetti.style.transition = `top ${duration}s ease-in, opacity ${duration}s ease-in`;
 
             container.appendChild(confetti);
 
