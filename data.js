@@ -233,21 +233,58 @@ const initialResources = [
 const initialPetitions = [
     {
         id: 1,
-        title: "Improved Bike Lanes in Downtown",
-        description: "Requesting the city council to implement protected bike lanes to improve safety for commuters.",
+        title: "Protected Bike Lanes on Main Street",
+        description: "Requesting the City of Houston to install physical barriers for bike lanes on Main St to protect cyclists from traffic and encourage sustainable commuting.",
         creator: "Sarah Jenkins",
         timestamp: "2 days ago",
         signatures: 450,
-        goal: 1000
+        goal: 1000,
+        category: "Transportation",
+        signed: false
     },
     {
         id: 2,
-        title: "Extended Library Hours",
-        description: "Advocating for evening hours at public library branches to support working families and students.",
+        title: "Extend Public Library Hours",
+        description: "Our community libraries currently close at 6 PM. We are petitioning for hours to be extended to 9 PM at least two days a week to support students and working families.",
         creator: "Mark Thompson",
         timestamp: "1 week ago",
         signatures: 820,
-        goal: 1000
+        goal: 1000,
+        category: "Education",
+        signed: false
+    },
+    {
+        id: 3,
+        title: "New Community Garden in Third Ward",
+        description: "We are seeking approval and funding for a new community managed garden near Emancipation Park to provide fresh produce and green space for local residents.",
+        creator: "Elena Rodriguez",
+        timestamp: "3 days ago",
+        signatures: 125,
+        goal: 500,
+        category: "Environment",
+        signed: false
+    },
+    {
+        id: 4,
+        title: "Improve Lighting in Hermann Park",
+        description: "For the safety of evening joggers and families, we demand the installation of energy-efficient LED streetlights along the outer loop of Hermann Park.",
+        creator: "David Chen",
+        timestamp: "5 days ago",
+        signatures: 940,
+        goal: 1500,
+        category: "Safety",
+        signed: false
+    },
+    {
+        id: 5,
+        title: "Expanded Youth Mental Health Services",
+        description: "Urging HISD to increase the number of licensed counselors and mental health specialists in middle and high schools across the district.",
+        creator: "Dr. Maya Patil",
+        timestamp: "2 weeks ago",
+        signatures: 2300,
+        goal: 5000,
+        category: "Health",
+        signed: false
     }
 ];
 

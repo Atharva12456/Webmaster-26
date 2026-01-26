@@ -440,6 +440,9 @@ function initApp() {
             case 'support':
                 renderSupport();
                 break;
+            case 'petitions':
+                renderPetitions();
+                break;
             case 'favorites':
                 renderFavorites();
                 break;
@@ -1335,6 +1338,145 @@ function initApp() {
             rootSearch.focus();
         }
     });
+
+    // ===== PETITIONS SECTION =====
+    function renderPetitions() {
+        contentDisplay.innerHTML = `
+            <div class="section-header">
+                <div>
+                    <h2>Create a Change</h2>
+                    <p>Support initiatives that make Houston better for everyone.</p>
+                </div>
+                <button class="btn btn-primary" id="start-petition-btn">
+                    <i class="fas fa-plus"></i> Start a Petition
+                </button>
+            </div>
+            <div class="petition-grid" id="petition-list"></div>
+        `;
+
+        const list = document.getElementById('petition-list');
+
+        const updatePetitions = () => {
+            list.innerHTML = state.petitions.map(pet => {
+                const percent = Math.min((pet.signatures / pet.goal) * 100, 100);
+                return `
+                    <div class="petition-card animate-in">
+                        <div class="petition-category">${pet.category}</div>
+                        <h3>${pet.title}</h3>
+                        <p>${pet.description}</p>
+                        
+                        <div class="petition-progress-wrapper">
+                            <div class="petition-stats">
+                                <span>${pet.signatures.toLocaleString()} signed</span>
+                                <span class="goal">Goal: ${pet.goal.toLocaleString()}</span>
+                            </div>
+                            <div class="petition-progress-container">
+                                <div class="petition-progress-bar" style="width: ${percent}%"></div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary sign-btn ${pet.signed ? 'signed' : ''}" 
+                                data-id="${pet.id}" ${pet.signed ? 'disabled' : ''}>
+                            ${pet.signed ? 'Signed ✓' : 'Sign this Petition'}
+                        </button>
+
+                        <div class="petition-author">
+                            <span>By ${pet.creator}</span>
+                            <span>${pet.timestamp}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            list.querySelectorAll('.sign-btn:not(.signed)').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = parseInt(btn.dataset.id);
+                    const pet = state.petitions.find(p => p.id === id);
+                    if (pet && !pet.signed) {
+                        pet.signatures++;
+                        pet.signed = true;
+                        localStorage.setItem('petitions', JSON.stringify(state.petitions));
+                        showToast('Thank you for signing!', 'success');
+
+                        // Local UI update for better performance
+                        const card = btn.closest('.petition-card');
+                        const progressBar = card.querySelector('.petition-progress-bar');
+                        const stats = card.querySelector('.petition-stats span');
+
+                        btn.classList.add('signed');
+                        btn.disabled = true;
+                        btn.textContent = 'Signed ✓';
+
+                        const newPercent = Math.min((pet.signatures / pet.goal) * 100, 100);
+                        progressBar.style.width = `${newPercent}%`;
+                        stats.textContent = `${pet.signatures.toLocaleString()} signed`;
+                    }
+                });
+            });
+        };
+
+        document.getElementById('start-petition-btn').addEventListener('click', showPetitionModal);
+
+        updatePetitions();
+    }
+
+    function showPetitionModal() {
+        modalBody.innerHTML = `
+            <div class="modal-form">
+                <h2>Start a Community Petition</h2>
+                <p>What change would you like to see in Houston?</p>
+                <form id="petition-form">
+                    <div class="form-group">
+                        <label>Target Neighborhood/District</label>
+                        <select id="pet-category">
+                            <option>Transportation</option>
+                            <option>Education</option>
+                            <option>Environment</option>
+                            <option>Safety</option>
+                            <option>Health</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Petition Title</label>
+                        <input type="text" id="pet-title" placeholder="e.g. Save Hernandez Park" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Signature Goal</label>
+                        <input type="number" id="pet-goal" value="1000" min="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description & Why this matters</label>
+                        <textarea id="pet-desc" rows="4" placeholder="Explain the impact of this change..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full" style="padding: 1.25rem; font-size: 1.1rem; margin-top: 1rem;">
+                        Launch Petition
+                    </button>
+                </form>
+            </div>
+        `;
+        modal.classList.add('active');
+
+        document.getElementById('petition-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newPet = {
+                id: Date.now(),
+                title: document.getElementById('pet-title').value,
+                description: document.getElementById('pet-desc').value,
+                category: document.getElementById('pet-category').value,
+                creator: "Resident",
+                timestamp: "Just now",
+                signatures: 1,
+                goal: parseInt(document.getElementById('pet-goal').value),
+                signed: true
+            };
+            state.petitions.unshift(newPet);
+            localStorage.setItem('petitions', JSON.stringify(state.petitions));
+            modal.classList.remove('active');
+            showToast('Your petition has been launched!', 'success');
+            if (state.currentView === 'petitions') renderPetitions();
+        });
+    }
 
     // ===== SERVICE WORKER REGISTRATION (PWA) =====
     if ('serviceWorker' in navigator) {
