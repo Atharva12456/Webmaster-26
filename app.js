@@ -20,6 +20,9 @@ function initApp() {
         theme: localStorage.getItem('theme') || 'light'
     };
 
+    // Helper function reference for centralized search listener
+    let renderDirectoryGrid = () => { };
+
     // DOM Elements
     const contentDisplay = document.getElementById('content-display');
     const navLinks = document.querySelectorAll('.nav-links a, .sidebar-links a');

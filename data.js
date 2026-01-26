@@ -1,3 +1,4 @@
+// ===== INITIAL RESOURCES =====
 const initialResources = [
     // 1. Food Security
     {
@@ -7,7 +8,8 @@ const initialResources = [
         description: "Leading the fight against hunger in southeast Texas by distributing food to over 1.1 million hungry people annually.",
         location: "535 Portwall St, Houston, TX 77029",
         hours: "8:00 AM - 6:00 PM",
-        rating: 4.8, reviews: 1240, tags: ["Volunteer", "Donations"]
+        rating: 4.8, reviews: 1240, tags: ["Volunteer", "Donations"],
+        impact: { metric: "1.1M+", label: "People Fed Annually" }
     },
     {
         id: 10,
@@ -16,16 +18,18 @@ const initialResources = [
         description: "Providing nutrition and hope to the food insecure of Galveston County through advocacy and resource distribution.",
         location: "624 4th Ave N, Texas City, TX 77590",
         hours: "8:00 AM - 4:00 PM",
-        rating: 4.7, reviews: 310, tags: ["Coastal", "Nutrition"]
+        rating: 4.7, reviews: 310, tags: ["Coastal", "Nutrition"],
+        impact: { metric: "25K+", label: "Families Served" }
     },
     {
         id: 11,
         name: "Kids' Meals Houston",
         category: "Food Security",
-        description: "The only home-delivery meal program in developer Houston for preschool-aged children living in poverty.",
+        description: "The only home-delivery meal program in Houston for preschool-aged children living in poverty.",
         location: "330 Garden Oaks Blvd, Houston, TX 77018",
         hours: "9:00 AM - 3:00 PM",
-        rating: 4.9, reviews: 850, tags: ["Youth", "Poverty Relief"]
+        rating: 4.9, reviews: 850, tags: ["Youth", "Poverty Relief"],
+        impact: { metric: "3M+", label: "Meals Delivered" }
     },
     {
         id: 12,
@@ -45,7 +49,8 @@ const initialResources = [
         description: "One of the best public tennis facilities in the country, featuring 18 courts and professional instruction.",
         location: "1500 Memorial Loop Dr, Houston, TX 77007",
         hours: "6:00 AM - 9:00 PM",
-        rating: 4.6, reviews: 450, tags: ["Court Booking", "Sports"]
+        rating: 4.6, reviews: 450, tags: ["Court Booking", "Sports"],
+        impact: { metric: "18", label: "Courts Available" }
     },
     {
         id: 13,
@@ -63,7 +68,8 @@ const initialResources = [
         description: "An urban park in Upper Kirby featuring a playground, splash pad, dog park, and community programs.",
         location: "3801 Eastside St, Houston, TX 77098",
         hours: "6:00 AM - 11:00 PM",
-        rating: 4.7, reviews: 2150, tags: ["Family", "Outdoors"]
+        rating: 4.7, reviews: 2150, tags: ["Family", "Outdoors"],
+        impact: { metric: "500K+", label: "Annual Visitors" }
     },
     {
         id: 14,
@@ -89,7 +95,7 @@ const initialResources = [
         id: 16,
         name: "Bayland Community Center",
         category: "Community Centers",
-        description: "A Harris County Precint 4 facility offering activities for seniors, youth, and the general public.",
+        description: "A Harris County Precinct 4 facility offering activities for seniors, youth, and the general public.",
         location: "6400 Bissonnet St, Houston, TX 77074",
         hours: "8:00 AM - 8:00 PM",
         rating: 4.3, reviews: 290, tags: ["Seniors", "Precinct 4"]
@@ -112,7 +118,8 @@ const initialResources = [
         description: "Dedicated to meeting the needs of Houston's homeless men, women, and their children through Christ-centered programs.",
         location: "4848 Jacinto City, TX 77029",
         hours: "24/7",
-        rating: 4.8, reviews: 920, tags: ["Housing", "Pantry"]
+        rating: 4.8, reviews: 920, tags: ["Housing", "Pantry"],
+        impact: { metric: "2,000+", label: "Beds Available" }
     },
     {
         id: 18,
@@ -130,7 +137,8 @@ const initialResources = [
         description: "Providing shelter, counseling, and advocacy for individuals affected by domestic and sexual violence.",
         location: "1010 Waugh Dr, Houston, TX 77019",
         hours: "24/7 Crisis Line",
-        rating: 4.9, reviews: 320, tags: ["Counseling", "Safe Space"]
+        rating: 4.9, reviews: 320, tags: ["Counseling", "Safe Space"],
+        impact: { metric: "35K+", label: "People Helped Yearly" }
     },
     {
         id: 19,
@@ -150,7 +158,8 @@ const initialResources = [
         description: "Inspiring and enabling all young people to realize their full potential as productive, responsible, and caring citizens.",
         location: "Multiple Locations",
         hours: "2:00 PM - 8:00 PM",
-        rating: 4.6, reviews: 180, tags: ["Mentorship", "Education"]
+        rating: 4.6, reviews: 180, tags: ["Mentorship", "Education"],
+        impact: { metric: "40K+", label: "Youth Served" }
     },
     {
         id: 20,
@@ -163,6 +172,7 @@ const initialResources = [
     }
 ];
 
+// ===== PETITIONS =====
 const initialPetitions = [
     {
         id: 1,
@@ -184,6 +194,7 @@ const initialPetitions = [
     }
 ];
 
+// ===== NONPROFITS =====
 const initialNonprofits = [
     {
         name: "United Way of Greater Houston",
@@ -202,6 +213,7 @@ const initialNonprofits = [
     }
 ];
 
+// ===== SCHOOL EVENTS =====
 const schoolEvents = [
     {
         title: "HISD Community Job Fair",
@@ -225,3 +237,260 @@ const schoolEvents = [
         category: "Arts"
     }
 ];
+
+// ===== EMERGENCY RESOURCES =====
+const emergencyResources = [
+    {
+        id: 1,
+        name: "Emergency Services",
+        number: "911",
+        icon: "fa-phone-volume",
+        description: "Police, Fire, Medical Emergencies"
+    },
+    {
+        id: 2,
+        name: "National Suicide Prevention",
+        number: "988",
+        icon: "fa-hand-holding-heart",
+        description: "24/7 Crisis Support & Counseling"
+    },
+    {
+        id: 3,
+        name: "Houston Area Women's Center Hotline",
+        number: "(713) 528-2121",
+        icon: "fa-user-shield",
+        description: "Domestic Violence & Sexual Assault"
+    },
+    {
+        id: 4,
+        name: "Texas Poison Center",
+        number: "1-800-222-1222",
+        icon: "fa-skull-crossbones",
+        description: "24/7 Poison Emergency Assistance"
+    },
+    {
+        id: 5,
+        name: "United Way 2-1-1",
+        number: "211",
+        icon: "fa-info-circle",
+        description: "Community Resources & Referrals"
+    },
+    {
+        id: 6,
+        name: "Mental Health Crisis Line",
+        number: "(832) 416-1177",
+        icon: "fa-brain",
+        description: "Harris County Mental Health Support"
+    }
+];
+
+// ===== VOLUNTEER OPPORTUNITIES =====
+const volunteerOpportunities = [
+    {
+        id: 1,
+        title: "Food Bank Distribution Helper",
+        organization: "Houston Food Bank",
+        description: "Help sort and distribute food packages to families in need. Great for groups and individuals.",
+        commitment: "4 hours",
+        frequency: "Weekly",
+        location: "Multiple Locations",
+        tags: ["Physical", "Groups Welcome"]
+    },
+    {
+        id: 2,
+        title: "Youth Tutoring Program",
+        organization: "Boys & Girls Clubs of Greater Houston",
+        description: "Mentor and tutor students in math, reading, and science after school.",
+        commitment: "2 hours",
+        frequency: "Twice Weekly",
+        location: "Various Club Locations",
+        tags: ["Education", "Mentorship"]
+    },
+    {
+        id: 3,
+        title: "Community Garden Volunteer",
+        organization: "Urban Harvest",
+        description: "Help maintain community gardens and teach sustainable gardening practices.",
+        commitment: "3 hours",
+        frequency: "Weekend",
+        location: "Eastside Houston",
+        tags: ["Outdoors", "Environment"]
+    },
+    {
+        id: 4,
+        title: "Senior Companion Program",
+        organization: "Interfaith Ministries",
+        description: "Visit with seniors, provide companionship, and assist with light activities.",
+        commitment: "2-3 hours",
+        frequency: "Weekly",
+        location: "Citywide",
+        tags: ["Seniors", "Compassion"]
+    }
+];
+
+// ===== TRANSPORTATION RESOURCES =====
+const transportationResources = [
+    {
+        id: 1,
+        name: "METRO Bus & Rail",
+        description: "Houston's public transit system with buses, METRORail, and Park & Ride services.",
+        website: "https://www.ridemetro.org/",
+        icon: "fa-bus",
+        cost: "$1.25 per ride"
+    },
+    {
+        id: 2,
+        name: "Harris County Rides",
+        description: "Free and low-cost transportation for seniors and persons with disabilities.",
+        website: "https://www.harristransit.com/",
+        icon: "fa-wheelchair",
+        cost: "Free - Low Cost"
+    },
+    {
+        id: 3,
+        name: "Houston BCycle",
+        description: "Bike share program with stations across Houston for short trips.",
+        website: "https://www.houstonbcycle.com/",
+        icon: "fa-bicycle",
+        cost: "$3 per 30 min"
+    },
+    {
+        id: 4,
+        name: "Medical Transportation Program",
+        description: "Texas Medicaid transportation for medical appointments.",
+        website: "https://www.hhs.texas.gov/",
+        icon: "fa-ambulance",
+        cost: "Medicaid Covered"
+    }
+];
+
+// ===== COMMUNITY CALENDAR EVENTS =====
+const calendarEvents = [
+    {
+        id: 1,
+        title: "Houston Community Health Fair",
+        date: "2026-01-28",
+        time: "9:00 AM - 2:00 PM",
+        location: "George R. Brown Convention Center",
+        category: "Health",
+        description: "Free health screenings, vaccinations, and wellness resources."
+    },
+    {
+        id: 2,
+        title: "Mayor's Back to School Fest",
+        date: "2026-01-30",
+        time: "8:00 AM - 1:00 PM",
+        location: "NRG Center",
+        category: "Education",
+        description: "Free backpacks, school supplies, and immunizations for students."
+    },
+    {
+        id: 3,
+        title: "Houston Restaurant Weeks",
+        date: "2026-02-01",
+        time: "All Day",
+        location: "Citywide",
+        category: "Community",
+        description: "Dining to benefit Houston Food Bank. Special menus at participating restaurants."
+    },
+    {
+        id: 4,
+        title: "Rodeo Houston Opening Day",
+        date: "2026-02-25",
+        time: "11:00 AM",
+        location: "NRG Park",
+        category: "Entertainment",
+        description: "The world's largest livestock exhibition and rodeo begins!"
+    },
+    {
+        id: 5,
+        title: "STEM Night & Science Fair",
+        date: "2026-02-05",
+        time: "6:00 PM - 8:30 PM",
+        location: "Lamar High School",
+        category: "Education",
+        description: "Student projects and interactive STEM exhibits."
+    },
+    {
+        id: 6,
+        title: "Free Tax Prep Workshop",
+        date: "2026-02-08",
+        time: "10:00 AM - 4:00 PM",
+        location: "Houston Public Library - Central",
+        category: "Financial",
+        description: "Free VITA tax preparation services for qualifying households."
+    },
+    {
+        id: 7,
+        title: "Community Cleanup Day",
+        date: "2026-02-15",
+        time: "8:00 AM - 12:00 PM",
+        location: "Buffalo Bayou Park",
+        category: "Environment",
+        description: "Join volunteers to clean up Houston's waterways."
+    }
+];
+
+// ===== ONBOARDING TOUR STEPS =====
+const tourSteps = [
+    {
+        target: "#main-search-input",
+        title: "Search Resources",
+        description: "Use the search bar to find community resources, support services, and programs in your area."
+    },
+    {
+        target: ".filter-chips",
+        title: "Filter by Category",
+        description: "Click on category chips to quickly filter resources by type - food, recreation, support, and more."
+    },
+    {
+        target: "#suggest-resource-btn",
+        title: "Suggest a Resource",
+        description: "Know of a great community resource? Click here to submit it for inclusion in our directory."
+    },
+    {
+        target: ".a11y-toggle",
+        title: "Accessibility Options",
+        description: "Adjust font size and contrast settings to make the site easier to read."
+    }
+];
+
+// ===== TRANSLATIONS (English/Spanish) =====
+const translations = {
+    en: {
+        heroTitle: "Connecting Houston",
+        heroSubtitle: "To What Matters.",
+        heroDescription: "Find non-profits, support services, recreation, and youth programs in your neighborhood.",
+        searchPlaceholder: "What are you looking for today?",
+        directory: "Directory",
+        featured: "Featured",
+        calendar: "Calendar",
+        support: "Support",
+        suggestResource: "Suggest Resource",
+        resourcesListed: "Resources Listed",
+        categories: "Categories",
+        usersHelped: "Users Helped",
+        openNow: "Open Now",
+        closed: "Closed",
+        addToFavorites: "Add to favorites",
+        removeFromFavorites: "Remove from favorites"
+    },
+    es: {
+        heroTitle: "Conectando Houston",
+        heroSubtitle: "Con Lo Que Importa.",
+        heroDescription: "Encuentre organizaciones sin fines de lucro, servicios de apoyo, recreación y programas juveniles en su vecindario.",
+        searchPlaceholder: "¿Qué estás buscando hoy?",
+        directory: "Directorio",
+        featured: "Destacados",
+        calendar: "Calendario",
+        support: "Apoyo",
+        suggestResource: "Sugerir Recurso",
+        resourcesListed: "Recursos Listados",
+        categories: "Categorías",
+        usersHelped: "Usuarios Ayudados",
+        openNow: "Abierto Ahora",
+        closed: "Cerrado",
+        addToFavorites: "Agregar a favoritos",
+        removeFromFavorites: "Quitar de favoritos"
+    }
+};
