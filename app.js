@@ -60,8 +60,25 @@ function initApp() {
     const modalBody = document.getElementById('modal-body');
     const suggestBtn = document.getElementById('suggest-resource-btn');
     const partnerBtn = document.getElementById('partner-inquiry-btn');
-    const closeModalBtn = document.querySelector('.close-modal');
-    const sidebarSuggestBtn = document.getElementById('sidebar-suggest');
+    const toggleScrollLock = (lock) => {
+        if (lock) document.body.classList.add('no-scroll');
+        else document.body.classList.remove('no-scroll');
+    };
+
+    const openModal = (contentHtml) => {
+        if (!modal || !modalBody) return;
+        modalBody.innerHTML = contentHtml;
+        modal.classList.remove('hidden');
+        modal.classList.add('active');
+        toggleScrollLock(true);
+    };
+
+    const closeModal = () => {
+        if (!modal) return;
+        modal.classList.remove('active');
+        modal.classList.add('hidden');
+        toggleScrollLock(false);
+    };
 
     // Attach Modal Listeners immediately for robustness
     console.log('Hub: Initializing Modal Listeners');
@@ -80,8 +97,7 @@ function initApp() {
     });
     closeModalBtn?.addEventListener('click', () => {
         console.log('Hub: Close button clicked');
-        modal?.classList.remove('active');
-        modal?.classList.add('hidden');
+        closeModal();
     });
 
     // ===== TOAST NOTIFICATION SYSTEM =====
@@ -1186,7 +1202,7 @@ function initApp() {
             return;
         }
         const isEs = state.language === 'es';
-        modalBody.innerHTML = `
+        const contentHtml = `
             <div class="modal-form">
                 <h2>${isEs ? 'Sugerir un Recurso' : 'Suggest a New Resource'}</h2>
                 <p>${isEs ? 'Ayúdenos a expandir nuestro centro comunitario sugiriendo un servicio local.' : 'Help us expand our community hub by suggesting a local service.'}</p>
@@ -1220,13 +1236,11 @@ function initApp() {
                 </form>
             </div>
             `;
-        modal.classList.remove('hidden');
-        modal.classList.add('active');
+        openModal(contentHtml);
 
         document.getElementById('suggest-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            modal.classList.remove('active');
-            modal.classList.add('hidden');
+            closeModal();
             showToast(isEs ? '¡Gracias! Su sugerencia ha sido enviada.' : 'Thank you! Your suggestion has been submitted.', 'success');
             createConfetti();
         });
@@ -1256,7 +1270,7 @@ function initApp() {
         const isEs = state.language === 'es';
         const name = (isEs && res.name_es) ? res.name_es : res.name;
 
-        modalBody.innerHTML = `
+        const contentHtml = `
             <div class="modal-form">
                 <h2>${isEs ? 'Reservar Lugar: ' : 'Book Venue: '} ${name}</h2>
                 <p>${isEs ? 'Seleccione fecha y hora para reservar este espacio.' : 'Select a date and time to reserve this community space.'}</p>
@@ -1283,13 +1297,11 @@ function initApp() {
                 </form>
             </div>
             `;
-        modal.classList.remove('hidden');
-        modal.classList.add('active');
+        openModal(contentHtml);
 
         document.getElementById('booking-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            modal.classList.remove('active');
-            modal.classList.add('hidden');
+            closeModal();
             showToast(isEs ? `¡Reserva confirmada para ${name} !` : `Booking confirmed for ${res.name}!`, 'success');
         });
     }
@@ -1297,7 +1309,7 @@ function initApp() {
     function showPartnerModal() {
         if (!modal || !modalBody) return;
         const isEs = state.language === 'es';
-        modalBody.innerHTML = `
+        const contentHtml = `
             <div class="modal-form">
                 <h2>${isEs ? 'Asóciese con Nosotros' : 'Partner With Us'}</h2>
                 <p>${isEs ? '¿Eres organización sin fines de lucro? Trabajemos juntos.' : 'Are you a non-profit or community organization? Let\'s work together to serve Houston.'}</p>
@@ -1318,13 +1330,11 @@ function initApp() {
                 </form>
             </div>
             `;
-        modal.classList.remove('hidden');
-        modal.classList.add('active');
+        openModal(contentHtml);
 
         document.getElementById('partner-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            modal.classList.remove('active');
-            modal.classList.add('hidden');
+            closeModal();
             showToast(isEs ? '¡Gracias! Estaremos en contacto pronto.' : 'Thank you! We\'ll be in touch soon.', 'success');
         });
     }
@@ -1335,8 +1345,7 @@ function initApp() {
     document.addEventListener('keydown', (e) => {
         // Escape to close modals
         if (e.key === 'Escape') {
-            modal?.classList.remove('active');
-            modal?.classList.add('hidden');
+            closeModal();
             a11yPanel?.classList.remove('active');
             langDropdown?.classList.remove('active');
         }
@@ -1444,7 +1453,7 @@ function initApp() {
     function showPetitionModal() {
         if (!modal || !modalBody) return;
         const isEs = state.language === 'es';
-        modalBody.innerHTML = `
+        const contentHtml = `
             <div class="modal-form">
                 <h2>${isEs ? 'Iniciar una Petición Comunitaria' : 'Start a Community Petition'}</h2>
                 <p>${isEs ? '¿Qué cambio te gustaría ver en Houston?' : 'What change would you like to see in Houston?'}</p>
@@ -1478,8 +1487,7 @@ function initApp() {
                 </form>
             </div>
             `;
-        modal.classList.remove('hidden');
-        modal.classList.add('active');
+        openModal(contentHtml);
 
         document.getElementById('petition-form').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1496,8 +1504,7 @@ function initApp() {
             };
             state.petitions.unshift(newPet);
             localStorage.setItem('petitions', JSON.stringify(state.petitions));
-            modal.classList.remove('active');
-            modal.classList.add('hidden');
+            closeModal();
             showToast(isEs ? '¡Su petición ha sido lanzada!' : 'Your petition has been launched!', 'success');
             if (state.currentView === 'petitions') renderPetitions();
         });
