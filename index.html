@@ -21,10 +21,10 @@
 <body data-theme="light">
     <header class="main-header">
         <nav class="container">
-            <div class="logo">
+            <a href="#directory" class="logo">
                 <i class="fas fa-bridge-water"></i>
                 <span>Houston<span>Hub</span></span>
-            </div>
+            </a>
             <ul class="nav-links">
                 <li><a href="#directory" class="active"><i class="fas fa-search"></i> Directory</a></li>
                 <li><a href="#featured"><i class="fas fa-star"></i> Featured</a></li>
@@ -37,7 +37,7 @@
                 </button>
                 <button class="btn btn-primary" id="suggest-resource-btn">Suggest Resource</button>
             </div>
-            <button class="mobile-menu-btn">
+            <button class="mobile-menu-btn" aria-label="Open navigation menu">
                 <i class="fas fa-bars"></i>
             </button>
         </nav>
@@ -64,10 +64,10 @@
     <footer class="main-footer">
         <div class="container footer-grid">
             <div class="footer-info">
-                <div class="logo">
+                <a href="#directory" class="logo">
                     <i class="fas fa-bridge-water"></i>
                     <span>Houston<span>Hub</span></span>
-                </div>
+                </a>
                 <p>Bridging the gap between Houston residents and community resources.</p>
             </div>
             <div class="footer-links">
@@ -98,7 +98,7 @@
                 <i class="fas fa-bridge-water"></i>
                 <span>Houston<span>Hub</span></span>
             </div>
-            <button class="close-sidebar">&times;</button>
+            <button class="close-sidebar" aria-label="Close navigation menu">&times;</button>
         </div>
         <ul class="sidebar-links">
             <li><a href="#directory" class="active"><i class="fas fa-search"></i> Directory</a></li>
@@ -106,12 +106,18 @@
             <li><a href="#petitions"><i class="fas fa-file-contract"></i> Petitions</a></li>
             <li><a href="#support"><i class="fas fa-heart"></i> Support Us</a></li>
         </ul>
+        <div class="sidebar-actions">
+            <button id="sidebar-theme-toggle" class="btn btn-outline" aria-label="Toggle Dark Mode">
+                <i class="fas fa-moon"></i> Toggle Theme
+            </button>
+            <button class="btn btn-primary" id="sidebar-suggest-btn">Suggest Resource</button>
+        </div>
     </div>
 
     <!-- Modals -->
     <div id="modal-container" class="modal-overlay hidden">
         <div class="modal-content">
-            <button class="close-modal">&times;</button>
+            <button class="close-modal" aria-label="Close modal">&times;</button>
             <div id="modal-body"></div>
         </div>
     </div>

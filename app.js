@@ -42,12 +42,23 @@ function initApp() {
     closeSidebar.addEventListener('click', toggleSidebar);
 
     // Initial Render Settings
-    logo.addEventListener('click', () => {
+    logo.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent default anchor behavior to allow filter reset
         state.filters.search = '';
         state.filters.category = 'All';
         rootSearch.value = '';
         window.location.hash = '#directory';
         renderDirectory(); // Force re-render if already on directory
+    });
+
+    // Centralized search listener (prevents duplicates on re-render)
+    rootSearch.addEventListener('input', (e) => {
+        state.filters.search = e.target.value;
+        if (window.location.hash !== '#directory') window.location.hash = 'directory';
+        // Re-render if already on directory, else hashchange will handle it
+        if (state.currentView === 'directory') {
+            renderDirectoryGrid();
+        }
     });
 
     // Initialize Theme
@@ -67,21 +78,31 @@ function initApp() {
         });
     });
 
-    // Theme Toggle Logic
-    themeToggle.addEventListener('click', () => {
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Sidebar-specific event listeners
+    const sidebarThemeToggle = document.getElementById('sidebar-theme-toggle');
+    const sidebarSuggestBtn = document.getElementById('sidebar-suggest-btn');
+
+    sidebarThemeToggle.addEventListener('click', toggleTheme);
+    sidebarSuggestBtn.addEventListener('click', () => {
+        toggleSidebar(); // Close sidebar first
+        showSuggestModal();
+    });
+
+    function toggleTheme() {
         state.theme = state.theme === 'light' ? 'dark' : 'light';
         document.body.setAttribute('data-theme', state.theme);
         localStorage.setItem('theme', state.theme);
         updateThemeIcon();
-    });
+    }
 
     function updateThemeIcon() {
         const icon = themeToggle.querySelector('i');
-        if (state.theme === 'dark') {
-            icon.className = 'fas fa-sun';
-        } else {
-            icon.className = 'fas fa-moon';
-        }
+        const sidebarIcon = sidebarThemeToggle.querySelector('i');
+        const iconClass = state.theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        icon.className = iconClass;
+        sidebarIcon.className = iconClass;
     }
 
     // Initial Render
@@ -181,11 +202,9 @@ function initApp() {
             updateGrid();
         });
 
-        rootSearch.addEventListener('input', (e) => {
-            state.filters.search = e.target.value;
-            if (window.location.hash !== '#directory') window.location.hash = 'directory';
-            updateGrid();
-        });
+        // Expose updateGrid so the centralized search listener can call it
+        renderDirectoryGrid = updateGrid;
+
 
         updateGrid();
     }
