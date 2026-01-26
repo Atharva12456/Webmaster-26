@@ -36,7 +36,7 @@ function initApp() {
         fontSize: localStorage.getItem('fontSize') || 'normal',
         contrast: localStorage.getItem('contrast') || 'normal',
         language: localStorage.getItem('language') || 'en',
-        hasSeenTour: localStorage.getItem('hasSeenTour') === 'true',
+
         carouselIndex: 0
     };
 
@@ -521,10 +521,7 @@ function initApp() {
     console.log('Hub: initApp finished successfully');
     updateActiveNav(initialHash);
 
-    // Show onboarding tour for first-time visitors
-    if (!state.hasSeenTour) {
-        setTimeout(() => startTour(), 1500);
-    }
+
 
     // ===== RENDER FUNCTIONS =====
     function renderSection(section) {
@@ -1332,92 +1329,7 @@ function initApp() {
         });
     }
 
-    // ===== ONBOARDING TOUR =====
-    function startTour() {
-        if (tourSteps.length === 0) return;
 
-        let currentTourStep = 0;
-        const overlay = document.getElementById('tour-overlay');
-        const tooltip = document.getElementById('tour-tooltip');
-        const titleEl = document.getElementById('tour-title');
-        const descEl = document.getElementById('tour-desc');
-        const dotsEl = document.getElementById('tour-dots');
-        const nextBtn = document.getElementById('tour-next');
-
-        // Helper to clear highlights
-        const clearHighlights = () => {
-            document.querySelectorAll('.tour-highlight').forEach(el => {
-                el.classList.remove('tour-highlight');
-            });
-        };
-
-        const showStep = () => {
-            clearHighlights();
-            const step = tourSteps[currentTourStep];
-            const target = document.querySelector(step.target);
-
-            if (!target) {
-                currentTourStep++;
-                if (currentTourStep < tourSteps.length) showStep();
-                else endTour();
-                return;
-            }
-
-            // Add highlight class to target
-            target.classList.add('tour-highlight');
-
-            overlay.classList.add('active');
-            tooltip.style.display = 'block';
-
-            titleEl.textContent = (state.language === 'es' && step.title_es) ? step.title_es : step.title;
-            descEl.textContent = (state.language === 'es' && step.description_es) ? step.description_es : step.description;
-
-            dotsEl.innerHTML = tourSteps.map((_, i) =>
-                `<div class="tour-dot ${i === currentTourStep ? 'active' : ''}"></div>`
-            ).join('');
-
-            nextBtn.textContent = currentTourStep === tourSteps.length - 1 ? (state.language === 'es' ? '¡Entendido!' : 'Got it!') : (state.language === 'es' ? 'Siguiente' : 'Next');
-
-            // Position tooltip
-            const rect = target.getBoundingClientRect();
-            // Ensure tooltip fits within viewport
-            let top = rect.bottom + 20;
-            let left = Math.max(20, rect.left);
-
-            // Should add boundary checks ideally, but basic positioning:
-            tooltip.style.top = `${top}px`;
-            tooltip.style.left = `${left}px`;
-
-            // Scroll target into view if needed
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        };
-
-        const endTour = () => {
-            clearHighlights();
-            overlay.classList.remove('active');
-            tooltip.style.display = 'none';
-            state.hasSeenTour = true;
-            localStorage.setItem('hasSeenTour', 'true');
-            showToast('Welcome to Houston Hub! 👋', 'success');
-        };
-
-        // Clone button to remove old event listeners if any (simple safety)
-        const newNextBtn = nextBtn.cloneNode(true);
-        nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
-
-        newNextBtn.addEventListener('click', () => {
-            currentTourStep++;
-            if (currentTourStep < tourSteps.length) {
-                showStep();
-            } else {
-                endTour();
-            }
-        });
-
-        overlay.addEventListener('click', endTour);
-
-        showStep();
-    }
 
     // ===== KEYBOARD NAVIGATION =====
     document.addEventListener('keydown', (e) => {

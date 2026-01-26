@@ -672,37 +672,7 @@ const calendarEvents = [
     }
 ];
 
-// ===== ONBOARDING TOUR STEPS =====
-const tourSteps = [
-    {
-        target: "#main-search-input",
-        title: "Search Resources",
-        title_es: "Buscar Recursos",
-        description: "Use the search bar to find community resources, support services, and programs in your area.",
-        description_es: "Use la barra de búsqueda para encontrar recursos de la comunidad, servicios de apoyo y programas en su área."
-    },
-    {
-        target: ".filter-chips",
-        title: "Filter by Category",
-        title_es: "Filtrar por Categoría",
-        description: "Click on category chips to quickly filter resources by type - food, recreation, support, and more.",
-        description_es: "Haga clic en las fichas de categoría para filtrar rápidamente los recursos por tipo: alimentos, recreación, apoyo y más."
-    },
-    {
-        target: "#suggest-resource-btn",
-        title: "Suggest a Resource",
-        title_es: "Sugerir un Recurso",
-        description: "Know of a great community resource? Click here to submit it for inclusion in our directory.",
-        description_es: "¿Conoces un gran recurso comunitario? Haga clic aquí para enviarlo para su inclusión en nuestro directorio."
-    },
-    {
-        target: ".a11y-toggle",
-        title: "Accessibility Options",
-        title_es: "Opciones de Accesibilidad",
-        description: "Adjust font size and contrast settings to make the site easier to read.",
-        description_es: "Ajuste el tamaño de la fuente y la configuración de contraste para que el sitio sea más fácil de leer."
-    }
-];
+
 
 // ===== TRANSLATIONS (English/Spanish) =====
 // ===== TRANSLATIONS (English/Spanish) =====
