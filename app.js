@@ -319,8 +319,9 @@ function initApp() {
     });
 
     function updateThemeIcon() {
+        if (!themeToggle) return;
         const icon = themeToggle.querySelector('i');
-        icon.className = state.theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        if (icon) icon.className = state.theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     }
 
     // ===== NAVIGATION =====
