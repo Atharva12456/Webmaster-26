@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Houston Community Hub | Local Resources & Support</title>
+    <meta name="description" content="A comprehensive resource hub for Houston residents to find support, recreation, and community events.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="light">
+    <header class="main-header">
+        <nav class="container">
+            <div class="logo">
+                <i class="fas fa-bridge-water"></i>
+                <span>Houston<span>Hub</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#directory" class="active"><i class="fas fa-search"></i> Directory</a></li>
+                <li><a href="#featured"><i class="fas fa-star"></i> Featured</a></li>
+                <li><a href="#petitions"><i class="fas fa-file-contract"></i> Petitions</a></li>
+                <li><a href="#support"><i class="fas fa-heart"></i> Support Us</a></li>
+            </ul>
+            <div class="header-actions">
+                <button id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-primary" id="suggest-resource-btn">Suggest Resource</button>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main id="app-root">
+        <!-- Dynamic Content Injected Here -->
+        <section id="hero" class="hero-section">
+            <div class="container hero-content">
+                <h1>Connecting Houston <br><span class="text-gradient">To What Matters.</span></h1>
+                <p>Find non-profits, support services, recreation, and youth programs in your neighborhood.</p>
+                <div class="hero-search">
+                    <input type="text" id="main-search-input" placeholder="What are you looking for today?">
+                    <button class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="content-display" class="container">
+            <!-- SPA Sections injected by app.js -->
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-info">
+                <div class="logo">
+                    <i class="fas fa-bridge-water"></i>
+                    <span>Houston<span>Hub</span></span>
+                </div>
+                <p>Bridging the gap between Houston residents and community resources.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#directory">Resource Hub</a></li>
+                    <li><a href="#petitions">Petitions</a></li>
+                    <li><a href="#support">Support Services</a></li>
+                    <li><a href="#featured">Spotlight</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Get Involved</h4>
+                <p>Are you a non-profit? Partner with us!</p>
+                <button class="btn btn-outline">Partner Inquiry</button>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2026 Houston Community Hub. TSA Webmaster Submission.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modal-container" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
