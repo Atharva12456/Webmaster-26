@@ -418,13 +418,15 @@ function initApp() {
         contentDisplay.innerHTML = '';
         state.currentView = section;
 
-        // Show hero only on directory page
-        const heroSection = document.getElementById('hero');
-        if (heroSection) {
-            heroSection.style.display = section === 'directory' ? 'block' : 'none';
+        // Show hero only on directory page (using body class for CSS control)
+        if (section === 'directory') {
+            document.body.classList.remove('hide-hero');
+        } else {
+            document.body.classList.add('hide-hero');
         }
 
         switch (section) {
+
             case 'directory':
                 renderDirectory();
 
@@ -743,8 +745,13 @@ function initApp() {
                                     <span class="category-badge">${res.category}</span>
                                     <h3>${res.name}</h3>
                                     <p>${res.description}</p>
-                                    <div style="display: flex; gap: 1rem;">
-                                        <button class="btn btn-primary" onclick="window.location.hash = '#directory'">Learn More</button>
+                                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                        ${res.website ? `
+                                            <a href="${res.website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                                                <i class="fas fa-external-link-alt"></i> Visit Website
+                                            </a>
+                                        ` : ''}
+                                        <button class="btn btn-outline" onclick="window.location.hash = '#directory'">View Details</button>
                                         <button class="btn btn-outline favorite-featured-btn" data-id="${res.id}">
                                             <i class="fas fa-heart"></i> Save
                                         </button>
@@ -782,7 +789,7 @@ function initApp() {
                         <div class="tags-container">
                             ${v.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
-                        <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Sign Up to Volunteer</button>
+                        <a href="${v.website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Sign Up to Volunteer</a>
                     </div>
                 `).join('')}
             </div>
@@ -897,7 +904,7 @@ function initApp() {
                         <p><i class="fas fa-clock"></i> ${event.time}</p>
                         <p><i class="fas fa-map-marker-alt"></i> ${event.location}</p>
                         <p style="margin-top: 1rem; color: var(--text-muted);">${event.description}</p>
-                        <button class="btn btn-outline" style="width: 100%; margin-top: 1rem;">Add to Calendar</button>
+                        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.date.replace(/-/g, '')}/${event.date.replace(/-/g, '')}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%; margin-top: 1rem;"><i class="fas fa-calendar-plus"></i> Add to Calendar</a>
                     </div>
                 `).join('')}
             </div>

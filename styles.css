@@ -279,6 +279,11 @@ h4 {
         radial-gradient(circle at bottom left, rgba(0, 121, 107, 0.05), transparent);
 }
 
+/* Hide hero when on other pages */
+body.hide-hero .hero-section {
+    display: none !important;
+}
+
 .hero-content h1 {
     font-size: 4.5rem;
     line-height: 1.1;
