@@ -292,9 +292,16 @@ function initApp() {
         contentDisplay.innerHTML = '';
         state.currentView = section;
 
+        // Show hero only on directory page
+        const heroSection = document.getElementById('hero');
+        if (heroSection) {
+            heroSection.style.display = section === 'directory' ? 'block' : 'none';
+        }
+
         switch (section) {
             case 'directory':
                 renderDirectory();
+
                 break;
             case 'featured':
                 renderFeatured();
