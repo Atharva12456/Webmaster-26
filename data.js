@@ -332,7 +332,9 @@ const initialPetitions = [
         signatures: 2300,
         goal: 5000,
         category: "Health",
-        signed: false
+        signed: false,
+        title_es: "Servicios de Salud Mental Juvenil Ampliados",
+        description_es: "Instando al HISD a aumentar el número de consejeros con licencia y especialistas en salud mental en las escuelas secundarias y preparatorias del distrito."
     }
 ];
 
@@ -341,17 +343,23 @@ const initialNonprofits = [
     {
         name: "United Way of Greater Houston",
         description: "Connecting people with local resources to help them improve their lives.",
-        link: "https://www.unitedwayhouston.org/"
+        link: "https://www.unitedwayhouston.org/",
+        name_es: "United Way del Gran Houston",
+        description_es: "Conectando a personas con recursos locales para ayudarlas a mejorar sus vidas."
     },
     {
         name: "Star of Hope Mission",
         description: "Providing essential services to Houston's homeless population.",
-        link: "https://www.sohmission.org/"
+        link: "https://www.sohmission.org/",
+        name_es: "Misión Star of Hope",
+        description_es: "Proporcionando servicios esenciales a la población sin hogar de Houston."
     },
     {
         name: "Houston Area Women's Center",
         description: "Supporting survivors of domestic and sexual violence.",
-        link: "https://hawc.org/"
+        link: "https://hawc.org/",
+        name_es: "Centro de Mujeres del Área de Houston",
+        description_es: "Apoyando a sobrevivientes de violencia doméstica y sexual."
     }
 ];
 
@@ -376,9 +384,17 @@ const schoolEvents = [
         school: "Kinder HSPVA",
         date: "Feb 12, 2026",
         time: "7:00 PM",
-        category: "Arts"
+        category: "Arts",
+        title_es: "Concierto de Cuerdas Juvenil de Houston",
+        description_es: "Concierto de cuerdas juvenil."
     }
 ];
+
+// Add translations fields to other school events
+schoolEvents[0].title_es = "Feria de Empleo Comunitaria HISD";
+schoolEvents[0].description_es = "Reúnase con empleadores locales.";
+schoolEvents[1].title_es = "Noche STEM y Feria de Ciencias";
+schoolEvents[1].description_es = "Proyectos estudiantiles y exhibiciones.";
 
 // ===== EMERGENCY RESOURCES =====
 const emergencyResources = [
@@ -387,42 +403,54 @@ const emergencyResources = [
         name: "Emergency Services",
         number: "911",
         icon: "fa-phone-volume",
-        description: "Police, Fire, Medical Emergencies"
+        description: "Police, Fire, Medical Emergencies",
+        name_es: "Servicios de Emergencia",
+        description_es: "Policía, Bomberos, Emergencias Médicas"
     },
     {
         id: 2,
         name: "National Suicide Prevention",
         number: "988",
         icon: "fa-hand-holding-heart",
-        description: "24/7 Crisis Support & Counseling"
+        description: "24/7 Crisis Support & Counseling",
+        name_es: "Prevención Nacional del Suicidio",
+        description_es: "Apoyo y Asesoramiento de Crisis 24/7"
     },
     {
         id: 3,
         name: "Houston Area Women's Center Hotline",
         number: "(713) 528-2121",
         icon: "fa-user-shield",
-        description: "Domestic Violence & Sexual Assault"
+        description: "Domestic Violence & Sexual Assault",
+        name_es: "Línea Directa del Centro de Mujeres",
+        description_es: "Violencia Doméstica y Agresión Sexual"
     },
     {
         id: 4,
         name: "Texas Poison Center",
         number: "1-800-222-1222",
         icon: "fa-skull-crossbones",
-        description: "24/7 Poison Emergency Assistance"
+        description: "24/7 Poison Emergency Assistance",
+        name_es: "Centro de Envenenamiento de Texas",
+        description_es: "Asistencia de Emergencia por Envenenamiento 24/7"
     },
     {
         id: 5,
         name: "United Way 2-1-1",
         number: "211",
         icon: "fa-info-circle",
-        description: "Community Resources & Referrals"
+        description: "Community Resources & Referrals",
+        name_es: "United Way 2-1-1",
+        description_es: "Recursos Comunitarios y Referencias"
     },
     {
         id: 6,
         name: "Mental Health Crisis Line",
         number: "(832) 416-1177",
         icon: "fa-brain",
-        description: "Harris County Mental Health Support"
+        description: "Harris County Mental Health Support",
+        name_es: "Línea de Crisis de Salud Mental",
+        description_es: "Apoyo de Salud Mental del Condado de Harris"
     }
 ];
 
@@ -437,7 +465,9 @@ const volunteerOpportunities = [
         frequency: "Weekly",
         location: "Multiple Locations",
         tags: ["Physical", "Groups Welcome"],
-        website: "https://www.houstonfoodbank.org/volunteer/"
+        website: "https://www.houstonfoodbank.org/volunteer/",
+        title_es: "Ayudante de Distribución del Banco de Alimentos",
+        description_es: "Ayude a clasificar y distribuir paquetes de alimentos a familias necesitadas."
     },
     {
         id: 2,
@@ -448,7 +478,9 @@ const volunteerOpportunities = [
         frequency: "Twice Weekly",
         location: "Various Club Locations",
         tags: ["Education", "Mentorship"],
-        website: "https://www.bgcgh.org/volunteer"
+        website: "https://www.bgcgh.org/volunteer",
+        title_es: "Programa de Tutoría Juvenil",
+        description_es: "Mentorear y dar tutoría a estudiantes en matemáticas, lectura y ciencias."
     },
     {
         id: 3,
@@ -459,7 +491,9 @@ const volunteerOpportunities = [
         frequency: "Weekend",
         location: "Eastside Houston",
         tags: ["Outdoors", "Environment"],
-        website: "https://www.urbanharvest.org/volunteer/"
+        website: "https://www.urbanharvest.org/volunteer/",
+        title_es: "Voluntario de Jardín Comunitario",
+        description_es: "Ayude a mantener jardines comunitarios y enseñar prácticas de jardinería sostenible."
     },
     {
         id: 4,
@@ -470,7 +504,9 @@ const volunteerOpportunities = [
         frequency: "Weekly",
         location: "Citywide",
         tags: ["Seniors", "Compassion"],
-        website: "https://www.imgh.org/volunteer/"
+        website: "https://www.imgh.org/volunteer/",
+        title_es: "Programa de Compañeros Mayores",
+        description_es: "Visite a personas mayores, brinde compañía y ayude con actividades ligeras."
     },
     {
         id: 5,
@@ -481,7 +517,9 @@ const volunteerOpportunities = [
         frequency: "Monthly",
         location: "Various Bayous",
         tags: ["Environment", "Outdoors"],
-        website: "https://houstonparksboard.org/volunteer/"
+        website: "https://houstonparksboard.org/volunteer/",
+        title_es: "Equipo Verde de Conservación",
+        description_es: "Ayude con la eliminación de especies invasoras, plantación y esfuerzos de conservación."
     },
     {
         id: 6,
@@ -492,43 +530,37 @@ const volunteerOpportunities = [
         frequency: "Weekly",
         location: "6725 Reed Rd",
         tags: ["Admin", "Support"],
-        website: "https://www.angelahouse.org/volunteer/"
-    }
+        website: "https://www.angelahouse.org/volunteer/",
+        title_es: "Apoyo Administrativo",
+        description_es: "Ayude con tareas de oficina y organización para apoyar a mujeres en transición."
+    },
 ];
 
 // ===== TRANSPORTATION RESOURCES =====
 const transportationResources = [
     {
-        id: 1,
         name: "METRO Bus & Rail",
-        description: "Houston's public transit system with buses, METRORail, and Park & Ride services.",
-        website: "https://www.ridemetro.org/",
         icon: "fa-bus",
-        cost: "$1.25 per ride"
+        description: "Affordable public transit across the city.",
+        description_es: "Transporte público asequible en toda la ciudad.",
+        cost: "$1.25 / ride",
+        website: "https://www.ridemetro.org/"
     },
     {
-        id: 2,
-        name: "Harris County Rides",
-        description: "Free and low-cost transportation for seniors and persons with disabilities.",
-        website: "https://www.harristransit.com/",
-        icon: "fa-wheelchair",
-        cost: "Free - Low Cost"
-    },
-    {
-        id: 3,
         name: "Houston BCycle",
-        description: "Bike share program with stations across Houston for short trips.",
-        website: "https://www.houstonbcycle.com/",
         icon: "fa-bicycle",
-        cost: "$3 per 30 min"
+        description: "Bike sharing network with stations citywide.",
+        description_es: "Red de bicicletas compartidas con estaciones en toda la ciudad.",
+        cost: "$3 / 30 mins",
+        website: "https://www.houstonbcycle.com/"
     },
     {
-        id: 4,
-        name: "Medical Transportation Program",
-        description: "Texas Medicaid transportation for medical appointments.",
-        website: "https://www.hhs.texas.gov/",
-        icon: "fa-ambulance",
-        cost: "Medicaid Covered"
+        name: "Harris County Rides",
+        icon: "fa-taxi",
+        description: "Subsidized transportation for seniors and disabilities.",
+        description_es: "Transporte subsidiado para personas mayores y discapacitadas.",
+        cost: "Varies",
+        website: "https://harriscountyrides.com/"
     }
 ];
 
@@ -540,8 +572,10 @@ const calendarEvents = [
         date: "2026-01-28",
         time: "9:00 AM - 2:00 PM",
         location: "George R. Brown Convention Center",
-        category: "Health",
-        description: "Free health screenings, vaccinations, and wellness resources."
+        category: "Career",
+        description: "Meet with over 50 local employers hiring for entry-level positions.",
+        title_es: "Feria de Empleo Comunitaria HISD",
+        description_es: "Reúnase con más de 50 empleadores locales que contratan para puestos de nivel de entrada."
     },
     {
         id: 2,
@@ -550,7 +584,9 @@ const calendarEvents = [
         time: "8:00 AM - 1:00 PM",
         location: "NRG Center",
         category: "Education",
-        description: "Free backpacks, school supplies, and immunizations for students."
+        description: "Free backpacks, school supplies, and immunizations for students.",
+        title_es: "Feria de Regreso a Clases de la Ciudad",
+        description_es: "Mochilas gratis, útiles escolares e inmunizaciones para estudiantes."
     },
     {
         id: 3,
@@ -559,7 +595,9 @@ const calendarEvents = [
         time: "All Day",
         location: "Citywide",
         category: "Community",
-        description: "Dining to benefit Houston Food Bank. Special menus at participating restaurants."
+        description: "Dining to benefit Houston Food Bank. Special menus at participating restaurants.",
+        title_es: "Semanas de Restaurantes de Houston",
+        description_es: "Cenas a beneficio del Banco de Alimentos de Houston. Menús especiales en restaurantes participantes."
     },
     {
         id: 4,
@@ -568,7 +606,9 @@ const calendarEvents = [
         time: "11:00 AM",
         location: "NRG Park",
         category: "Entertainment",
-        description: "The world's largest livestock exhibition and rodeo begins!"
+        description: "The world's largest livestock exhibition and rodeo begins!",
+        title_es: "Día de Apertura del Rodeo Houston",
+        description_es: "¡Comienza la exhibición de ganado y rodeo más grande del mundo!"
     },
     {
         id: 5,
@@ -577,7 +617,9 @@ const calendarEvents = [
         time: "6:00 PM - 8:30 PM",
         location: "Lamar High School",
         category: "Education",
-        description: "Student projects and interactive STEM exhibits."
+        description: "Student projects and interactive STEM exhibits.",
+        title_es: "Noche STEM y Feria de Ciencias",
+        description_es: "Proyectos estudiantiles y exhibiciones interactivas STEM."
     },
     {
         id: 6,
@@ -586,7 +628,9 @@ const calendarEvents = [
         time: "10:00 AM - 4:00 PM",
         location: "Houston Public Library - Central",
         category: "Financial",
-        description: "Free VITA tax preparation services for qualifying households."
+        description: "Free VITA tax preparation services for qualifying households.",
+        title_es: "Taller Gratuito de Preparación de Impuestos",
+        description_es: "Servicios gratuitos de preparación de impuestos VITA para hogares que califican."
     },
     {
         id: 7,
@@ -595,7 +639,9 @@ const calendarEvents = [
         time: "8:00 AM - 12:00 PM",
         location: "Buffalo Bayou Park",
         category: "Environment",
-        description: "Join volunteers to clean up Houston's waterways."
+        description: "Join volunteers to clean up Houston's waterways.",
+        title_es: "Día de Limpieza Comunitaria",
+        description_es: "Únase a voluntarios para limpiar las vías fluviales de Houston."
     },
     {
         id: 8,
@@ -711,7 +757,65 @@ const translations = {
         "spotlight": "Spotlight",
         "events": "Events",
         "change": "Change",
-        "favorites": "Favorites"
+        "communitySpotlight": "Community Spotlight",
+        "communitySpotlightSubtitle": "Highlighting the most impactful resources in Houston.",
+        "viewDetails": "View Details",
+        "save": "Save",
+        "volunteerOpportunities": "Volunteer Opportunities",
+        "volunteerOpportunitiesSubtitle": "Make a difference in your community.",
+        "signUpToVolunteer": "Sign Up to Volunteer",
+        "supportYourCommunity": "Support Your Community",
+        "supportSubtitle": "Your support helps non-profits provide essential services to Houstonians.",
+        "learnMoreDonate": "Learn More & Donate",
+        "transportationResources": "Transportation Resources",
+        "transportationSubtitle": "Get around Houston with these transportation options.",
+        "visitWebsite": "Visit Website",
+        "schoolEvents": "School Events",
+        "schoolEventsSubtitle": "Stay updated with events from Houston ISD and local schools.",
+        "newsletterTitle": "Houston Hub Newsletter",
+        "newsletterSubtitle": "Get weekly updates on resources, events, and community news.",
+        "enterEmail": "Enter your email address",
+        "joinNow": "Join Now",
+        "thanksSubscribing": "Thanks for subscribing! We'll keep you updated.",
+        "yourFavorites": "Your Favorites",
+        "savedResources": "saved resources",
+        "noFavoritesTitle": "No favorites yet",
+        "noFavoritesSubtitle": "Save resources by clicking the heart icon on resource cards.",
+        "browseResources": "Browse Resources",
+        "trendingNow": "TRENDING NOW",
+        "resourceDirectory": "Resource Directory",
+        "clearFilters": "Clear Filters",
+        "showing": "Showing",
+        "resourcesInHouston": "resources in Houston",
+        "noResourcesFound": "No resources found",
+        "tryAdjustingFilters": "Try adjusting your filters or search terms.",
+        "clearAllFilters": "Clear All Filters",
+        "openNow": "Open Now",
+        "bookVenue": "Book Venue",
+        "shareOnTwitter": "Share on Twitter",
+        "shareOnFacebook": "Share on Facebook",
+        "copyLink": "Copy link",
+        "previousSlide": "Previous Slide",
+        "nextSlide": "Next Slide",
+        "goToSlide": "Go to slide",
+        "previousMonth": "Previous Month",
+        "nextMonth": "Next Month",
+        "favorites": "Favorites",
+        "footerTagline": "Bridging the gap between Houston residents and community resources.",
+        "partnerText": "Are you a non-profit? Partner with us!",
+        "copyright": "© 2026 Houston Community Hub. TSA Webmaster Submission.",
+        "trendingText": "<strong>Memorial Park Tennis Center</strong> just added 4 new clay courts!",
+        "bookNow": "Book now",
+        "goHome": "Go to homepage",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu",
+        "backToTop": "Back to top",
+        "calendarTitle": "Community Calendar",
+        "calendarSubtitle": "Stay updated with events happening across Houston.",
+        "upcomingEvents": "Upcoming Events",
+        "addToCalendar": "Add to Calendar",
+        "searchPlaceholder": "What are you looking for today?",
+        "sun": "Sun", "mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri", "sat": "Sat"
     },
     es: {
         heroTitle: "Conectando Houston",
@@ -764,6 +868,64 @@ const translations = {
         "spotlight": "Destacado",
         "events": "Eventos",
         "change": "Cambio",
-        "favorites": "Favoritos"
+        "communitySpotlight": "Destacado Comunitario",
+        "communitySpotlightSubtitle": "Destacando los recursos más impactantes en Houston.",
+        "viewDetails": "Ver Detalles",
+        "save": "Guardar",
+        "volunteerOpportunities": "Oportunidades de Voluntariado",
+        "volunteerOpportunitiesSubtitle": "Marque la diferencia en su comunidad.",
+        "signUpToVolunteer": "Regístrese para ser Voluntario",
+        "supportYourCommunity": "Apoye a su Comunidad",
+        "supportSubtitle": "Su apoyo ayuda a las organizaciones sin fines de lucro a brindar servicios esenciales a los habitantes de Houston.",
+        "learnMoreDonate": "Más Información y Donar",
+        "transportationResources": "Recursos de Transporte",
+        "transportationSubtitle": "Muévase por Houston con estas opciones de transporte.",
+        "visitWebsite": "Visitar Sitio",
+        "schoolEvents": "Eventos Escolares",
+        "schoolEventsSubtitle": "Manténgase al día con los eventos de Houston ISD y las escuelas locales.",
+        "newsletterTitle": "Boletín de Houston Hub",
+        "newsletterSubtitle": "Reciba actualizaciones semanales sobre recursos, eventos y noticias de la comunidad.",
+        "enterEmail": "Ingrese su dirección de correo electrónico",
+        "joinNow": "Únete Ahora",
+        "thanksSubscribing": "¡Gracias por suscribirte! Te mantendremos informado.",
+        "yourFavorites": "Tus Favoritos",
+        "savedResources": "recursos guardados",
+        "noFavoritesTitle": "Aún no hay favoritos",
+        "noFavoritesSubtitle": "Guarde recursos haciendo clic en el icono del corazón en las tarjetas de recursos.",
+        "browseResources": "Explorar Recursos",
+        "trendingNow": "TENDENCIA AHORA",
+        "resourceDirectory": "Directorio de Recursos",
+        "clearFilters": "Borrar Filtros",
+        "showing": "Mostrando",
+        "resourcesInHouston": "recursos en Houston",
+        "noResourcesFound": "No se encontraron recursos",
+        "tryAdjustingFilters": "Intente ajustar sus filtros o términos de búsqueda.",
+        "clearAllFilters": "Borrar Todos los Filtros",
+        "openNow": "Abierto Ahora",
+        "bookVenue": "Reservar Lugar",
+        "shareOnTwitter": "Compartir en Twitter",
+        "shareOnFacebook": "Compartir en Facebook",
+        "copyLink": "Copiar enlace",
+        "previousSlide": "Diapositiva Anterior",
+        "nextSlide": "Diapositiva Siguiente",
+        "goToSlide": "Ir a la diapositiva",
+        "previousMonth": "Mes Anterior",
+        "nextMonth": "Mes Siguiente",
+        "favorites": "Favoritos",
+        "footerTagline": "Cerrando la brecha entre residentes de Houston y recursos comunitarios.",
+        "partnerText": "¿Eres una organización sin fines de lucro? ¡Asóciate con nosotros!",
+        "copyright": "© 2026 Houston Community Hub. Presentación TSA Webmaster.",
+        "trendingText": "<strong>Memorial Park Tennis Center</strong> acaba de añadir 4 canchas nuevas!",
+        "bookNow": "Reservar ahora",
+        "goHome": "Ir a la página de inicio",
+        "openMenu": "Abrir menú",
+        "closeMenu": "Cerrar menú",
+        "backToTop": "Volver arriba",
+        "calendarTitle": "Calendario Comunitario",
+        "calendarSubtitle": "Manténgase actualizado con los eventos en todo Houston.",
+        "upcomingEvents": "Próximos Eventos",
+        "addToCalendar": "Añadir al Calendario",
+        "searchPlaceholder": "¿Qué estás buscando hoy?",
+        "sun": "Dom", "mon": "Lun", "tue": "Mar", "wed": "Mié", "thu": "Jue", "fri": "Vie", "sat": "Sáb"
     }
 };

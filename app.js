@@ -276,6 +276,14 @@ function initApp() {
             }
         });
 
+        // Update aria-labels
+        document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+            const key = el.getAttribute('data-i18n-aria-label');
+            if (translations[lang] && translations[lang][key]) {
+                el.setAttribute('aria-label', translations[lang][key]);
+            }
+        });
+
         // Update document direction if needed (for RTL languages, though not applicable here yet)
         // Update document direction if needed (for RTL languages, though not applicable here yet)
         document.documentElement.lang = lang;
@@ -531,28 +539,31 @@ function initApp() {
                     <h3>${t['Emergency Resources'] || 'Emergency Resources'}</h3>
                 </div>
                 <div class="emergency-grid">
-                    ${emergencyResources.map(e => `
+                    ${emergencyResources.map(e => {
+            const name = (state.language === 'es' && e.name_es) ? e.name_es : e.name;
+            const desc = (state.language === 'es' && e.description_es) ? e.description_es : e.description;
+            return `
                         <div class="emergency-card">
                             <div class="emergency-icon"><i class="fas ${e.icon}"></i></div>
                             <div class="emergency-info">
-                                <h4>${e.name}</h4>
+                                <h4>${name}</h4>
                                 <a href="tel:${e.number.replace(/[^0-9]/g, '')}" class="emergency-number">${e.number}</a>
-                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem">${e.description}</p>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem">${desc}</p>
                             </div>
                         </div>
-                    `).join('')}
+                    `}).join('')}
                 </div>
             </div>
 
             <!-- Recently Viewed -->
             ${state.recentlyViewed.length > 0 ? `
                 <div class="recently-viewed animate-in">
-                    <h3><i class="fas fa-history"></i> Recently Viewed</h3>
+                    <h3><i class="fas fa-history"></i> ${t['recentlyViewed'] || 'Recently Viewed'}</h3>
                     <div class="recent-items">
                         ${state.recentlyViewed.map(r => `
                             <div class="recent-item" data-id="${r.id}">
                                 <h4>${r.name}</h4>
-                                <span>${r.category}</span>
+                                <span>${t[r.category] || r.category}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -561,20 +572,20 @@ function initApp() {
 
             <!-- Trending Banner -->
             <div class="trending-banner animate-in">
-                <div class="trending-badge">TRENDING NOW</div>
-                <p><strong>Memorial Park Tennis Center</strong> just added 4 new clay courts! <a href="#directory">Book now &rarr;</a></p>
+                <div class="trending-badge">${t['trendingNow'] || 'TRENDING NOW'}</div>
+                <p>${t['trendingText'] || '<strong>Memorial Park Tennis Center</strong> just added 4 new clay courts!'} <a href="#directory">${t['bookNow'] || 'Book now'} &rarr;</a></p>
             </div>
 
             <!-- Section Header -->
             <div class="section-header">
                 <div>
-                    <h2>Resource Directory</h2>
+                    <h2>${t['resourceDirectory'] || 'Resource Directory'}</h2>
                     <p id="results-count" class="text-muted"></p>
                 </div>
                 <div class="directory-controls" style="display: flex; gap: 1rem; align-items: center;">
                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 600;">
                         <input type="checkbox" id="open-now-filter" ${state.filters.openNow ? 'checked' : ''}>
-                        <span class="open-badge">Open Now</span>
+                        <span class="open-badge">${t['openNow'] || 'Open Now'}</span>
                     </label>
                 </div>
             </div>
@@ -587,7 +598,7 @@ function initApp() {
                     </button>
                 `).join('')}
                 ${state.filters.category !== 'All' || state.filters.search ? `
-                    <button class="clear-filters"><i class="fas fa-times"></i> ${state.language === 'es' ? 'Borrar Filtros' : 'Clear Filters'}</button>
+                    <button class="clear-filters"><i class="fas fa-times"></i> ${t['clearFilters'] || 'Clear Filters'}</button>
                 ` : ''}
             </div>
 
@@ -607,15 +618,15 @@ function initApp() {
                 return matchesSearch && matchesCategory && matchesOpen;
             });
 
-            document.getElementById('results-count').textContent = `Showing ${filtered.length} resources in Houston`;
+            document.getElementById('results-count').textContent = `${t['showing'] || 'Showing'} ${filtered.length} ${t['resourcesInHouston'] || 'resources in Houston'}`;
 
             if (filtered.length === 0) {
                 grid.innerHTML = `
                     <div class="no-results animate-in">
                         <i class="fas fa-search" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
-                        <h3>No resources found</h3>
-                        <p>Try adjusting your filters or search terms.</p>
-                        <button class="btn btn-primary" onclick="state.filters.search=''; state.filters.category='All'; renderDirectory();">Clear All Filters</button>
+                        <h3>${t['noResourcesFound'] || 'No resources found'}</h3>
+                        <p>${t['tryAdjustingFilters'] || 'Try adjusting your filters or search terms.'}</p>
+                        <button class="btn btn-primary" onclick="state.filters.search=''; state.filters.category='All'; renderDirectory();">${t['clearAllFilters'] || 'Clear All Filters'}</button>
                     </div>
                 `;
                 return;
@@ -639,7 +650,7 @@ function initApp() {
                                     ${openStatus ? (t['openNow'] || 'Open') : (t['closed'] || 'Closed')}
                                 </span>
                             </div>
-                            <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${res.id}" aria-label="${isFavorite ? t['removeFromFavorites'] : t['addToFavorites']}">
+                            <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${res.id}" data-i18n-aria-label="${isFavorite ? 'removeFromFavorites' : 'addToFavorites'}">
                                 <i class="fas fa-heart"></i>
                             </button>
                         </div>
@@ -665,20 +676,20 @@ function initApp() {
                                 <i class="fas fa-star" style="color: #f59e0b;"></i> ${res.rating} (${res.reviews})
                             </div>
                             <div class="share-container">
-                                <button class="share-btn twitter" data-share="twitter" data-name="${res.name}" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></button>
-                                <button class="share-btn facebook" data-share="facebook" data-name="${res.name}" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></button>
-                                <button class="share-btn copy" data-share="copy" data-name="${res.name}" aria-label="Copy link"><i class="fas fa-link"></i></button>
+                                <button class="share-btn twitter" data-share="twitter" data-name="${res.name}" data-i18n-aria-label="shareOnTwitter"><i class="fab fa-twitter"></i></button>
+                                <button class="share-btn facebook" data-share="facebook" data-name="${res.name}" data-i18n-aria-label="shareOnFacebook"><i class="fab fa-facebook-f"></i></button>
+                                <button class="share-btn copy" data-share="copy" data-name="${res.name}" data-i18n-aria-label="copyLink"><i class="fas fa-link"></i></button>
                             </div>
                         </div>
                         <div class="card-actions" style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
                             ${res.website ? `
                                 <a href="${res.website}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="flex: 1;">
-                                    <i class="fas fa-external-link-alt"></i> ${state.language === 'es' ? 'Visitar Sitio' : 'Visit Website'}
+                                    <i class="fas fa-external-link-alt"></i> ${t['visitWebsite'] || 'Visit Website'}
                                 </a>
                             ` : ''}
                             ${res.category === 'Recreation' ? `
                                 <button class="btn btn-primary book-btn" data-id="${res.id}" style="flex: 1;">
-                                    <i class="fas fa-calendar-check"></i> ${state.language === 'es' ? 'Reservar' : 'Book Venue'}
+                                    <i class="fas fa-calendar-check"></i> ${t['bookVenue'] || 'Book Venue'}
                                 </button>
                             ` : ''}
                         </div>
@@ -793,75 +804,84 @@ function initApp() {
     // ===== FEATURED SECTION WITH CAROUSEL =====
     function renderFeatured() {
         const featured = state.resources.filter(r => r.impact).slice(0, 5);
+        const t = translations[state.language];
+        const isEs = state.language === 'es';
 
         contentDisplay.innerHTML = `
             <div class="section-header">
-                <h2>Community Spotlight</h2>
-                <p>Highlighting the most impactful resources in Houston.</p>
+                <h2>${t['communitySpotlight'] || 'Community Spotlight'}</h2>
+                <p>${t['communitySpotlightSubtitle'] || 'Highlighting the most impactful resources in Houston.'}</p>
             </div>
             
             <div class="carousel-container">
                 <div class="carousel-track" id="carousel-track">
-                    ${featured.map((res, i) => `
+                    ${featured.map((res, i) => {
+            const name = (isEs && res.name_es) ? res.name_es : res.name;
+            const desc = (isEs && res.description_es) ? res.description_es : res.description;
+            const impactLabel = (isEs && res.impact?.label_es) ? res.impact.label_es : res.impact?.label;
+            return `
                         <div class="carousel-slide">
                             <div class="featured-card animate-in">
                                 <div class="featured-image" style="background: linear-gradient(135deg, var(--primary-teal), var(--secondary-coral))">
                                     <div style="text-align: center; color: white;">
                                         <div style="font-size: 4rem; font-weight: 700;">${res.impact?.metric || ''}</div>
-                                        <div style="font-size: 1.25rem; opacity: 0.9;">${res.impact?.label || ''}</div>
+                                        <div style="font-size: 1.25rem; opacity: 0.9;">${impactLabel || ''}</div>
                                     </div>
                                 </div>
                                 <div class="featured-content">
-                                    <span class="category-badge">${res.category}</span>
-                                    <h3>${res.name}</h3>
-                                    <p>${res.description}</p>
+                                    <span class="category-badge">${t[res.category] || res.category}</span>
+                                    <h3>${name}</h3>
+                                    <p>${desc}</p>
                                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                                         ${res.website ? `
                                             <a href="${res.website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                                                <i class="fas fa-external-link-alt"></i> Visit Website
+                                                <i class="fas fa-external-link-alt"></i> ${t['visitWebsite'] || 'Visit Website'}
                                             </a>
                                         ` : ''}
-                                        <button class="btn btn-outline" onclick="window.location.hash = '#directory'">View Details</button>
+                                        <button class="btn btn-outline" onclick="window.location.hash = '#directory'">${t['viewDetails'] || 'View Details'}</button>
                                         <button class="btn btn-outline favorite-featured-btn" data-id="${res.id}">
-                                            <i class="fas fa-heart"></i> Save
+                                            <i class="fas fa-heart"></i> ${t['save'] || 'Save'}
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    `).join('')}
+                    `}).join('')}
                 </div>
                 <div class="carousel-controls">
-                    <button class="carousel-btn" id="carousel-prev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-btn" id="carousel-prev" data-i18n-aria-label="previousSlide"><i class="fas fa-chevron-left"></i></button>
                     <div class="carousel-dots">
-                        ${featured.map((_, i) => `<button class="carousel-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></button>`).join('')}
+                        ${featured.map((_, i) => `<button class="carousel-dot ${i === 0 ? 'active' : ''}" data-index="${i}" data-i18n-aria-label="goToSlide ${i + 1}"></button>`).join('')}
                     </div>
-                    <button class="carousel-btn" id="carousel-next"><i class="fas fa-chevron-right"></i></button>
+                    <button class="carousel-btn" id="carousel-next" data-i18n-aria-label="nextSlide"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
 
             <!-- Volunteer Opportunities -->
             <div class="section-header" style="margin-top: 6rem;">
-                <h2>Volunteer Opportunities</h2>
-                <p>Make a difference in your community.</p>
+                <h2>${t['volunteerOpportunities'] || 'Volunteer Opportunities'}</h2>
+                <p>${t['volunteerOpportunitiesSubtitle'] || 'Make a difference in your community.'}</p>
             </div>
             <div class="volunteer-grid">
-                ${volunteerOpportunities.map(v => `
+                ${volunteerOpportunities.map(v => {
+                const title = (isEs && v.title_es) ? v.title_es : v.title;
+                const desc = (isEs && v.description_es) ? v.description_es : v.description;
+                return `
                     <div class="volunteer-card animate-in">
-                        <span class="volunteer-badge">${v.frequency}</span>
-                        <h3>${v.title}</h3>
+                        <span class="volunteer-badge">${t[v.frequency] || v.frequency}</span>
+                        <h3>${title}</h3>
                         <p style="color: var(--primary-teal); font-weight: 600;">${v.organization}</p>
-                        <p>${v.description}</p>
+                        <p>${desc}</p>
                         <div class="volunteer-meta">
-                            <span><i class="fas fa-clock"></i> ${v.commitment}</span>
+                            <span><i class="fas fa-clock"></i> ${t[v.commitment] || v.commitment}</span>
                             <span><i class="fas fa-map-marker-alt"></i> ${v.location}</span>
                         </div>
                         <div class="tags-container">
                             ${v.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
-                        <a href="${v.website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Sign Up to Volunteer</a>
+                        <a href="${v.website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">${t['signUpToVolunteer'] || 'Sign Up to Volunteer'}</a>
                     </div>
-                `).join('')}
+                `}).join('')}
             </div>
         `;
 
@@ -913,8 +933,12 @@ function initApp() {
 
     // ===== CALENDAR SECTION =====
     function renderCalendar() {
+        const t = translations[state.language];
+        const isEs = state.language === 'es';
         const now = new Date();
-        const currentMonth = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+        const currentMonth = now.toLocaleString(isEs ? 'es-MX' : 'en-US', { month: 'long', year: 'numeric' });
+        const capitalizedMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
+
         const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
         const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
 
@@ -930,122 +954,131 @@ function initApp() {
             const isToday = day === now.getDate();
             const hasEvent = eventDates.includes(day);
             calendarDays += `
-                <div class="calendar-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" data-day="${day}">
-                    ${day}
-                </div>
-            `;
-        }
-
-        contentDisplay.innerHTML = `
-            <div class="section-header">
-                <h2>Community Calendar</h2>
-                <p>Stay updated with events happening across Houston.</p>
-            </div>
-
-            <div class="calendar-view animate-in">
-                <div class="calendar-header">
-                    <h3>${currentMonth}</h3>
-                    <div class="calendar-nav">
-                        <button class="carousel-btn"><i class="fas fa-chevron-left"></i></button>
-                        <button class="carousel-btn"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                </div>
-                <div class="calendar-grid">
-                    <div class="calendar-day-header">Sun</div>
-                    <div class="calendar-day-header">Mon</div>
-                    <div class="calendar-day-header">Tue</div>
-                    <div class="calendar-day-header">Wed</div>
-                    <div class="calendar-day-header">Thu</div>
-                    <div class="calendar-day-header">Fri</div>
-                    <div class="calendar-day-header">Sat</div>
-                    ${calendarDays}
-                </div>
-            </div>
-
-            <div class="section-header">
-                <h2>Upcoming Events</h2>
-            </div>
-            <div class="event-grid">
-                ${calendarEvents.slice(0, 6).map(event => `
-                    <div class="event-card animate-in">
-                        <span class="event-category">${event.category}</span>
-                        <h3>${event.title}</h3>
-                        <p><i class="fas fa-calendar"></i> ${event.date}</p>
-                        <p><i class="fas fa-clock"></i> ${event.time}</p>
-                        <p><i class="fas fa-map-marker-alt"></i> ${event.location}</p>
-                        <p style="margin-top: 1rem; color: var(--text-muted);">${event.description}</p>
-                        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.date.replace(/-/g, '')}/${event.date.replace(/-/g, '')}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%; margin-top: 1rem;"><i class="fas fa-calendar-plus"></i> Add to Calendar</a>
-                    </div>
-                `).join('')}
+            <div class="calendar-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" data-day="${day}">
+                ${day}
             </div>
         `;
-    }
+        }
 
+        const weekDays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+
+        contentDisplay.innerHTML = `
+        <div class="section-header">
+            <h2>${t['calendarTitle'] || 'Community Calendar'}</h2>
+            <p>${t['calendarSubtitle'] || 'Stay updated with events happening across Houston.'}</p>
+        </div>
+
+        <div class="calendar-view animate-in">
+            <div class="calendar-header">
+                <h3>${capitalizedMonth}</h3>
+                <div class="calendar-nav">
+                    <button class="carousel-btn" data-i18n-aria-label="previousMonth"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-btn" data-i18n-aria-label="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="calendar-grid">
+                ${weekDays.map(d => `<div class="calendar-day-header">${t[d] || d.toUpperCase()}</div>`).join('')}
+                ${calendarDays}
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>${t['upcomingEvents'] || 'Upcoming Events'}</h2>
+        </div>
+        <div class="event-grid">
+            ${calendarEvents.slice(0, 6).map(event => {
+            const title = (isEs && event.title_es) ? event.title_es : event.title;
+            const desc = (isEs && event.description_es) ? event.description_es : event.description;
+            return `
+                <div class="event-card animate-in">
+                    <span class="event-category">${t[event.category] || event.category}</span>
+                    <h3>${title}</h3>
+                    <p><i class="fas fa-calendar"></i> ${event.date}</p>
+                    <p><i class="fas fa-clock"></i> ${event.time}</p>
+                    <p><i class="fas fa-map-marker-alt"></i> ${event.location}</p>
+                    <p style="margin-top: 1rem; color: var(--text-muted);">${desc}</p>
+                    <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${event.date.replace(/-/g, '')}/${event.date.replace(/-/g, '')}&details=${encodeURIComponent(desc)}&location=${encodeURIComponent(event.location)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%; margin-top: 1rem;"><i class="fas fa-calendar-plus"></i> ${t['addToCalendar'] || 'Add to Calendar'}</a>
+                </div>
+            `}).join('')}
+        </div>
+    `;
+    }
     // ===== SUPPORT SECTION =====
     function renderSupport() {
+        const t = translations[state.language];
+        const isEs = state.language === 'es';
+
         contentDisplay.innerHTML = `
             <div class="section-header">
-                <h2>Support Your Community</h2>
-                <p>Your support helps non-profits provide essential services to Houstonians.</p>
+                <h2>${t['supportYourCommunity'] || 'Support Your Community'}</h2>
+                <p>${t['supportSubtitle'] || 'Your support helps non-profits provide essential services to Houstonians.'}</p>
             </div>
             <div class="support-grid">
-                ${initialNonprofits.map(org => `
+                ${initialNonprofits.map(org => {
+            const name = (isEs && org.name_es) ? org.name_es : org.name;
+            const desc = (isEs && org.description_es) ? org.description_es : org.description;
+            return `
                     <div class="support-card animate-in">
                         <div class="support-icon"><i class="fas fa-heart"></i></div>
-                        <h3>${org.name}</h3>
-                        <p>${org.description}</p>
-                        <a href="${org.link}" target="_blank" class="btn btn-primary">Learn More & Donate</a>
+                        <h3>${name}</h3>
+                        <p>${desc}</p>
+                        <a href="${org.link}" target="_blank" class="btn btn-primary">${t['learnMoreDonate'] || 'Learn More & Donate'}</a>
                     </div>
-                `).join('')}
+                `}).join('')}
             </div>
 
             <!-- Transportation Resources -->
             <div class="section-header">
-                <h2>Transportation Resources</h2>
-                <p>Get around Houston with these transportation options.</p>
+                <h2>${t['transportationResources'] || 'Transportation Resources'}</h2>
+                <p>${t['transportationSubtitle'] || 'Get around Houston with these transportation options.'}</p>
             </div>
             <div class="transport-grid">
-                ${transportationResources.map(t => `
+                ${transportationResources.map(t => {
+                const desc = (isEs && t.description_es) ? t.description_es : t.description;
+                return `
                     <div class="transport-card animate-in">
                         <div class="transport-icon"><i class="fas ${t.icon}"></i></div>
                         <div>
                             <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">${t.name}</h3>
-                            <p style="margin-bottom: 0.75rem;">${t.description}</p>
+                            <p style="margin-bottom: 0.75rem;">${desc}</p>
                             <p style="font-weight: 600; color: var(--primary-teal);">${t.cost}</p>
-                            <a href="${t.website}" target="_blank" class="btn btn-outline" style="margin-top: 1rem;">Visit Website</a>
+                            <a href="${t.website}" target="_blank" class="btn btn-outline" style="margin-top: 1rem;">${translations[state.language]['visitWebsite'] || 'Visit Website'}</a>
                         </div>
                     </div>
-                `).join('')}
+                `}).join('')}
             </div>
             
             <div class="section-header">
-                <h2>School Events</h2>
-                <p>Stay updated with events from Houston ISD and local schools.</p>
+                <h2>${t['schoolEvents'] || 'School Events'}</h2>
+                <p>${t['schoolEventsSubtitle'] || 'Stay updated with events from Houston ISD and local schools.'}</p>
             </div>
             <div class="event-grid">
-                ${schoolEvents.map(event => `
+                ${schoolEvents.map(event => {
+                    const title = (isEs && event.title_es) ? event.title_es : event.title;
+                    const desc = (isEs && event.description_es) ? event.description_es : ''; // Not rendered in original but good to have
+                    return `
                     <div class="event-card animate-in">
-                        <span class="event-category">${event.category}</span>
-                        <h3>${event.title}</h3>
+                        <span class="event-category">${t[event.category] || event.category}</span>
+                        <h3>${title}</h3>
                         <p><strong>${event.school}</strong></p>
                         <p><i class="fas fa-calendar"></i> ${event.date} | ${event.time}</p>
                     </div>
-                `).join('')}
+                `}).join('')}
             </div>
 
             <div class="newsletter-card animate-in">
-                <h3>Houston Hub Newsletter</h3>
-                <p>Get weekly updates on resources, events, and community news.</p>
+                <h3>${t['newsletterTitle'] || 'Houston Hub Newsletter'}</h3>
+                <p>${t['newsletterSubtitle'] || 'Get weekly updates on resources, events, and community news.'}</p>
                 <form class="newsletter-form" id="newsletter-form">
-                    <input type="email" placeholder="Enter your email address" required>
-                    <button type="submit" class="btn btn-primary">Join Now</button>
+                    <input type="email" placeholder="${t['enterEmail'] || 'Enter your email address'}" required>
+                    <button type="submit" class="btn btn-primary">${t['joinNow'] || 'Join Now'}</button>
                 </form>
             </div>
         `;
 
         document.getElementById('newsletter-form')?.addEventListener('submit', (e) => {
             e.preventDefault();
-            showToast('Thanks for subscribing! We\'ll keep you updated.', 'success');
+            showToast(t['thanksSubscribing'] || 'Thanks for subscribing! We\'ll keep you updated.', 'success');
             e.target.reset();
         });
     }
@@ -1053,29 +1086,34 @@ function initApp() {
     // ===== FAVORITES SECTION =====
     function renderFavorites() {
         const favoriteResources = state.resources.filter(r => state.favorites.includes(r.id));
+        const t = translations[state.language];
+        const isEs = state.language === 'es';
 
         contentDisplay.innerHTML = `
             <div class="section-header">
-                <h2>Your Favorites</h2>
-                <p>${favoriteResources.length} saved resources</p>
+                <h2>${t['yourFavorites'] || 'Your Favorites'}</h2>
+                <p>${favoriteResources.length} ${t['savedResources'] || 'saved resources'}</p>
             </div>
             ${favoriteResources.length === 0 ? `
                 <div style="text-align: center; padding: 6rem 2rem;">
                     <i class="fas fa-heart" style="font-size: 5rem; color: var(--text-muted); margin-bottom: 2rem;"></i>
-                    <h3>No favorites yet</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 2rem;">Save resources by clicking the heart icon on resource cards.</p>
-                    <a href="#directory" class="btn btn-primary">Browse Resources</a>
+                    <h3>${t['noFavoritesTitle'] || 'No favorites yet'}</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem;">${t['noFavoritesSubtitle'] || 'Save resources by clicking the heart icon on resource cards.'}</p>
+                    <a href="#directory" class="btn btn-primary">${t['browseResources'] || 'Browse Resources'}</a>
                 </div>
             ` : `
                 <div class="resource-grid">
-                    ${favoriteResources.map(res => `
+                    ${favoriteResources.map(res => {
+            const name = (isEs && res.name_es) ? res.name_es : res.name;
+            const desc = (isEs && res.description_es) ? res.description_es : res.description;
+            return `
                         <div class="resource-card animate-in">
                             <div class="card-header" style="display: flex; justify-content: space-between;">
-                                <span class="category-badge">${res.category}</span>
+                                <span class="category-badge">${t[res.category] || res.category}</span>
                                 <button class="favorite-btn active" data-id="${res.id}"><i class="fas fa-heart"></i></button>
                             </div>
-                            <h3>${res.name}</h3>
-                            <p>${res.description}</p>
+                            <h3>${name}</h3>
+                            <p>${desc}</p>
                             <div class="card-footer">
                                 <span><i class="fas fa-location-dot"></i> ${res.location}</span>
                             </div>
@@ -1106,137 +1144,48 @@ function initApp() {
     closeModalBtn?.addEventListener('click', () => modal.classList.remove('active'));
 
     function showSuggestModal() {
+        const isEs = state.language === 'es';
         modalBody.innerHTML = `
             <div class="modal-form">
-                <h2>Suggest a New Resource</h2>
-                <p>Help us expand our community hub by suggesting a local service.</p>
-                
-                <div class="form-steps">
-                    <div class="form-step active" data-step="1">
-                        <div class="step-number">1</div>
-                        <span class="step-label">Basic Info</span>
-                    </div>
-                    <div class="form-step" data-step="2">
-                        <div class="step-number">2</div>
-                        <span class="step-label">Details</span>
-                    </div>
-                    <div class="form-step" data-step="3">
-                        <div class="step-number">3</div>
-                        <span class="step-label">Submit</span>
-                    </div>
-                </div>
-
+                <h2>${isEs ? 'Sugerir un Recurso' : 'Suggest a New Resource'}</h2>
+                <p>${isEs ? 'Ayúdenos a expandir nuestro centro comunitario sugiriendo un servicio local.' : 'Help us expand our community hub by suggesting a local service.'}</p>
                 <form id="suggest-form">
-                    <div class="form-panel active" data-panel="1">
-                        <div class="form-group">
-                            <label for="res-name">Organization Name</label>
-                            <input type="text" id="res-name" placeholder="e.g. Houston Literacy Center" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="res-category">Category</label>
-                            <select id="res-category">
-                                <option>Food Security</option>
-                                <option>Recreation</option>
-                                <option>Community Centers</option>
-                                <option>Support Services</option>
-                                <option>Youth Programs</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label>${isEs ? 'Nombre del Recurso' : 'Resource Name'}</label>
+                        <input type="text" id="res-name" placeholder="${isEs ? 'ej. Banco de Alimentos de Houston' : 'e.g. Houston Food Bank'}" required>
                     </div>
-
-                    <div class="form-panel" data-panel="2">
-                        <div class="form-group">
-                            <label for="res-location">Location</label>
-                            <input type="text" id="res-location" placeholder="Address or neighborhood" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="res-hours">Operating Hours</label>
-                            <input type="text" id="res-hours" placeholder="e.g. 9:00 AM - 5:00 PM">
-                        </div>
-                        <div class="form-group">
-                            <label for="res-website">Website (optional)</label>
-                            <input type="url" id="res-website" placeholder="https://...">
-                        </div>
+                    <div class="form-group">
+                        <label>${isEs ? 'Categoría' : 'Category'}</label>
+                        <select id="res-category">
+                            <option>${isEs ? 'Seguridad Alimentaria' : 'Food Security'}</option>
+                            <option>${isEs ? 'Recreación' : 'Recreation'}</option>
+                            <option>${isEs ? 'Servicios de Apoyo' : 'Support Services'}</option>
+                            <option>${isEs ? 'Programas Juveniles' : 'Youth Programs'}</option>
+                            <option>${isEs ? 'Centros Comunitarios' : 'Community Centers'}</option>
+                            <option>${isEs ? 'Otro' : 'Other'}</option>
+                        </select>
                     </div>
-
-                    <div class="form-panel" data-panel="3">
-                        <div class="form-group">
-                            <label for="res-desc">Brief Description</label>
-                            <textarea id="res-desc" rows="4" placeholder="How does this resource help the community?" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="res-contact">Your Email (optional)</label>
-                            <input type="email" id="res-contact" placeholder="For follow-up questions">
-                        </div>
+                    <div class="form-group">
+                        <label>${isEs ? 'Descripción' : 'Description'}</label>
+                        <textarea id="res-desc" rows="3" placeholder="${isEs ? '¿Qué servicios proporcionan?' : 'What services do they provide?'}" required></textarea>
                     </div>
-
-                    <div class="form-nav">
-                        <button type="button" class="btn btn-outline" id="prev-step" style="display: none;">Previous</button>
-                        <button type="button" class="btn btn-primary" id="next-step">Next</button>
+                     <div class="form-group">
+                        <label>${isEs ? 'Ubicación/Dirección' : 'Location/Address'}</label>
+                        <input type="text" id="res-address" placeholder="${isEs ? '123 Calle Principal, Houston, TX' : '123 Main St, Houston, TX'}" required>
                     </div>
+                    <button type="submit" class="btn btn-primary w-full" style="margin-top: 1rem;">
+                        ${isEs ? 'Enviar Sugerencia' : 'Submit Suggestion'}
+                    </button>
                 </form>
             </div>
-        `;
+            `;
         modal.classList.add('active');
 
-        // Multi-step form logic
-        let currentStep = 1;
-        const totalSteps = 3;
-        const prevBtn = document.getElementById('prev-step');
-        const nextBtn = document.getElementById('next-step');
-
-        const updateStepUI = () => {
-            document.querySelectorAll('.form-step').forEach(step => {
-                const stepNum = parseInt(step.dataset.step);
-                step.classList.remove('active', 'completed');
-                if (stepNum === currentStep) step.classList.add('active');
-                if (stepNum < currentStep) step.classList.add('completed');
-            });
-
-            document.querySelectorAll('.form-panel').forEach(panel => {
-                panel.classList.remove('active');
-                if (parseInt(panel.dataset.panel) === currentStep) panel.classList.add('active');
-            });
-
-            prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
-            nextBtn.textContent = currentStep === totalSteps ? 'Submit Resource' : 'Next';
-        };
-
-        prevBtn.addEventListener('click', () => {
-            if (currentStep > 1) {
-                currentStep--;
-                updateStepUI();
-            }
-        });
-
-        nextBtn.addEventListener('click', () => {
-            if (currentStep < totalSteps) {
-                currentStep++;
-                updateStepUI();
-            } else {
-                // Submit
-                const newRes = {
-                    id: Date.now(),
-                    name: document.getElementById('res-name').value,
-                    category: document.getElementById('res-category').value,
-                    description: document.getElementById('res-desc').value,
-                    location: document.getElementById('res-location').value,
-                    hours: document.getElementById('res-hours').value || "To be verified",
-                    rating: 5.0,
-                    reviews: 0,
-                    tags: ["User Suggested"]
-                };
-                state.resources.unshift(newRes);
-                localStorage.setItem('resources', JSON.stringify(state.resources));
-                modal.classList.remove('active');
-
-                // Show success animation
-                showSuccessAnimation();
-
-                if (state.currentView === 'directory') {
-                    setTimeout(() => renderDirectory(), 2500);
-                }
-            }
+        document.getElementById('suggest-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            modal.classList.remove('active');
+            showToast(isEs ? '¡Gracias! Su sugerencia ha sido enviada.' : 'Thank you! Your suggestion has been submitted.', 'success');
+            createConfetti();
         });
     }
 
@@ -1244,11 +1193,11 @@ function initApp() {
         const overlay = document.createElement('div');
         overlay.className = 'success-overlay';
         overlay.innerHTML = `
-            <div class="success-checkmark"><i class="fas fa-check"></i></div>
-            <div class="success-message">
-                <h2>Thank You!</h2>
-                <p>Your resource suggestion has been submitted successfully.</p>
-            </div>
+            < div class="success-checkmark" > <i class="fas fa-check"></i></div >
+                <div class="success-message">
+                    <h2>Thank You!</h2>
+                    <p>Your resource suggestion has been submitted successfully.</p>
+                </div>
         `;
         document.body.appendChild(overlay);
         createConfetti();
@@ -1264,7 +1213,7 @@ function initApp() {
         const name = (isEs && res.name_es) ? res.name_es : res.name;
 
         modalBody.innerHTML = `
-            <div class="modal-form">
+            < div class="modal-form" >
                 <h2>${isEs ? 'Reservar Lugar: ' : 'Book Venue: '} ${name}</h2>
                 <p>${isEs ? 'Seleccione fecha y hora para reservar este espacio.' : 'Select a date and time to reserve this community space.'}</p>
                 <form id="booking-form">
@@ -1288,21 +1237,21 @@ function initApp() {
                     </div>
                     <button type="submit" class="btn btn-primary w-full">${isEs ? 'Confirmar Reserva' : 'Confirm Booking'}</button>
                 </form>
-            </div>
-        `;
+            </div >
+            `;
         modal.classList.add('active');
 
         document.getElementById('booking-form').addEventListener('submit', (e) => {
             e.preventDefault();
             modal.classList.remove('active');
-            showToast(isEs ? `¡Reserva confirmada para ${name}!` : `Booking confirmed for ${res.name}!`, 'success');
+            showToast(isEs ? `¡Reserva confirmada para ${name} !` : `Booking confirmed for ${res.name}!`, 'success');
         });
     }
 
     function showPartnerModal() {
         const isEs = state.language === 'es';
         modalBody.innerHTML = `
-            <div class="modal-form">
+            < div class= "modal-form" >
                 <h2>${isEs ? 'Asóciese con Nosotros' : 'Partner With Us'}</h2>
                 <p>${isEs ? '¿Eres organización sin fines de lucro? Trabajemos juntos.' : 'Are you a non-profit or community organization? Let\'s work together to serve Houston.'}</p>
                 <form id="partner-form">
@@ -1320,8 +1269,8 @@ function initApp() {
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">${isEs ? 'Enviar Consulta' : 'Submit Inquiry'}</button>
                 </form>
-            </div>
-        `;
+            </div >
+            `;
         modal.classList.add('active');
 
         document.getElementById('partner-form').addEventListener('submit', (e) => {
@@ -1372,7 +1321,7 @@ function initApp() {
             descEl.textContent = (state.language === 'es' && step.description_es) ? step.description_es : step.description;
 
             dotsEl.innerHTML = tourSteps.map((_, i) =>
-                `<div class="tour-dot ${i === currentTourStep ? 'active' : ''}"></div>`
+                `< div class="tour-dot ${i === currentTourStep ? 'active' : ''}" ></div > `
             ).join('');
 
             nextBtn.textContent = currentTourStep === tourSteps.length - 1 ? (state.language === 'es' ? '¡Entendido!' : 'Got it!') : (state.language === 'es' ? 'Siguiente' : 'Next');
@@ -1384,8 +1333,8 @@ function initApp() {
             let left = Math.max(20, rect.left);
 
             // Should add boundary checks ideally, but basic positioning:
-            tooltip.style.top = `${top}px`;
-            tooltip.style.left = `${left}px`;
+            tooltip.style.top = `${top} px`;
+            tooltip.style.left = `${left} px`;
 
             // Scroll target into view if needed
             target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1440,7 +1389,7 @@ function initApp() {
         const isEs = state.language === 'es';
 
         contentDisplay.innerHTML = `
-            <div class="section-header">
+            < div class="section-header" >
                 <div>
                     <h2>${t['petitions'] || 'Create a Change'}</h2>
                     <p>${isEs ? 'Apoye iniciativas que hacen que Houston sea mejor para todos.' : 'Support initiatives that make Houston better for everyone.'}</p>
@@ -1448,7 +1397,7 @@ function initApp() {
                 <button class="btn btn-primary" id="start-petition-btn">
                     <i class="fas fa-plus"></i> ${isEs ? 'Iniciar una Petición' : 'Start a Petition'}
                 </button>
-            </div>
+            </div >
             <div class="petition-grid" id="petition-list"></div>
         `;
 
@@ -1462,7 +1411,7 @@ function initApp() {
                 const desc = (state.language === 'es' && pet.description_es) ? pet.description_es : pet.description;
 
                 return `
-                    <div class="petition-card animate-in">
+            < div class="petition-card animate-in" >
                         <div class="petition-category">${pet.category}</div>
                         <h3>${title}</h3>
                         <p>${desc}</p>
@@ -1486,8 +1435,8 @@ function initApp() {
                             <span>${isEs ? 'Por' : 'By'} ${pet.creator}</span>
                             <span>${pet.timestamp}</span>
                         </div>
-                    </div>
-                `;
+                    </div >
+            `;
             }).join('');
 
             list.querySelectorAll('.sign-btn:not(.signed)').forEach(btn => {
@@ -1498,7 +1447,9 @@ function initApp() {
                         pet.signatures++;
                         pet.signed = true;
                         localStorage.setItem('petitions', JSON.stringify(state.petitions));
-                        showToast('Thank you for signing!', 'success');
+
+                        // Show localized toast immediately
+                        showToast(state.language === 'es' ? '¡Gracias por firmar!' : 'Thank you for signing!', 'success');
 
                         // Local UI update for better performance
                         const card = btn.closest('.petition-card');
@@ -1511,11 +1462,9 @@ function initApp() {
                         btn.disabled = true;
                         btn.textContent = state.language === 'es' ? 'Firmado ✓' : 'Signed ✓';
 
-                        showToast(state.language === 'es' ? '¡Gracias por firmar!' : 'Thank you for signing!', 'success');
-
                         const newPercent = Math.min((pet.signatures / pet.goal) * 100, 100);
-                        progressBar.style.width = `${newPercent}%`;
-                        stats.textContent = `${pet.signatures.toLocaleString()} ${state.language === 'es' ? 'firmado' : 'signed'}`;
+                        progressBar.style.width = `${newPercent}% `;
+                        stats.textContent = `${pet.signatures.toLocaleString()} ${state.language === 'es' ? 'firmado' : 'signed'} `;
                     }
                 });
             });
@@ -1528,62 +1477,10 @@ function initApp() {
     }
 
     // ===== SUGGEST RESOURCE MODAL =====
-    function showSuggestModal() {
-        const modalBody = document.getElementById('modal-body');
-        const modal = document.getElementById('modal-container');
-        const isEs = state.language === 'es';
-
-        modalBody.innerHTML = `
-            <div class="modal-form">
-                <h2>${isEs ? 'Sugerir un Recurso' : 'Suggest a Resource'}</h2>
-                <p>${isEs ? '¡Ayúdenos a hacer crecer el directorio! Cuéntenos sobre un servicio local.' : 'Help us grow the directory! Tell us about a local service.'}</p>
-                <form id="suggest-form">
-                    <div class="form-group">
-                        <label>${isEs ? 'Nombre del Recurso' : 'Resource Name'}</label>
-                        <input type="text" id="res-name" placeholder="${isEs ? 'ej. Banco de Alimentos de Houston' : 'e.g. Houston Food Bank'}" required>
-                    </div>
-                    <div class="form-group">
-                        <label>${isEs ? 'Categoría' : 'Category'}</label>
-                        <select id="res-category">
-                            <option>${isEs ? 'Seguridad Alimentaria' : 'Food Security'}</option>
-                            <option>${isEs ? 'Recreación' : 'Recreation'}</option>
-                            <option>${isEs ? 'Servicios de Apoyo' : 'Support Services'}</option>
-                            <option>${isEs ? 'Programas Juveniles' : 'Youth Programs'}</option>
-                            <option>${isEs ? 'Centros Comunitarios' : 'Community Centers'}</option>
-                            <option>${isEs ? 'Otro' : 'Other'}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>${isEs ? 'Descripción' : 'Description'}</label>
-                        <textarea id="res-desc" rows="3" placeholder="${isEs ? '¿Qué servicios proporcionan?' : 'What services do they provide?'}" required></textarea>
-                    </div>
-                     <div class="form-group">
-                        <label>${isEs ? 'Ubicación/Dirección' : 'Location/Address'}</label>
-                        <input type="text" id="res-address" placeholder="123 Main St, Houston, TX" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-full" style="margin-top: 1rem;">
-                        ${isEs ? 'Enviar Sugerencia' : 'Submit Suggestion'}
-                    </button>
-                </form>
-            </div>
-        `;
-        modal.classList.add('active');
-
-        document.getElementById('suggest-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            modal.classList.remove('active');
-            // In a real app, this would send data to a backend
-            showToast(isEs ? '¡Gracias! Su sugerencia ha sido enviada para revisión.' : 'Thank you! Your suggestion has been submitted for review.', 'success');
-
-            // Trigger confetti for fun
-            createConfetti();
-        });
-    }
-
     function showPetitionModal() {
         const isEs = state.language === 'es';
         modalBody.innerHTML = `
-            <div class="modal-form">
+            < div class="modal-form" >
                 <h2>${isEs ? 'Iniciar una Petición Comunitaria' : 'Start a Community Petition'}</h2>
                 <p>${isEs ? '¿Qué cambio te gustaría ver en Houston?' : 'What change would you like to see in Houston?'}</p>
                 <form id="petition-form">
@@ -1614,8 +1511,8 @@ function initApp() {
                         ${isEs ? 'Lanzar Petición' : 'Launch Petition'}
                     </button>
                 </form>
-            </div>
-        `;
+            </div >
+            `;
         modal.classList.add('active');
 
         document.getElementById('petition-form').addEventListener('submit', (e) => {
@@ -1659,7 +1556,7 @@ function initApp() {
             confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
 
             const duration = Math.random() * 2 + 1;
-            confetti.style.transition = `top ${duration}s ease-in, opacity ${duration}s ease-in`;
+            confetti.style.transition = `top ${duration}s ease -in, opacity ${duration}s ease -in `;
 
             container.appendChild(confetti);
 
