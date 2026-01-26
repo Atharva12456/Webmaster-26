@@ -122,6 +122,9 @@ function initApp() {
     document.documentElement.setAttribute('data-font-size', state.fontSize);
     document.documentElement.setAttribute('data-contrast', state.contrast);
 
+    // Suggest Resource Button
+    document.getElementById('suggest-resource-btn')?.addEventListener('click', showSuggestModal);
+
     // ===== LANGUAGE SELECTOR =====
     langToggle?.addEventListener('click', () => {
         langDropdown?.classList.toggle('active');
@@ -284,7 +287,10 @@ function initApp() {
         btn.addEventListener('click', () => {
             state.language = btn.dataset.lang;
             localStorage.setItem('language', state.language);
-            langToggle.innerHTML = `<i class="fas fa-globe"></i> ${state.language.toUpperCase()}`;
+
+            if (langToggle) {
+                langToggle.innerHTML = `<i class="fas fa-globe"></i> ${state.language.toUpperCase()}`;
+            }
 
             updateLangButtons();
             updateLanguage(state.language);
@@ -1483,6 +1489,59 @@ function initApp() {
         document.getElementById('start-petition-btn').addEventListener('click', showPetitionModal);
 
         updatePetitions();
+        updatePetitions();
+    }
+
+    // ===== SUGGEST RESOURCE MODAL =====
+    function showSuggestModal() {
+        const modalBody = document.getElementById('modal-body');
+        const modal = document.getElementById('modal-container');
+
+        modalBody.innerHTML = `
+            <div class="modal-form">
+                <h2>Suggest a Resource</h2>
+                <p>Help us grow the directory! Tell us about a local service.</p>
+                <form id="suggest-form">
+                    <div class="form-group">
+                        <label>Resource Name</label>
+                        <input type="text" id="res-name" placeholder="e.g. Houston Food Bank" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="res-category">
+                            <option>Food Security</option>
+                            <option>Recreation</option>
+                            <option>Support Services</option>
+                            <option>Youth Programs</option>
+                            <option>Community Centers</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="res-desc" rows="3" placeholder="What services do they provide?" required></textarea>
+                    </div>
+                     <div class="form-group">
+                        <label>Location/Address</label>
+                        <input type="text" id="res-address" placeholder="123 Main St, Houston, TX" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full" style="margin-top: 1rem;">
+                        Submit Suggestion
+                    </button>
+                </form>
+            </div>
+        `;
+        modal.classList.add('active');
+
+        document.getElementById('suggest-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            modal.classList.remove('active');
+            // In a real app, this would send data to a backend
+            showToast('Thank you! Your suggestion has been submitted for review.', 'success');
+
+            // Trigger confetti for fun
+            createConfetti();
+        });
     }
 
     function showPetitionModal() {
