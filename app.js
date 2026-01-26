@@ -1285,7 +1285,15 @@ function initApp() {
         const dotsEl = document.getElementById('tour-dots');
         const nextBtn = document.getElementById('tour-next');
 
+        // Helper to clear highlights
+        const clearHighlights = () => {
+            document.querySelectorAll('.tour-highlight').forEach(el => {
+                el.classList.remove('tour-highlight');
+            });
+        };
+
         const showStep = () => {
+            clearHighlights();
             const step = tourSteps[currentTourStep];
             const target = document.querySelector(step.target);
 
@@ -1295,6 +1303,9 @@ function initApp() {
                 else endTour();
                 return;
             }
+
+            // Add highlight class to target
+            target.classList.add('tour-highlight');
 
             overlay.classList.add('active');
             tooltip.style.display = 'block';
@@ -1310,11 +1321,20 @@ function initApp() {
 
             // Position tooltip
             const rect = target.getBoundingClientRect();
-            tooltip.style.top = `${rect.bottom + 20}px`;
-            tooltip.style.left = `${Math.max(20, rect.left)}px`;
+            // Ensure tooltip fits within viewport
+            let top = rect.bottom + 20;
+            let left = Math.max(20, rect.left);
+
+            // Should add boundary checks ideally, but basic positioning:
+            tooltip.style.top = `${top}px`;
+            tooltip.style.left = `${left}px`;
+
+            // Scroll target into view if needed
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         };
 
         const endTour = () => {
+            clearHighlights();
             overlay.classList.remove('active');
             tooltip.style.display = 'none';
             state.hasSeenTour = true;
@@ -1322,7 +1342,11 @@ function initApp() {
             showToast('Welcome to Houston Hub! 👋', 'success');
         };
 
-        nextBtn.addEventListener('click', () => {
+        // Clone button to remove old event listeners if any (simple safety)
+        const newNextBtn = nextBtn.cloneNode(true);
+        nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+        newNextBtn.addEventListener('click', () => {
             currentTourStep++;
             if (currentTourStep < tourSteps.length) {
                 showStep();
