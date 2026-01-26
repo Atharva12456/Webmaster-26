@@ -212,6 +212,38 @@ h4 {
     color: var(--text-main);
 }
 
+/* Trending Banner */
+.trending-banner {
+    background: rgba(255, 112, 67, 0.08);
+    border: 1px dashed var(--secondary-coral);
+    border-radius: 20px;
+    padding: 1.5rem 2.5rem;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.trending-badge {
+    background: var(--secondary-coral);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.trending-banner p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.trending-banner a {
+    color: var(--primary-teal);
+    font-weight: 700;
+    text-decoration: none;
+}
+
 /* Resource Cards */
 .resource-grid {
     display: grid;
