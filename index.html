@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Houston Community Hub | Local Resources & Support</title>
-    <meta name="description" content="A comprehensive resource hub for Houston residents to find support, recreation, and community events.">
+    <meta name="description"
+        content="A comprehensive resource hub for Houston residents to find support, recreation, and community events.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body data-theme="light">
     <header class="main-header">
         <nav class="container">
@@ -85,6 +90,24 @@
         </div>
     </footer>
 
+    <!-- Sidebar for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="sidebar" id="mobile-sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-bridge-water"></i>
+                <span>Houston<span>Hub</span></span>
+            </div>
+            <button class="close-sidebar">&times;</button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="#directory" class="active"><i class="fas fa-search"></i> Directory</a></li>
+            <li><a href="#featured"><i class="fas fa-star"></i> Featured</a></li>
+            <li><a href="#petitions"><i class="fas fa-file-contract"></i> Petitions</a></li>
+            <li><a href="#support"><i class="fas fa-heart"></i> Support Us</a></li>
+        </ul>
+    </div>
+
     <!-- Modals -->
     <div id="modal-container" class="modal-overlay hidden">
         <div class="modal-content">
@@ -96,4 +119,5 @@
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>

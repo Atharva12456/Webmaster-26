@@ -22,9 +22,33 @@ function initApp() {
 
     // DOM Elements
     const contentDisplay = document.getElementById('content-display');
-    const navLinks = document.querySelectorAll('.nav-links a');
+    const navLinks = document.querySelectorAll('.nav-links a, .sidebar-links a');
     const themeToggle = document.getElementById('theme-toggle');
     const rootSearch = document.getElementById('main-search-input');
+    const logo = document.querySelector('.logo');
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const sidebar = document.getElementById('mobile-sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const closeSidebar = document.querySelector('.close-sidebar');
+
+    // Sidebar Logic
+    const toggleSidebar = () => {
+        sidebar.classList.toggle('active');
+        sidebarOverlay.classList.toggle('active');
+    };
+
+    mobileMenuBtn.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+    closeSidebar.addEventListener('click', toggleSidebar);
+
+    // Initial Render Settings
+    logo.addEventListener('click', () => {
+        state.filters.search = '';
+        state.filters.category = 'All';
+        rootSearch.value = '';
+        window.location.hash = '#directory';
+        renderDirectory(); // Force re-render if already on directory
+    });
 
     // Initialize Theme
     document.body.setAttribute('data-theme', state.theme);
@@ -89,8 +113,15 @@ function initApp() {
 
     function renderDirectory() {
         contentDisplay.innerHTML = `
+            <div class="trending-banner animate-in">
+                <div class="trending-badge">TRENDING NOW</div>
+                <p><strong>Memorial Park Tennis Center</strong> just added 4 new clay courts! <a href="#directory" onclick="state.filters.category='Recreation'; updateGrid();">Book now &rarr;</a></p>
+            </div>
             <div class="section-header">
-                <h2>Resource Directory</h2>
+                <div>
+                    <h2>Resource Directory</h2>
+                    <p id="results-count" class="text-muted"></p>
+                </div>
                 <div class="directory-controls">
                     <select id="category-filter">
                         <option value="All">All Categories</option>
@@ -114,6 +145,8 @@ function initApp() {
                 const matchesCategory = state.filters.category === 'All' || res.category === state.filters.category;
                 return matchesSearch && matchesCategory;
             });
+
+            document.getElementById('results-count').textContent = `Showing ${filtered.length} resources in Houston`;
 
             grid.innerHTML = filtered.map(res => `
                 <div class="resource-card animate-in">
@@ -297,7 +330,10 @@ function initApp() {
                     <h2>Community Petitions</h2>
                     <p>Support initiatives that make Houston better for everyone.</p>
                 </div>
-                <button class="btn btn-outline" id="start-petition-btn">Start a Petition</button>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-outline" id="export-petitions-btn"><i class="fas fa-download"></i> Export</button>
+                    <button class="btn btn-primary" id="start-petition-btn">Start a Petition</button>
+                </div>
             </div>
             <div class="petition-grid" id="petition-list"></div>
         `;
@@ -346,6 +382,10 @@ function initApp() {
 
         document.getElementById('start-petition-btn').addEventListener('click', () => {
             showPetitionModal();
+        });
+
+        document.getElementById('export-petitions-btn').addEventListener('click', () => {
+            alert('Signatures exported to HoustonHub_Petitions.csv (Simulated)');
         });
 
         updatePetitions();
@@ -410,6 +450,36 @@ function initApp() {
                     </div>
                 `).join('')}
             </div>
+            
+            <div class="section-header">
+                <h2>School Events</h2>
+                <p>Stay updated with events from Houston ISD and local schools.</p>
+            </div>
+            <div class="event-grid">
+                ${schoolEvents.map(event => `
+                    <div class="event-card animate-in">
+                        <span class="event-category">${event.category}</span>
+                        <h3>${event.title}</h3>
+                        <p><strong>${event.school}</strong></p>
+                        <p><i class="fas fa-calendar"></i> ${event.date} | ${event.time}</p>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="newsletter-card animate-in">
+                <h3>Houston Hub Newsletter</h3>
+                <p>Get weekly updates on resources, events, and community news.</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit" class="btn btn-primary">Join Now</button>
+                </form>
+            </div>
         `;
+
+        document.getElementById('newsletter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thanks for subscribing! We will keep you updated.');
+            e.target.reset();
+        });
     }
 }
