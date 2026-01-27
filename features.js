@@ -185,30 +185,6 @@ function getAverageUserRating(resourceId) {
     return (sum / reviews.length).toFixed(1);
 }
 
-// ===== SAVED SEARCHES =====
-function getSavedSearches() {
-    return JSON.parse(localStorage.getItem('savedSearches') || '[]');
-}
-
-function saveSearch(searchConfig) {
-    const searches = getSavedSearches();
-    const newSearch = {
-        id: Date.now(),
-        name: searchConfig.name || `Search ${searches.length + 1}`,
-        filters: searchConfig.filters,
-        timestamp: new Date().toISOString()
-    };
-    searches.unshift(newSearch);
-    // Keep only last 10 searches
-    localStorage.setItem('savedSearches', JSON.stringify(searches.slice(0, 10)));
-    return newSearch;
-}
-
-function deleteSavedSearch(searchId) {
-    const searches = getSavedSearches();
-    const filtered = searches.filter(s => s.id !== searchId);
-    localStorage.setItem('savedSearches', JSON.stringify(filtered));
-}
 
 // ===== RESOURCE SUBMISSIONS TRACKER =====
 function getSubmissions() {
@@ -314,83 +290,6 @@ const communityStories = [
     }
 ];
 
-// ===== PDF EXPORT =====
-function exportFavoritesToPDF(favorites, resources, language = 'en') {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    const favResources = resources.filter(r => favorites.includes(r.id));
-
-    // Title
-    doc.setFontSize(20);
-    doc.setTextColor(0, 121, 107);
-    doc.text('Houston Community Hub - My Saved Resources', 20, 20);
-
-    doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 28);
-
-    let yPos = 40;
-
-    favResources.forEach((res, index) => {
-        if (yPos > 260) {
-            doc.addPage();
-            yPos = 20;
-        }
-
-        const name = (language === 'es' && res.name_es) ? res.name_es : res.name;
-        const desc = (language === 'es' && res.description_es) ? res.description_es : res.description;
-
-        // Resource name
-        doc.setFontSize(14);
-        doc.setTextColor(0, 0, 0);
-        doc.text(`${index + 1}. ${name}`, 20, yPos);
-        yPos += 7;
-
-        // Category
-        doc.setFontSize(10);
-        doc.setTextColor(0, 121, 107);
-        doc.text(res.category, 20, yPos);
-        yPos += 6;
-
-        // Description (wrap text)
-        doc.setTextColor(80);
-        const descLines = doc.splitTextToSize(desc, 170);
-        doc.text(descLines, 20, yPos);
-        yPos += descLines.length * 5 + 3;
-
-        // Location & Hours
-        doc.setFontSize(9);
-        doc.text(`📍 ${res.location}`, 20, yPos);
-        yPos += 5;
-        doc.text(`🕐 ${res.hours}`, 20, yPos);
-        yPos += 5;
-
-        // Website
-        if (res.website) {
-            doc.setTextColor(0, 0, 255);
-            doc.text(`🌐 ${res.website}`, 20, yPos);
-            yPos += 5;
-        }
-
-        // Distance if available
-        const dist = getResourceDistance(res.id);
-        if (dist !== null) {
-            doc.setTextColor(100);
-            doc.text(`📏 ${formatDistance(dist)} from you`, 20, yPos);
-            yPos += 5;
-        }
-
-        yPos += 8;
-    });
-
-    // Footer
-    doc.setFontSize(8);
-    doc.setTextColor(150);
-    doc.text('Houston Community Hub - https://atharva12456.github.io/Webmaster-26/', 20, 285);
-
-    doc.save('houston-hub-favorites.pdf');
-}
 
 // ===== MAP FUNCTIONALITY =====
 let resourceMap = null;
@@ -533,16 +432,12 @@ window.formatDistance = formatDistance;
 window.getResourceReviews = getResourceReviews;
 window.addResourceReview = addResourceReview;
 window.getAverageUserRating = getAverageUserRating;
-window.getSavedSearches = getSavedSearches;
-window.saveSearch = saveSearch;
-window.deleteSavedSearch = deleteSavedSearch;
 window.getSubmissions = getSubmissions;
 window.addSubmission = addSubmission;
 window.getSubmissionStatus = getSubmissionStatus;
 window.accessibilityFeatures = accessibilityFeatures;
 window.getResourceAccessibility = getResourceAccessibility;
 window.communityStories = communityStories;
-window.exportFavoritesToPDF = exportFavoritesToPDF;
 window.initializeMap = initializeMap;
 window.updateMapMarkers = updateMapMarkers;
 window.filterMapByDistance = filterMapByDistance;

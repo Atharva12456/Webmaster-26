@@ -555,6 +555,17 @@ function initApp() {
     console.log('Hub: initApp finished successfully');
     updateActiveNav(initialHash);
 
+    // Check for deep link
+    const urlParams = new URLSearchParams(window.location.search);
+    const resourceId = urlParams.get('resource');
+    if (resourceId) {
+        // clear the param cleanly without reload
+        window.history.replaceState({}, document.title, window.location.pathname);
+        setTimeout(() => {
+            showResourceDetailModal(parseInt(resourceId));
+        }, 500); // Small delay to ensure resources are loaded
+    }
+
 
 
     // ===== RENDER FUNCTIONS =====
@@ -689,8 +700,6 @@ function initApp() {
                 </div>
             </div>
 
-            <!-- Saved Searches (Compact) -->
-            <div id="saved-searches-container" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.85rem;"></div>
 
             <!-- Filter Chips (Scrolling) -->
             <div class="filter-chips">
@@ -705,9 +714,6 @@ function initApp() {
                 ${(state.filters.category.length > 0 && !state.filters.category.includes('All')) || state.filters.search ? `
                     <button class="clear-filters"><i class="fas fa-times"></i> ${t['clearFilters'] || 'Clear Filters'}</button>
                 ` : ''}
-                <button id="save-search-btn" class="btn btn-outline" style="margin-left: auto; font-size: 0.85rem; padding: 0.4rem 0.8rem;">
-                    <i class="fas fa-bookmark"></i> Save Search
-                </button>
             </div>
 
             <!-- Map Container (Hidden by default) -->
@@ -832,7 +838,7 @@ function initApp() {
                                 <i class="fas fa-star" style="color: #f59e0b;"></i> ${res.rating} (${res.reviews})
                             </div>
                             <div class="share-container">
-                                <button class="share-btn copy" data-share="copy" data-name="${res.name}" data-i18n-aria-label="copyLink"><i class="fas fa-link"></i></button>
+                                <button class="share-btn copy" data-share="copy" data-id="${res.id}" data-name="${res.name}" data-i18n-aria-label="copyLink"><i class="fas fa-link"></i></button>
                             </div>
                         </div>
                         <div class="card-actions" style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
@@ -901,16 +907,18 @@ function initApp() {
             grid.querySelectorAll('.share-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const type = btn.dataset.share;
-                    const name = btn.dataset.name;
-                    const url = window.location.href;
+                    const id = parseInt(btn.dataset.id);
+                    const res = state.resources.find(r => r.id === id);
 
-                    if (type === 'twitter') {
-                        window.open(`https://twitter.com/intent/tweet?text=Check out ${name} on Houston Hub!&url=${url}`, '_blank');
-                    } else if (type === 'facebook') {
-                        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-                    } else if (type === 'copy') {
-                        copyToClipboard(url);
+                    if (res && res.website) {
+                        copyToClipboard(res.website);
+                        showToast(t['linkCopied'] || 'Website URL copied!', 'success');
+                    } else {
+                        // Fallback
+                        const baseUrl = window.location.origin + window.location.pathname;
+                        const shareUrl = `${baseUrl}?resource=${id}`;
+                        copyToClipboard(shareUrl);
+                        showToast(t['linkCopied'] || 'Link copied to clipboard!', 'success');
                     }
                 });
             });
@@ -1046,63 +1054,6 @@ function initApp() {
             updateGrid();
         });
 
-        // Save Search Button
-        document.getElementById('save-search-btn')?.addEventListener('click', () => {
-            if (typeof saveSearch === 'function') {
-                const searchConfig = {
-                    name: state.filters.search || state.filters.category,
-                    filters: { ...state.filters }
-                };
-                saveSearch(searchConfig);
-                showToast('Search saved!', 'success');
-                loadSavedSearches();
-            }
-        });
-
-        // Load Saved Searches
-        function loadSavedSearches() {
-            const container = document.getElementById('saved-searches-container');
-            if (!container || typeof getSavedSearches !== 'function') return;
-
-            const searches = getSavedSearches();
-            if (searches.length === 0) {
-                container.innerHTML = '';
-                return;
-            }
-
-            container.innerHTML = searches.slice(0, 5).map(s => `
-                <button class="saved-search-chip" data-id="${s.id}" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 0.3rem 0.6rem; border-radius: 16px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.3rem;">
-                    <i class="fas fa-bookmark" style="color: var(--primary-teal);"></i>
-                    ${s.name.substring(0, 20)}${s.name.length > 20 ? '...' : ''}
-                    <span class="delete-saved" data-id="${s.id}" style="margin-left: 0.25rem; color: #999;">&times;</span>
-                </button>
-            `).join('');
-
-            // Attach click handlers
-            container.querySelectorAll('.saved-search-chip').forEach(chip => {
-                chip.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('delete-saved')) {
-                        const id = parseInt(e.target.dataset.id);
-                        if (typeof deleteSavedSearch === 'function') {
-                            deleteSavedSearch(id);
-                            loadSavedSearches();
-                        }
-                        return;
-                    }
-                    const id = parseInt(chip.dataset.id);
-                    const searches = getSavedSearches();
-                    const saved = searches.find(s => s.id === id);
-                    if (saved) {
-                        state.filters = { ...saved.filters };
-                        const searchInput = document.getElementById('main-search-input');
-                        if (searchInput) searchInput.value = state.filters.search || '';
-                        renderDirectory();
-                    }
-                });
-            });
-        }
-
-        loadSavedSearches();
 
         updateGrid();
     }
@@ -1592,11 +1543,6 @@ function initApp() {
                     <h2>${t['yourFavorites'] || 'Your Favorites'}</h2>
                     <p>${favoriteResources.length} ${t['savedResources'] || 'saved resources'}</p>
                 </div>
-                ${favoriteResources.length > 0 ? `
-                    <button id="export-pdf-btn" class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="fas fa-file-pdf"></i> ${t['exportPDF'] || 'Export to PDF'}
-                    </button>
-                ` : ''}
             </div>
 
             <!-- My Submissions Tracker -->
@@ -1668,14 +1614,6 @@ function initApp() {
             });
         });
 
-        document.getElementById('export-pdf-btn')?.addEventListener('click', () => {
-            if (typeof exportFavoritesToPDF === 'function') {
-                exportFavoritesToPDF(state.favorites, state.resources, state.language);
-                showToast(t['pdfExportStarted'] || 'Exporting favorites to PDF...', 'success');
-            } else {
-                showToast('PDF export feature not loaded.', 'error');
-            }
-        });
     }
 
     // Event listeners already moved up for robustness
