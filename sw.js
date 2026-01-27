@@ -1,4 +1,4 @@
-const CACHE_NAME = 'houston-hub-v1';
+const CACHE_NAME = 'houston-hub-v2';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -10,8 +10,7 @@ const ASSETS_TO_CACHE = [
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
     'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
+    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
 ];
 
 // Install event - cache assets
