@@ -890,6 +890,14 @@ function initApp() {
                 });
             });
 
+            grid.querySelectorAll('.view-details-btn, .resource-name-link').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.dataset.id);
+                    showResourceDetailModal(id);
+                });
+            });
+
             grid.querySelectorAll('.share-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -973,17 +981,6 @@ function initApp() {
                     if (searchInput) searchInput.value = res.name;
                     updateGrid();
                 }
-            });
-        });
-
-        // ===== NEW FEATURE EVENT HANDLERS =====
-
-        // View Details button - opens resource detail modal
-        grid.querySelectorAll('.view-details-btn, .resource-name-link').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const id = parseInt(btn.dataset.id);
-                showResourceDetailModal(id);
             });
         });
 
@@ -1645,6 +1642,11 @@ function initApp() {
                             <div class="card-footer">
                                 <span><i class="fas fa-location-dot"></i> ${res.location}</span>
                             </div>
+                            <div class="card-actions" style="margin-top: 1rem;">
+                                <button class="btn btn-primary view-details-btn" data-id="${res.id}" style="width: 100%;">
+                                    <i class="fas fa-info-circle"></i> ${t['viewDetails'] || 'View Details'}
+                                </button>
+                            </div>
                         </div>
                     `}).join('')}
                 </div>
@@ -1656,6 +1658,13 @@ function initApp() {
                 const id = parseInt(btn.dataset.id);
                 toggleFavorite(id);
                 renderFavorites();
+            });
+        });
+
+        document.querySelectorAll('.view-details-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = parseInt(btn.dataset.id);
+                showResourceDetailModal(id);
             });
         });
 
