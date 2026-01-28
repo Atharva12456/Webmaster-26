@@ -1,4 +1,4 @@
-const CACHE_NAME = 'houston-hub-v2';
+const CACHE_NAME = 'houston-hub-v3';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
