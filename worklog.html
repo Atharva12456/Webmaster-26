@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worklog & Citation Checklist - Houston Community Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .worklog-container {
+            max-width: 1000px;
+            margin: 120px auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .document-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .document-card h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-teal);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .document-image {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .back-nav {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body class="hide-hero">
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-heart-pulse"></i>
+                <span>Houston<span>Hub</span></span>
+            </a>
+            <div class="back-nav">
+                <a href="index.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="worklog-container animate-in">
+        <div class="section-header">
+            <h2>Worklog & Citation Checklist</h2>
+            <p>Documentation for the Technology Student Association (TSA) Webmaster competition.</p>
+        </div>
+
+        <div class="document-card">
+            <h2><i class="fas fa-clipboard-list"></i> Plan of Work Log</h2>
+            <img src="assets/images/worklog.jpg" alt="Plan of Work Log" class="document-image">
+        </div>
+
+        <div class="document-card">
+            <h2><i class="fas fa-check-double"></i> Student Copyright Checklist</h2>
+            <img src="assets/images/checklist.jpg" alt="Student Copyright Checklist" class="document-image">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Houston Community Hub. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="index.html">Home</a>
+                    <a href="worklog.html" class="active">Worklog & Citations</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme init (simplified from app.js)
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+</body>
+
+</html>
